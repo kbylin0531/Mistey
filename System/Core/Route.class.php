@@ -1,0 +1,38 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2015/8/27
+ * Time: 14:04
+ */
+namespace System\Core;
+use System\Utils\Util;
+defined('BASE_PATH') or die('No Permission!');
+
+class Route{
+
+    protected static $convention = array();
+
+    protected static $inited = false;
+
+    public static function init($confnm='route'){
+        //获取静态方法调用的类名称使用get_called_class,对象用get_class
+//        $clsnm = strtolower(strstr(get_called_class(),'Helper',true));//配置文件名称
+        Util::mergeConf(self::$convention,ConfigHelper::loadConfig('route'),true);
+        static::$inited = true;
+    }
+
+    public static function parseRouteRules(){
+        $conf = ConfigHelper::loadConfig('');
+        self::$convention = array_merge(self::$convention,$conf);
+    }
+
+    public static function parseDirectRouteRule($url){
+
+    }
+
+    public static function parseIndirectRouteRule($module,$controller,$action,$param=null){
+
+    }
+
+}

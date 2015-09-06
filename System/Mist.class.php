@@ -1,0 +1,368 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 2015/9/6
+ * Time: 9:16
+ */
+namespace System;
+
+use System\Core\ConfigHelper;
+use System\Core\Dao;
+use System\Core\Dispatcher;
+use System\Core\Log;
+use System\Core\URLHelper;
+use System\Exception\ClassNotFoundException;
+use System\Utils\Util;
+
+defined('BASE_PATH') or die('No Permission!');
+
+final class Mist{
+
+    private static $_config = array(
+        'APP_NAME' => 'Mistight',//写入session时区分
+        'TIME_ZONE'=> 'Asia/Shanghai',
+
+        'URL_MODE'          => URLMODE_COMMON,//URL模式
+        'LOG_RATE'          => LOGRATE_DAY,//日志频度
+
+        //-- 开关模式 --//
+        /**
+         * 调试模式，异常和错误不会被显示，但会写入到日志文件中
+         */
+        'DEBUG_MODE_ON' => true,
+        /**
+         * URL快速模式，不会判断URL模式而统一使用URL的通常模式
+         * 解析速度最快，可以省略中间的很多步骤
+         */
+        'URLMODE_TOPSPEED_ON' => false,
+        /**
+         * 是否开启rewrite引擎,只有在运行环境支持的情况下建议开启
+         */
+        'REWRITE_ENGINE_ON'   => false,
+        /**
+         * 是否显示调试信息
+         */
+        'PAGE_TRACE_ON'    => true,
+        /**
+         * 是否开启路由功能
+         */
+        'URL_ROUTE_ON'      => true,
+        /**
+         * 是否自动开启配置文件检查与缓存，项目稳定运行的情况下建议关闭，可以减少三分之二的分析时间
+         * 如果配置文件修改了或者集合配置文件被删除，需要手动开启并访问以建立集合配置文件，之后可以关闭
+         */
+        'AUTO_CHECK_CONFIG_ON'  => true,
+        /**
+         * 模板引擎选择
+         */
+        'TEMPLATE_ENGINE'       => 'Smarty',
+
+        'TEMPLATE_EXT'          => 'html',
+    );
+
+    private static $_classes = array(
+
+    );
+
+    private static $_errors = array();
+
+    /**
+     * 初始化配置
+     * @param array $config
+     * @return void
+     */
+    public static function init(array $config = array()){
+        self::$_config = array_merge(self::$_config,$config);
+        date_default_timezone_set(self::$_config['TIME_ZONE']);
+        spl_autoload_register('System\Mist::loadClass') or die('Function spl_autoload_register called failed!');//自动加载类定义
+
+        //-- 普通常量定义 --//
+        define('SYSTEM_PATH',BASE_PATH.'System/');
+        define('RUNTIME_PATH',BASE_PATH.'Runtime/');
+        define('APP_PATH',BASE_PATH.'Application/');
+
+        define('APP_NAME',self::$_config['APP_NAME']);   //定义应用名称
+        define('IS_WIN',false !== stripos(PHP_OS, 'WIN')); //运行环境
+        define('IS_AJAX', ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ));
+
+        //-- 配置常量定义 --//
+        define('URL_MODE',self::$_config['URL_MODE']);
+        define('LOG_RATE',self::$_config['LOG_RATE']);//日志写入频率
+        define('TEMPLATE_ENGINE',self::$_config['TEMPLATE_ENGINE']);
+        define('TEMPLATE_EXT',self::$_config['TEMPLATE_EXT']);
+
+        //-- 开关常量 --//
+        define('DEBUG_MODE_ON',self::$_config['DEBUG_MODE_ON']);
+        define('URLMODE_TOPSPEED_ON',self::$_config['URLMODE_TOPSPEED_ON']);
+        define('REWRITE_ENGINE_ON',self::$_config['REWRITE_ENGINE_ON']);
+        define('PAGE_TRACE_ON',self::$_config['PAGE_TRACE_ON']);
+        define('AUTO_CHECK_CONFIG_ON',self::$_config['AUTO_CHECK_CONFIG_ON']);
+
+
+        //-- 错误信息显示设置 --//
+        if(DEBUG_MODE_ON){
+            error_reporting(-1);
+            ini_set('display_errors',1);
+        }else{
+            ini_set('display_errors',0);
+            if(version_compare(PHP_VERSION,'5.3','>=')){
+                error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+            }else{
+                error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+            }
+        }
+
+        //-- 检测服务器环境 --//
+        if(defined('SAE_APPNAME')){
+            define('RUNTIME_ENVIRONMENT','Sae');
+        }else{
+            define('RUNTIME_ENVIRONMENT','Common');
+        }
+        //对应的驱动类都将使用该运行环境的名称为正式名称
+        //....还可以是其他环境
+
+
+        //-- 开始记录 --//
+        Util::status('init');
+        register_shutdown_function('System\Mist::end');
+        set_error_handler('System\Mist::handleError',E_ALL|E_STRICT );//报告所有的错误，PHP5.4以后E_STRICT成为E_ALL的一部分
+        set_exception_handler('System\Mist::handleException');
+
+        //-- 常用类的路径定义 --//
+        self::$_classes = array(
+            'System\Core\ConfigHelper' => SYSTEM_PATH.'Core/ConfigHelper.class.php',
+            'System\Core\Dispatcher' => SYSTEM_PATH.'Core/Dispatcher.class.php',
+            'System\Core\URLHelper' => SYSTEM_PATH.'Core/URLHelper.class.php',
+            'System\Core\Controller' => SYSTEM_PATH.'Core/Controller.class.php',
+        );
+        //测试发现 调用类的自动加载会减缓运行速度，故这里对必须的类文件进行预加载以提高运行速度
+        foreach(self::$_classes as $val){
+            include_once $val;
+        }
+    }
+
+    public static function start(){
+        ob_start();//ob缓存开启，直到结束都不会自动输出
+        Util::status('start');
+        //配置环境初始化(检查是否需要生成集合配置文件)
+        ConfigHelper::init();
+        Log::init();
+        Util::status('init_done');
+        //解析URL
+//        URLHelper::init('url');
+        $parseResult = URLHelper::parse();
+        Util::status('done_url_parse');
+
+//        Util::dump('解析结果',$parseResult); 
+//        Dispatcher::init('guide');
+        Dispatcher::execute(
+            $parseResult['m'], $parseResult['c'],
+            $parseResult['a'], $parseResult['p']);
+    }
+
+    /**
+     * 脚本结束时自行调用
+     * @return void
+     */
+    public static function end(){
+        Util::status('end');
+        if(DEBUG_MODE_ON and PAGE_TRACE_ON){
+            self::showTrace();//页面跟踪信息显示
+        }
+        ob_get_level() > 0 and ob_end_flush();
+    }
+
+    /**
+     * 显示trace页面
+     * @return void
+     */
+    public static function showTrace(){
+        //吞吐率  1秒/单次执行时间
+        $stat = Util::status('init','end');
+        $reqs = empty($stat[0])?'Unknown':1000*number_format(1/$stat[0],8).' req/s';
+
+        //包含的文件数组
+        $files  =  get_included_files();
+        $info   =   array();
+        foreach ($files as $key=>$file){
+            $info[] = $file.' ( '.number_format(filesize($file)/1024,2).' KB )';
+        }
+
+        //运行时间与内存开销
+        $_infos = Util::status();
+        $fkey = null;
+        $cmprst = array(
+            'Total' => "{$stat[0]}ms",//一共花费的时间
+        );
+        foreach($_infos as $key=>$val){
+            if(null === $fkey){
+                $fkey = $key;
+                continue;
+            }
+            $cmprst["[$fkey --> $key]    "] = number_format(1000 * floatval($_infos[$key][0] - $_infos[$fkey][0]),6).'ms&nbsp;&nbsp;'.
+                number_format((floatval($_infos[$key][1] - $_infos[$fkey][1])/1024),2).' KB';
+            $fkey = $key;
+        }
+        $vars = array(
+            'trace' => array(
+                'General'       => array(
+                    'Request'   => date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']).' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_METHOD'],
+                    'IP'        => Util::getClientIP(),
+                    'Time'      => "{$stat[0]}ms",
+                    'QPS'       => $reqs,//吞吐率
+                    'SessionID' => session_id(),
+                    'Cookie'    => var_export($_COOKIE,true),
+                    'Obcache-Size'  => number_format((ob_get_length()/1024),2).' KB (Lack TRACE!)',//不包括trace
+                ),
+                'Files'         => array_merge(array('Total'=>count($info)),$info),
+                'Status'        => $cmprst,
+                'Sql'           => Dao::getSql(false),
+                'Log'           => Log::getLogCache(),
+//                'Error'         => self::$_errorCache,
+                'SERVER'        => $_SERVER,
+                'FILES'         => $_FILES,
+                'ENV'           => $_ENV,
+                'SESSION'       => isset($_SESSION)?$_SESSION:array('SESSION state disabled'),//session_start()之后$_SESSION数组才会被创建
+                'IP'            => array(
+                    '$_SERVER["HTTP_X_FORWARDED_FOR"]'  =>  isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:'',
+                    '$_SERVER["HTTP_CLIENT_IP"]'  =>  isset($_SERVER['HTTP_CLIENT_IP'])?$_SERVER['HTTP_CLIENT_IP']:'',
+                    '$_SERVER["REMOTE_ADDR"]'  =>  $_SERVER['REMOTE_ADDR'],
+                    'getenv("HTTP_X_FORWARDED_FOR")'  =>  getenv('HTTP_X_FORWARDED_FOR'),
+                    'getenv("HTTP_CLIENT_IP")'  =>  getenv('HTTP_CLIENT_IP'),
+                    'getenv("REMOTE_ADDR")'  =>  getenv('REMOTE_ADDR'),
+                ),
+            ),
+        );
+        self::loadTemplate('trace',$vars,false);//参数三表示不清空之前的缓存区
+    }
+
+    /**
+     * 用于用户自定义闭包加载函数
+     * @param callable $closure
+     * @param bool $into_head
+     * @return bool
+     * @Exception 注册失败时会抛出错误
+     */
+    public static function registerClassLoader(callable $closure,$into_head = false){
+        return spl_autoload_register($closure,true,$into_head);
+    }
+
+    /**
+     * 取得对象实例 支持调用类的静态方法
+     * @param string $class 对象类名
+     * @param string $method 类的静态方法名
+     * @return object
+     * @throws ClassNotFoundException
+     */
+    public static function instance($class,$method='') {
+        static $_instances = array();
+        $identify   =   $class.$method;
+        if(!isset($_instances[$identify])) {
+            if(class_exists($class)){
+                $o = new $class();
+                if(!empty($method) && method_exists($o,$method))
+                    $_instances[$identify] = call_user_func(array(&$o, $method));
+                else
+                    $_instances[$identify] = $o;
+            }else{
+                throw new ClassNotFoundException($class);
+            }
+        }
+        return $_instances[$identify];
+    }
+
+    /**
+     * 根据命名空间进行类的自动加载
+     * @param string $clsnm
+     */
+    public static function loadClass($clsnm){
+        if(isset(self::$_classes[$clsnm])) {
+            include_once self::$_classes[$clsnm];
+        }elseif(false !== strpos($clsnm,'\\')){
+            $basename           =   strstr($clsnm, '\\', true);//参数3将把第一次出现参数2之前的部分返回，否则返回之后的部分
+            $dir = BASE_PATH.$basename;
+            if(is_dir($dir)){
+                $filename       =   BASE_PATH.str_replace('\\', '/', $clsnm).'.class.php';
+                if(is_file($filename) ) {
+                    //window下对is_file对文件名称不区分大小写，故这里需要作检测
+                    defined('IS_WIN') or define('IS_WIN',false !== stripos(PHP_OS, 'WIN')); //运行环境
+                    if (!(IS_WIN && false === strpos(str_replace('/', '\\', realpath($filename)), "{$clsnm}.class.php") )){
+                        include_once self::$_classes[$clsnm] = $filename;
+                    }
+                }
+
+            }
+        }
+    }
+
+    /**
+     * 处理错误的发生
+     * 测试代码：trigger_error('发生了错误,- -#，这个是错误信息！ ',E_USER_ERROR);
+     * @param $errno
+     * @param $errstr
+     * @param $errfile
+     * @param $errline
+     */
+    public static function handleError($errno, $errstr, $errfile, $errline){
+//        ob_end_clean();
+        //错误信息
+        ob_start();
+        debug_print_backtrace();
+        $vars = array(
+            'message'   => "{$errno} {$errstr}",
+            'position'  => "File:{$errfile}   Line:{$errline}",
+            'trace'     => ob_get_clean(),//回溯信息
+        );
+        try{
+            self::$_errors[] = Log::write($vars);
+        }catch (\Exception $e){}
+        if(DEBUG_MODE_ON){
+            self::loadTemplate('error',$vars);
+        }else{
+            self::loadTemplate('user_error');
+        }
+        //异常处理完成后仍然会继续执行，需要强制退出
+        exit;
+    }
+
+
+    /**
+     * 处理异常的发生
+     * 开放模式下允许将Exception打印打浏览器中
+     * 部署模式下不建议这么做，因为回退栈中可能保存敏感信息
+     * @param \Exception $e
+     */
+    public static function handleException($e){
+        ob_end_clean();
+        //错误信息
+        $vars = array(
+            'message'   => get_class($e).' : '.iconv('gbk','utf-8',$e->getMessage()),
+            'position'  => 'File:'.$e->getFile().'   Line:'.$e->getLine(),
+            'trace'     => $e->getTraceAsString(),//回溯信息，可能会暴露数据库等敏感信息
+        );
+        try{
+            self::$_errors[] = Log::write($vars);
+        }catch (\Exception $e){}
+        if(DEBUG_MODE_ON){
+            self::loadTemplate('exception',$vars);
+        }else{
+            self::loadTemplate('user_error');
+        }
+        //异常处理完成后仍然会继续执行，需要强制退出
+        exit;
+    }
+
+    /**
+     * @param string $type 模板文件类型（名称）
+     * @param null|array $vars 变量数组
+     * @param bool $endclean 是否清空之前的缓存区
+     * @return void
+     */
+    public static function loadTemplate($type,$vars=null,$endclean=true){
+        $endclean and ob_get_level() >0 and ob_end_clean();
+        if(is_array($vars)) extract($vars, EXTR_OVERWRITE);
+        include SYSTEM_PATH."Tpl/{$type}.php";
+    }
+
+}
