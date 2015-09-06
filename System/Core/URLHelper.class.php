@@ -74,9 +74,9 @@ final class URLHelper{
      * 解析结果集
      * @var array
      */
-    protected static $_parseSet = array();
+    private static $_parseSet = array();
 
-    protected static $_inited = false;
+    private static $_inited = false;
 
     /**
      * 初始化

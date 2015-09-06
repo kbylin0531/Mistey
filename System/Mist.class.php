@@ -136,10 +136,6 @@ final class Mist{
             'System\Core\URLHelper' => SYSTEM_PATH.'Core/URLHelper.class.php',
             'System\Core\Controller' => SYSTEM_PATH.'Core/Controller.class.php',
         );
-        //测试发现 调用类的自动加载会减缓运行速度，故这里对必须的类文件进行预加载以提高运行速度
-        foreach(self::$_classes as $val){
-            include_once $val;
-        }
     }
 
     public static function start(){
