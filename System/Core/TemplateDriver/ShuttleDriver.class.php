@@ -15,6 +15,7 @@ use System\Exception\StorageSystem\DirentNotExistsException;
 use System\Exception\Template\ParseTagException;
 use System\Exception\Template\XMLReadFailedException;
 use System\MinShuttler;
+use System\Mist;
 use System\Utils\Util;
 
 /**
@@ -566,7 +567,7 @@ class ShuttleDriver extends TemplateDriver{
         $begin = self::TAGLIB_BEGIN_TAG;
         $end   = self::TAGLIB_END_TAG;
         //标签库类名称
-        $tLib = MinShuttler::instance('System\\Core\\TemplateDriver\\ShuttleTagLib\\'.ucwords($tagLib));
+        $tLib = Mist::instance('System\\Core\\TemplateDriver\\ShuttleTagLib\\'.ucwords($tagLib));
         $context = $this;
 
         //遍历该标签库的标签
@@ -700,10 +701,8 @@ class ShuttleDriver extends TemplateDriver{
         $replace =  array(
             '__ROOT__'      =>  __ROOT__,       // 当前网站地址
             '__MODULE__'    =>  __MODULE__,
-            '__ACTION__'    =>  __ACTION__,     // 当前操作地址
-            '__SELF__'      =>  __SELF__,       // 当前页面地址
             '__CONTROLLER__'=>  __CONTROLLER__,
-            '__URL__'       =>  __CONTROLLER__,
+            '__URL__'       =>  __CONTROLLER__,//不包含操作
             '__PUBLIC__'    =>  __ROOT__.'/Public',// 站点公共目录
         );
         // 允许用户自定义模板的字符串替换

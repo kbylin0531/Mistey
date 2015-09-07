@@ -21,6 +21,8 @@ class NameController extends Controller{
             'zhao'  => 'youtian',
             'tang'  => 'yiguang',
         ));
+        Util::dump(__ROOT__,__MODULE__,__CONTROLLER__);
+        echo __ROOT__;
         $this->display();
 //        $this->error('yeah!',3);
     }

@@ -40,7 +40,7 @@ Mist::init(array(
 
     'DEBUG_MODE_ON'         => true,
     'URLMODE_TOPSPEED_ON'   => false,
-    'REWRITE_ENGINE_ON'     => true,
+    'REWRITE_ENGINE_ON'     => false,
     'PAGE_TRACE_ON'         => true,
     'URL_ROUTE_ON'          => true,
     'AUTO_CHECK_CONFIG_ON'  => true,

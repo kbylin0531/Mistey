@@ -56,11 +56,9 @@ class Controller{
             $this->context['c'] = $matches[2];
 //            Util::dump($matches);
 
-            $_root  =   rtrim(dirname(rtrim($_SERVER['SCRIPT_NAME'],'/')),'/');
-            define('__ROOT__',  (($_root=='/' or $_root=='\\')?'':$_root));
-
-            define('__MODULE__',__ROOT__.'');
-
+            defined('__ROOT__') or define('__ROOT__',URLHelper::createTemplateConstant());
+            defined('__MODULE__') or define('__MODULE__',URLHelper::createTemplateConstant($this->context['m']));
+            defined('__CONTROLLER__') or define('__CONTROLLER__',URLHelper::createTemplateConstant($this->context['m'],$this->context['c']));
         }else{
             throw new \Exception('Class "'.get_called_class().'" can not fetch modules and controller!');
         }

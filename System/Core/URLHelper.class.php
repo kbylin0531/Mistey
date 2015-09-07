@@ -422,15 +422,18 @@ final class URLHelper{
      * @param $controller
      * @param $action
      * @param $params
+     * @param bool $withtail
      * @return string
      */
-    public static function createInPathinfo($modules,$controller,$action,$params){
+    public static function createInPathinfo($modules,$controller,$action,$params,$withtail=true){
         if(is_array($modules)) self::translateModules($modules);
         $conf = &self::$_convention;
-        $tail = isset($conf['MASQUERADE_TAIL'])?".{$conf['MASQUERADE_TAIL']}":'';
         $params = self::translateParameters($params);
         empty($params) or $params = "{$conf['AP_BRIDGE']}{$params}";
-        $url = self::$_server['SCRIPT_NAME']."/{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}{$tail}";
+        $url = self::$_server['SCRIPT_NAME']."/{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
+        if(isset(self::$_convention['MASQUERADE_TAIL']) and $withtail){
+            $url .= '.'.self::$_convention['MASQUERADE_TAIL'];
+        }
         REWRITE_ENGINE_ON and self::applyRewriteHidden($url);
         return $url;
     }
@@ -441,14 +444,18 @@ final class URLHelper{
      * @param $controller
      * @param $action
      * @param $params
+     * @param bool $withtail
      * @return string
      */
-    public static function createInCompatible($modules,$controller,$action,$params){        if(is_array($modules)) self::translateModules($modules);
+    public static function createInCompatible($modules,$controller,$action,$params,$withtail=true){
+        if(is_array($modules)) self::translateModules($modules);
         $conf = &self::$_convention;
-        $tail = isset($conf['MASQUERADE_TAIL'])?".{$conf['MASQUERADE_TAIL']}":'';
         $params = self::translateParameters($params);
         empty($params) or $params = "{$conf['AP_BRIDGE']}{$params}";
-        $url = self::$_server['SCRIPT_NAME']."?{$conf['URL_COMPATIBLE_VARIABLE']}{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}{$tail}";
+        $url = self::$_server['SCRIPT_NAME']."?{$conf['URL_COMPATIBLE_VARIABLE']}{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
+        if(isset(self::$_convention['MASQUERADE_TAIL']) and $withtail){
+            $url .= '.'.self::$_convention['MASQUERADE_TAIL'];
+        }
         REWRITE_ENGINE_ON and self::applyRewriteHidden($url);
         return $url;
     }
@@ -541,16 +548,16 @@ final class URLHelper{
                     $url = self::createInCommon($modulelist,$controller,$action,$params);
                     break;
                 case URLMODE_PATHINFO:
-                    $url = self::createInPathinfo($modulelist,$controller,$action,$params);
+                    $url = self::createInPathinfo($modulelist,$controller,$action,$params,false);
                     break;
                 case URLMODE_COMPATIBLE:
-                    $url = self::createInCompatible($modulelist,$controller,$action,$params);
+                    $url = self::createInCompatible($modulelist,$controller,$action,$params,false);
                     break;
                 default:
                     throw new \Exception('Unknown url mode:'.URL_MODE);
             }
         }
-        return $url;
+        return rtrim($url,'/');
     }
 
     /**
