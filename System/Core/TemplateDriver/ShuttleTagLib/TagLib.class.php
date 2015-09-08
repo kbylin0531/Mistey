@@ -9,8 +9,7 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 namespace System\Core\TemplateDriver\ShuttleTagLib;
-use System\Core\TemplateDriver\ShuttleDriver;
-use System\Core\View;
+use System\Core\TemplateDriver\ThinkDriver;
 use System\Exception\ParameterInvalidException;
 use System\Exception\Template\XMLReadFailedException;
 use System\Utils\Util;
@@ -62,7 +61,7 @@ class TagLib {
 
     /**
      * 当前模板对象
-     * @var ShuttleDriver
+     * @var ThinkDriver
      */
     protected $_context;
 
@@ -70,7 +69,7 @@ class TagLib {
         ' eq '=>' == ',' egt '=>' >= ',' gt '=>' > ',' elt '=>' <= ',' lt '=>' < ');
 
     /**
-     * @param ShuttleDriver $context 驱动类的上下文
+     * @param ThinkDriver $context 驱动类的上下文
      * @throws \System\Exception\ClassNotFoundException
      */
     public function __construct($context){

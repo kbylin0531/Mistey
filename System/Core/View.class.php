@@ -12,7 +12,7 @@ use System\Utils\Util;
 class View{
 
     const TPL_ENGINE_SMARTY = 'Smarty';
-    const TPL_ENGINE_SHUTTLER = 'Shuttle';
+    const TPL_ENGINE_THINK = 'Think';
 
     /**
      * 模板文件存放目录
@@ -58,12 +58,8 @@ class View{
     public function __construct($context){
         self::$_context = $context;
         if(!isset(self::$tpl_engine)){
-            $driverName = 'System\\Core\\TemplateDriver\\'.TEMPLATE_ENGINE.'Driver';
-            if(class_exists($driverName)){
-                self::$tpl_engine = new $driverName();
-            }else{
-                throw new \Exception('Unknown Template Driver "'.TEMPLATE_ENGINE.'"');
-            }
+            $driverName = 'System\\Core\\TemplateDriver\\SmartyDriver';
+            self::$tpl_engine = new $driverName(self::$_context);
 //            Util::dump($driverName,TEMPLATE_ENGINE);exit;
         }
     }
@@ -80,6 +76,7 @@ class View{
      */
     public function display($template = null, $cache_id = null, $compile_id = null, $parent = null){
 //        Util::dump($template,$this->_context,TEMPLATE_ENGINE);exit;
+        Util::status('display_begin');
         $context = &self::$_context;
         if($template){
             $context = array_merge($context,self::parseTemplatePath($template));
@@ -102,25 +99,17 @@ class View{
 //        }
 
         //分配变量
-        switch(TEMPLATE_ENGINE){
-            case self::TPL_ENGINE_SMARTY:
-                self::$tpl_engine->assign($this->_tVars);
-                break;
-            case self::TPL_ENGINE_SHUTTLER:
-                //批量导入模板变量
-                self::$tpl_engine->assign($this->_tVars);
-                break;
-            default:
-                throw new \Exception('Unknown template engine "'.TEMPLATE_ENGINE.'"!');
-        }
+        self::$tpl_engine->assign($this->_tVars);
         //设置模板目录(基础)
 //        Util::dump($template,$this->_context,TEMPLATE_ENGINE);
         self::$tpl_engine->setTemplateDir($this->_tpl_dir);
         self::$tpl_engine->setCompileDir($this->_tpl_cache_dir.'compile/');
         self::$tpl_engine->setCacheDir($this->_tpl_cache_dir.'static/');
 //        Util::dump($this->_context,$template);exit;
+        Util::status('display_gonna_to_begin');
         //显示模板文件
         self::$tpl_engine->display(self::$_context['a'],$cache_id,$compile_id,$parent);
+        Util::status('display_end');
     }
 
     /**
@@ -131,18 +120,7 @@ class View{
      * @return $this
      */
     public function assign($tpl_var,$value=null,$nocache=false){
-        if($nocache){
-            //TODO:Smarty模板分配变量
-        }else{
-            if(is_array($tpl_var)){
-                foreach($tpl_var as $_key => $_val){
-                    $_key and $this->_tVars[$_key] = $_val;
-                }
-            }else{
-                $tpl_var and $this->_tVars[$tpl_var] = $value;
-            }
-        }
-        return $this;
+        return self::$tpl_engine->assign($tpl_var,$value,$nocache);
     }
 
     /**

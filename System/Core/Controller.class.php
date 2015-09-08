@@ -6,7 +6,7 @@
  * Time: 18:48
  */
 namespace System\Core;
-use System\MinShuttler;
+use System\Mist;
 use System\Utils\Util;
 defined('BASE_PATH') or die('No Permission!');
 /**
@@ -155,7 +155,7 @@ class Controller{
             default:
                 throw new \Exception('Unknown jumping url!');
         }
-        MinShuttler::loadTemplate('jump',$vars);
+        Mist::loadTemplate('jump',$vars);
     }
 
 
@@ -174,10 +174,9 @@ class Controller{
      * $tpl_var =>  array($value,$nocache=false)
      * @param array|string $tpl_var 变量名称 或者 "名称/变量值"键值对数组
      * @param mixed $value 变量值
-     * @param bool $nocache 为true时任何输出变量都不会被缓存
      * @return $this 可以链式调用
      */
-    public function assign($tpl_var,$value=null,$nocache=false){
+    public function assign($tpl_var,$value=null){
         if(is_array($tpl_var)){
             foreach($tpl_var as $_key => $_val){
                 $_key and $this->_tVars[$_key] = $_val;
@@ -201,9 +200,11 @@ class Controller{
 //            Util::dump($trace);exit;
             $this->context['a'] = $trace[1]['function'];
         }
+        Util::status('display_c_begin');
         if(null === $this->_view) $this->initView();
         $this->_view->assign($this->_tVars);
-        $this->_view->display($template,$cache_id,$compile_id,$parent,$this->context);
+        Util::status('display_cc_begin');
+        $this->_view->display($template,$cache_id,$compile_id,$parent);
     }
 
     /**

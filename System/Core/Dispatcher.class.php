@@ -24,7 +24,7 @@ class Dispatcher{
 
     public static function init(){
         //获取静态方法调用的类名称使用get_called_class,对象用get_class
-        Util::mergeConf(self::$convention,ConfigHelper::loadConfig('custom'),true);
+        Util::mergeConf(self::$convention,ConfigHelper::loadConfig('guide'),true);
         static::$inited = true;
     }
 
@@ -39,7 +39,8 @@ class Dispatcher{
      * @throws ParameterInvalidException 参数缺失时的设置
      */
     public static function execute($modules,$ctrler,$action,$parameters=null){
-        self::$inited or self::init('guide');
+        Util::status('execute_begin');
+        self::$inited or self::init();
         if(!isset($modules,$ctrler,$action)){
             throw new ParameterInvalidException($modules,$ctrler,$action,$parameters);
         }
@@ -58,20 +59,23 @@ class Dispatcher{
             }
         }
 
+        Util::status('execute_instance_build_init_begin');
         $className = "Application\\{$modules}\\Controller\\{$ctrler}Controller";
-        if(!class_exists($className)){
-            //可以检查模块的空控制器函数 模块-全局
-//            $moduleDir = str_replace('\\','/',BASE_PATH.$modules);
-//            if(is_dir($moduleDir)){//模块存在，加载模块空控制器
-//
-//            }else{//加载全局空控制器
-//
-//            }
-            throw new ClassNotFoundException($className);
-        }
+//        if(!class_exists($className)){//此步骤操作比较耗时
+//            //可以检查模块的空控制器函数 模块-全局
+////            $moduleDir = str_replace('\\','/',BASE_PATH.$modules);
+////            if(is_dir($moduleDir)){//模块存在，加载模块空控制器
+////
+////            }else{//加载全局空控制器
+////
+////            }
+//            throw new ClassNotFoundException($className);
+//        }
 
+        Util::status('execute_instance_build_begin');
         //Controller 子类实例
         $classInstance =  new $className();
+        Util::status('execute_instance_build_end');
         //检查方法
         $targetMethod = new \ReflectionMethod($classInstance, $action);
         if ($targetMethod->isPublic() && !$targetMethod->isStatic()) {//非静态的公开方法
@@ -111,6 +115,7 @@ class Dispatcher{
         } else {
             throw new MethodNotFoundException($className, $action);
         }
+        Util::status('execute_method_called_end');
 
     }
 

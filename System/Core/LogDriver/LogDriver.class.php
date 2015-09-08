@@ -18,7 +18,7 @@ abstract class LogDriver {
     /**
      * 写入日志信息
      * 如果日志文件已经存在，则追加到文件末尾
-     * @param string $content 日志内容
+     * @param string|array $content 日志内容
      * @param string $level 日志级别
      * @return string 写入内容返回
      */
@@ -40,13 +40,13 @@ abstract class LogDriver {
      * @return string 日期字符串
      */
     protected function getTime(){
-        if(!isset($this->$_time)){
+        if(!isset($this->_time)){
             $date = Util::getFormatDate();
-            $this->$_time[0] = LOG_RATE?'':substr($date,0,10);//年月日 文件夹名称,''表示创建文件夹
-            $this->$_time[1] = LOG_RATE?substr($date,0,10):substr($date,11,2);//时 文件名称,按日频度计算则显示年月入，否则显示小时
-            $this->$_time[2] = substr($date,11);//时分秒 具体时间
+            $this->_time[0] = LOG_RATE?'':substr($date,0,10);//年月日 文件夹名称,''表示创建文件夹
+            $this->_time[1] = LOG_RATE?substr($date,0,10):substr($date,11,2);//时 文件名称,按日频度计算则显示年月入，否则显示小时
+            $this->_time[2] = substr($date,11);//时分秒 具体时间
         }
-        return $this->$_time;
+        return $this->_time;
     }
 
     /**

@@ -43,9 +43,9 @@ Mist::init(array(
     'REWRITE_ENGINE_ON'     => false,
     'PAGE_TRACE_ON'         => true,
     'URL_ROUTE_ON'          => true,
-    'AUTO_CHECK_CONFIG_ON'  => true,
+    'AUTO_CHECK_CONFIG_ON'  => false,
 
-    'TEMPLATE_ENGINE'       => 'Shuttle',
+    'TEMPLATE_ENGINE'       => 'Smarty',
 ));
 
 Mist::start();

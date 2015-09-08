@@ -14,15 +14,13 @@ use System\Exception\FileNotFoundException;
 use System\Exception\StorageSystem\DirentNotExistsException;
 use System\Exception\Template\ParseTagException;
 use System\Exception\Template\XMLReadFailedException;
-use System\MinShuttler;
-use System\Mist;
 use System\Utils\Util;
 
 /**
  * Class ShuttleDriver 框架默认模板引擎（修改ThinkPHP的模板引擎）
  * @package System\Core\TemplateDriver
  */
-class ShuttleDriver extends TemplateDriver{
+class ThinkDriver extends TemplateDriver{
 
     /**
      * 模板中内容不替换标记
@@ -156,17 +154,21 @@ class ShuttleDriver extends TemplateDriver{
 
     private $tempVar = array();
 
+    private $_context = null;
     /**
      * 初始化模板驱动类
+     * @param array $context 控制器上下文
      * @throws \System\Exception\ConfigLoadFailedException
      */
-    public function __construct(){
+    public function __construct($context){
         //加载并应用配置
         Util::mergeConf(self::$_config,ConfigHelper::loadConfig('template'));
         if(null === self::$_tpl_layout_dir){
             self::$_tpl_layout_dir = BASE_PATH.self::$_config['TEMPLATE_LAYOUT_DIR'];
         }
+        $this->_context = $context;
     }
+
     /**
      * 设置模板存放目录
      * @Override
@@ -242,7 +244,7 @@ class ShuttleDriver extends TemplateDriver{
      * 显示模板
      * 是否显示缓存由View决定
      * @Override
-     * @param string $template 模板文件名称，当文件不存在时抛出异常
+     * @param string $template 模板文件名称(包含后缀不含目录)，当文件不存在时抛出异常
      * @param null $cache_id
      * @param null $compile_id
      * @param null $parent
@@ -256,36 +258,41 @@ class ShuttleDriver extends TemplateDriver{
         if(!is_file($template_file)){
             throw new FileNotFoundException($this->_cur_tpl_file);
         }
-        //模板文件
-        $this->_cur_tpl_file = $template_file;
-        $file_content = Storage::readFile($this->_cur_tpl_file);
-
-        //解析模板布局
-        if(self::$_config['TEMPLATE_LAYOUT_ON']){
-            //是否单独脱离全局模板布局
-            if(false !== strpos($file_content,self::NO_LAYOUT_TAG)){
-                $file_content = str_replace(self::NO_LAYOUT_TAG,'',$file_content);//删除标记
-            }else{
-                //获取布局模板
-                $tpl_layout_file = self::$_config['TEMPLATE_LAYOUT_DIR'].
-                    self::$_config['TEMPLATE_LAYOUT_FILENAME'].
-                    self::$_config['TEMPLATE_LAYOUT_SUFFIX'];
-                if(!is_file($tpl_layout_file)){
-                    throw new FileNotFoundException($tpl_layout_file);
-                }
-                //替换布局文件名称
-                $file_content = str_replace(self::DO_LAYOUT_TAG,$file_content,$tpl_layout_file);
-            }
-        }
-
-        //编译模板内容(如果含有模板布局文件，同样编译)
-        $file_content = $this->compile($file_content);
 
         //模板编译后的文件
         $compiled_file = $this->_tpl_compile_dir.md5($this->_cur_tpl_file).'.php';
-        Storage::writeFile($compiled_file,$file_content);
 
-        return $compiled_file;
+        //文件存在，不编译
+        if(!Storage::hasFile($compiled_file)){
+
+            //模板文件内容获取
+            $this->_cur_tpl_file = $template_file;
+            $file_content = Storage::readFile($this->_cur_tpl_file);
+
+            //解析模板布局
+            if(self::$_config['TEMPLATE_LAYOUT_ON']){
+                //是否单独脱离全局模板布局
+                if(false !== strpos($file_content,self::NO_LAYOUT_TAG)){
+                    $file_content = str_replace(self::NO_LAYOUT_TAG,'',$file_content);//删除标记
+                }else{
+                    //获取布局模板
+                    $tpl_layout_file = self::$_config['TEMPLATE_LAYOUT_DIR'].
+                        self::$_config['TEMPLATE_LAYOUT_FILENAME'].
+                        self::$_config['TEMPLATE_LAYOUT_SUFFIX'];
+                    if(!is_file($tpl_layout_file)){
+                        throw new FileNotFoundException($tpl_layout_file);
+                    }
+                    //替换布局文件名称
+                    $file_content = str_replace(self::DO_LAYOUT_TAG,$file_content,$tpl_layout_file);
+                }
+            }
+
+            //编译模板内容(如果含有模板布局文件，同样编译)
+            $file_content = $this->compile($file_content);
+            Storage::writeFile($compiled_file,$file_content);
+        }
+        extract($this->tVars);
+        include_once $compiled_file;
     }
 
     /**
@@ -297,7 +304,7 @@ class ShuttleDriver extends TemplateDriver{
         //解析模板内容
         $this->parse($file_content);
 
-        // 还原被替换的Literal标签
+        // 还原被替换的Literal标签,参数二为false表示还原
         $this->switchTagLiteral($file_content,false);
 
         // 添加安全代码
@@ -320,8 +327,7 @@ class ShuttleDriver extends TemplateDriver{
     public function parse(&$file_content){
         //如果是空字符串，直接返回
         if(is_string($file_content) and !trim($file_content)){//内容为空，不解析
-            $file_content = '';
-            return ;
+            return $file_content = '';
         }
 
         // 检查include标签
@@ -350,8 +356,6 @@ class ShuttleDriver extends TemplateDriver{
                 $this->parseTagsUsingTaglib($tag,$file_content);
             }
         }
-        Util::dump($file_content);
-        exit;
         // 内置标签库 无需使用taglib标签导入就可以使用 并且不需使用标签库XML前缀
         $this->parseTagsUsingTaglib('cx',$file_content,true);
         //解析普通模板标签 {$tagName}
@@ -359,43 +363,8 @@ class ShuttleDriver extends TemplateDriver{
         $file_content = preg_replace_callback(
             "/({$conf['TEMPLATE_VAR_L_DEPR']})([^\\d\\w\\s{$conf['TEMPLATE_VAR_L_DEPR']}{$conf['TEMPLATE_VAR_R_DEPR']}].+?)({$conf['TEMPLATE_VAR_R_DEPR']})/is",
             array($this, 'parseTag'),$file_content);
+//        Util::dump($file_content);exit;
         return $file_content;
-    }
-    /**
-     * 获取解析标签正则表达式
-     * 单标签解析结果：
-     *  $matches[0] 匹配整个匹配到的标签
-     *  $matches[1] 匹配 属性部分
-     * 双标签解析结果：
-     *  $matches[0] 匹配整个匹配到的标签
-     *  $matches[1] 匹配整个标签头部
-     *  $matches[2] 匹配name属性值
-     *  $matches[3] 匹配name属性意外的属性序列（name属性值必须放在第一个）
-     *  $matches[4] 匹配双标签内部的内容
-     * @param $name
-     * @param bool $double
-     * @return mixed
-     */
-    private static function getTagRegex($name,$double=true){
-        static $_tags = array();
-        if(!isset($_tags[$name])){
-            $begin = self::TAGLIB_BEGIN_TAG;
-            $end   = self::TAGLIB_END_TAG;
-            if($double){
-                //?\/表示非贪婪匹配，尽可能短地缩短属性方位，否则可能抵达 </html>的位置（贪婪的代价）
-                //matches[1]是整个标签头
-                //matches[2]是标签的所有属性
-                //matches[3]是标签内容
-                $_tags[$name] = "/({$begin}{$name}\\s*(.+?)\\s*?{$end})(.*?){$begin}\\/{$name}{$end}/is";
-                //'/'.$begin.'block\sname=[\'"](.+?)[\'"]\s*?'.$end.'(.*?)'.$begin.'\/block'.$end.'/is'
-            }else{
-                $_tags[$name] = "/{$begin}{$name}\\s*(.+?)\\s*?\\/{$end}/is";
-                //matches[1] 用于读取属性
-                //'/'.$this->config['taglib_begin'].'include\s(.+?)\s*?\/'.$this->config['taglib_end'].'/is'
-                //'/'.$begin.'extend\s(.+?)\s*?\/'.$end.'/is'
-            }
-        }
-        return $_tags[$name];
     }
     /**
      * 解析模板中的include标签
@@ -406,26 +375,23 @@ class ShuttleDriver extends TemplateDriver{
      * @throws XMLReadFailedException
      */
     protected function parseTagInclude(&$content, $extend = true) {
+        static $_increg = null;
+        isset($_increg) or $_increg = '/'.self::TAGLIB_BEGIN_TAG.'include\s*?(.+?)\s*?\/'.self::TAGLIB_END_TAG.'/is';
         // 解析继承
         $extend and $this->parseTagExtend($content);
 
         // 解析布局
-        $content    =   $this->parseTagLayout($content);
+        $this->parseTagLayout($content);
 
-        //读取模板中的所有的include标签
-        //$matches[0]包含所有匹配到的内容
-        //$matches[1]包行匹配的子式
         $matches = null;
-        $count = preg_match_all('/'.self::TAGLIB_BEGIN_TAG.'include\s*?(.+?)\s*?\/'.self::TAGLIB_END_TAG.'/is',
-            $content,$matches);
-//        Util::dump($matches);exit;
+        //获取匹配次数
+        $count = preg_match_all($_increg,$content,$matches);
         if($count) {
             for($i=0;$i<$count;$i++) {
                 $include = $matches[1][$i];//各个include的属性内容
                 $attrs = Util::readXmlAttrs($include);
                 $file = $attrs['file'];
                 unset($attrs['file']);
-//                Util::dump($include,$attrs,$file);exit;
                 //对每个include标签全部内容进行替换
                 $content = str_replace($matches[0][$i],$this->walkIncludeItem($file,$attrs,$extend),$content);
             }
@@ -440,9 +406,9 @@ class ShuttleDriver extends TemplateDriver{
     private function parseTagExtend(&$content){
         static $entendreg = null;
         static $blockreg = null;
-        $begin = self::TAGLIB_BEGIN_TAG;
-        $end   = self::TAGLIB_END_TAG;
-        isset($entendreg) or $entendreg = '/'.$begin.'extend\s*?(.+?)\s*?\/'.$end.'/is';
+        isset($entendreg) or $entendreg = '/'.self::TAGLIB_BEGIN_TAG.'extend\s*?(.+?)\s*?\/'.self::TAGLIB_END_TAG.'/is';
+        isset($blockreg) or $blockreg = '/'.self::TAGLIB_BEGIN_TAG.'block\sname=[\'"](.+?)[\'"]\s*?'.
+            self::TAGLIB_END_TAG.'(.*?)'.self::TAGLIB_BEGIN_TAG.'\/block'.self::TAGLIB_END_TAG.'/is';
 
         //匹配是否存在entend标签
         $matches = null;
@@ -451,20 +417,14 @@ class ShuttleDriver extends TemplateDriver{
         if(false === $has){
             throw new ParseTagException('extend',$content);
         }else{
-            isset($blockreg) or $blockreg = '/'.$begin.'block\sname=[\'"](.+?)[\'"]\s*?'.
-                $end.'(.*?)'.$begin.'\/block'.$end.'/is';
-
-            if(1 === $has){
+            if($has){
                 //清空掉extend标签(整个标签)内容
                 $content = str_replace($matches[0],'',$content);
                 //处理本模板文件中的block标签,其他的内容将全部被忽略
                 preg_replace_callback($blockreg, function($match){
-                    $content = '';
                     if(is_array($match)){
-                        $content = $match[2];//block内容
-                        $match = $match[1];//block名称
+                        $this->_blocks[$match[1]] = $match[2];
                     }
-                    $this->_blocks[$match] = $content;
                     return '';
                 },$content);//调用parseBlock函数，传入$matches参数
 
@@ -473,7 +433,7 @@ class ShuttleDriver extends TemplateDriver{
                 //读取extend的属性name指向的资源模板文件，读取其内容
                 $content = $this->getIncludeContent($attrs['file']);
                 //解析模板内部的include标签
-                $this->parseTagInclude($content, false); //对继承模板中的include进行分析
+                $this->parseTagInclude($content, false); //对继承模板中的include进行分析，不支持多重继承
                 //用记录的block内容替换block标签替换block标签
                 $content = $this->replaceBlock($content);
 //                Util::dump($content);exit;
@@ -499,8 +459,10 @@ class ShuttleDriver extends TemplateDriver{
         static $parse = 0;
         static $strReg = null;
         static $arrReg = null;
-        isset($strReg) or $strReg = '/('.self::TAGLIB_BEGIN_TAG.'block\sname=[\'"](.+?)[\'"]\s*?'.self::TAGLIB_END_TAG.')(.*?)'.self::TAGLIB_BEGIN_TAG.'\/block'.self::TAGLIB_END_TAG.'/is';
-        isset($arrReg) or $arrReg = '/'.self::TAGLIB_BEGIN_TAG.'block\s*name=[\'"](.+?)[\'"]\s*?'.self::TAGLIB_END_TAG.'/is';
+        isset($strReg) or $strReg = '/('.self::TAGLIB_BEGIN_TAG.'block\s*?name=[\'"](.+?)[\'"]\s*?'.
+                self::TAGLIB_END_TAG.')(.*?)'.self::TAGLIB_BEGIN_TAG.'\/block'.self::TAGLIB_END_TAG.'/is';
+        isset($arrReg) or $arrReg = '/'.self::TAGLIB_BEGIN_TAG.'block\s*?name=[\'"](.+?)[\'"]\s*?'.
+                self::TAGLIB_END_TAG.'/is';
 
         if(is_string($content)){
             do{
@@ -508,12 +470,12 @@ class ShuttleDriver extends TemplateDriver{
             } while ($parse && $parse--);//到0为止不再减，
         }elseif(is_array($content)){
             //将前面正则表达式匹配到的内容作替换
-            if(preg_match($arrReg, $content[3])){ //存在嵌套，进一步解析，$content[3]即<block>标签内部的内容
+            if(preg_match($arrReg, $content[3])){  //存在嵌套，进一步解析
                 $parse = 1;
                 $content[3] = preg_replace_callback($strReg, array($this, 'replaceBlock'),
                     $content[3].self::TAGLIB_BEGIN_TAG.'/block'.self::TAGLIB_END_TAG);
-                $content = $content[1] . $content[3];
-            }else{
+                return $content[1] . $content[3];
+            }else{//一般是不存在嵌套的情况
                 $name    = $content[2];
                 $content = $content[3];
                 $content = isset($this->_blocks[$name]) ? $this->_blocks[$name] : $content;
@@ -531,17 +493,17 @@ class ShuttleDriver extends TemplateDriver{
         if($is_store){
             $content = preg_replace_callback(
                 '/'.self::TAGLIB_BEGIN_TAG.'literal'.self::TAGLIB_END_TAG.
-                '(.*?)'.
-                self::TAGLIB_BEGIN_TAG.'\/literal'.self::TAGLIB_END_TAG.'/is',
-                function($content){
-                    if(is_array($content)){
-                        $content = $content[1];
-                    }elseif(!trim($content)){
+                    '(.*?)'.
+                    self::TAGLIB_BEGIN_TAG.'\/literal'.self::TAGLIB_END_TAG.'/is',
+                function($matches){
+                    if(is_array($matches)){
+                        $matches = $matches[1];
+                    }elseif(!trim($matches)){
                         return '';
                     }
                     $index = count($this->_literal);
                     $parseStr = "<!--###literal{$index}###-->";
-                    $this->_literal[$index] = stripslashes($content);
+                    $this->_literal[$index] = stripslashes($matches);
                     return $parseStr;
                 },$content);
         }else{
@@ -567,7 +529,8 @@ class ShuttleDriver extends TemplateDriver{
         $begin = self::TAGLIB_BEGIN_TAG;
         $end   = self::TAGLIB_END_TAG;
         //标签库类名称
-        $tLib = Mist::instance('System\\Core\\TemplateDriver\\ShuttleTagLib\\'.ucwords($tagLib));
+        $clsnm = 'System\\Core\\TemplateDriver\\ShuttleTagLib\\'.ucwords($tagLib);
+        $tLib = new $clsnm($this->_context);
         $context = $this;
 
         //遍历该标签库的标签
@@ -916,12 +879,14 @@ class ShuttleDriver extends TemplateDriver{
     /**
      * 解析模板中布局标签
      * @param $content
-     * @return mixed
+     * @return void
      * @throws ParseTagException
      */
-    protected function parseTagLayout($content) {
-        // 读取模板中的布局标签
-        $has = preg_match(self::getTagRegex('layout',false),$content,$matches);
+    protected function parseTagLayout(&$content) {
+        static $_reg = null;
+        isset($_reg) or $_reg = '/'.self::TAGLIB_BEGIN_TAG.'layout\s*?(.+?)\s*?\/'.self::TAGLIB_END_TAG.'/is';
+        //检测是否存在layout
+        $has = preg_match($_reg,$content,$matches);
         if(false === $has){
             throw new ParseTagException('layout',$content);
         }else{
@@ -935,11 +900,11 @@ class ShuttleDriver extends TemplateDriver{
                     //ThinkPHP则回去读取主题目录下的对应文件
                     throw new ParseTagException('layout','The Template has not open layout or layout file not exist!');
                 }
-            }else{//不存在布局标签
+            }else{
+                //不存在布局标签，删除
                 $content = str_replace(self::NO_LAYOUT_TAG,'',$content);
             }
         }
-        return $content;
     }
 
     /**

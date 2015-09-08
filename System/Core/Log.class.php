@@ -51,7 +51,7 @@ class Log{
     /**
      * 写入日志信息
      * 如果日志文件已经存在，则追加到文件末尾
-     * @param string $content 日志内容
+     * @param string|array $content 日志内容
      * @param string $level 日志级别
      * @return string 写入内容返回
      * @Exception FileWriteFailedException
