@@ -39,7 +39,7 @@ class Controller{
     /**
      * 模板引擎驱动
      *  跳过模板类直接调用模板引擎驱动
-     * @var TemplateDriver\TemplateDriver
+     * @var \Smarty
      */
     protected static $template_engine = null;
 
@@ -174,16 +174,12 @@ class Controller{
      * $tpl_var =>  array($value,$nocache=false)
      * @param array|string $tpl_var 变量名称 或者 "名称/变量值"键值对数组
      * @param mixed $value 变量值
+     * @param bool $nocache
      * @return $this 可以链式调用
      */
-    public function assign($tpl_var,$value=null){
-        if(is_array($tpl_var)){
-            foreach($tpl_var as $_key => $_val){
-                $_key and $this->_tVars[$_key] = $_val;
-            }
-        }else{
-            $tpl_var and $this->_tVars[$tpl_var] = $value;
-        }
+    public function assign($tpl_var,$value=null,$nocache=false){
+        if(null === $this->_view) $this->initView();
+        return self::$template_engine->assign($tpl_var,$value,$nocache);
     }
 
     /**
@@ -194,6 +190,7 @@ class Controller{
      * @param object $parent     next higher level of Smarty variables
      */
     public function display($template = null, $cache_id = null, $compile_id = null, $parent = null){
+        //未设置时使用调用display的函数名称
         if(!$template){//如果未设置参数一
 //            $this->context['a'] = URLHelper::getParsedResult('a');//不正确的
             $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,2);

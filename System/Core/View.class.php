@@ -9,10 +9,11 @@ namespace System\Core;
 use System\Exception\FileNotFoundException;
 use System\Utils\Util;
 
+/**
+ * Class View 视图类，控制模板引擎的行为(当前版本统一使用Smarty模板引擎)
+ * @package System\Core
+ */
 class View{
-
-    const TPL_ENGINE_SMARTY = 'Smarty';
-    const TPL_ENGINE_THINK = 'Think';
 
     /**
      * 模板文件存放目录
@@ -44,7 +45,7 @@ class View{
 
     /**
      * 模板引擎驱动
-     * @var TemplateDriver\TemplateDriver
+     * @var \Smarty
      */
     public static $tpl_engine = null;
 
@@ -58,13 +59,32 @@ class View{
     public function __construct($context){
         self::$_context = $context;
         if(!isset(self::$tpl_engine)){
-            $driverName = 'System\\Core\\TemplateDriver\\SmartyDriver';
-            self::$tpl_engine = new $driverName(self::$_context);
-//            Util::dump($driverName,TEMPLATE_ENGINE);exit;
+            defined('SMARTY_DIR') or define('SMARTY_DIR',BASE_PATH.'System/Projects/TemplateEngine/Smarty/libs/');
+            require_once SMARTY_DIR.'Smarty.class.php';
+            static::$tpl_engine = new \Smarty();
         }
     }
+    public function setTemplateDir($path){
+//        Util::dump($path);
+        return static::$tpl_engine->setTemplateDir($path);
+    }
 
-
+    public function setCompileDir($path){
+        return static::$tpl_engine->setCompileDir($path);
+    }
+    public function setCacheDir($path){
+        return static::$tpl_engine->setCacheDir($path);
+    }
+    /**
+     * 保存控制器分配的变量
+     * @param string $tpl_var
+     * @param null $value
+     * @param bool $nocache
+     * @return $this
+     */
+    public function assign($tpl_var,$value=null,$nocache=false){
+        return self::$tpl_engine->assign($tpl_var,$value,$nocache);
+    }
     /**
      * 显示模板
      * @param string $template 全部模板引擎通用的
@@ -110,17 +130,6 @@ class View{
         //显示模板文件
         self::$tpl_engine->display(self::$_context['a'],$cache_id,$compile_id,$parent);
         Util::status('display_end');
-    }
-
-    /**
-     * 保存控制器分配的变量
-     * @param string $tpl_var
-     * @param null $value
-     * @param bool $nocache
-     * @return $this
-     */
-    public function assign($tpl_var,$value=null,$nocache=false){
-        return self::$tpl_engine->assign($tpl_var,$value,$nocache);
     }
 
     /**
