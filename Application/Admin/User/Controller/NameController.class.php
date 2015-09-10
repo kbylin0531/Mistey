@@ -16,18 +16,16 @@ class NameController extends Controller{
         $url = Util::url('hey',array('k'=>'Thanks!'));
         echo "<a href='{$url}'>Go to Self Controller method [hey]</a>";
 
-
-
-        Util::status('smarty_begin');
-
-        $this->assign('lin','zhonghuang');
-        $this->assign(array(
-            'zhao'  => 'youtian',
-            'tang'  => 'yiguang',
-        ));
-        Util::status('smarty_midway');
-        $this->display('look.html');
-        Util::status('smarty_end');
+//        Util::status('smarty_begin');
+//
+//        $this->assign('lin','zhonghuang');
+//        $this->assign(array(
+//            'zhao'  => 'youtian',
+//            'tang'  => 'yiguang',
+//        ));
+//        Util::status('smarty_midway');
+//        $this->display('look.html');
+//        Util::status('smarty_end');
 //        $this->error('yeah!',3);
     }
 
