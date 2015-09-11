@@ -192,7 +192,6 @@ class Controller{
     public function display($template = null, $cache_id = null, $compile_id = null, $parent = null){
         //未设置时使用调用display的函数名称
         if(!$template){//如果未设置参数一
-//            $this->context['a'] = URLHelper::getParsedResult('a');//不正确的
             $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,2);
 //            Util::dump($trace);exit;
             $this->context['a'] = $trace[1]['function'];

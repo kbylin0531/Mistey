@@ -25,104 +25,87 @@ defined('BASE_PATH') or die('No Permission!');
 final class URLHelper{
 
     /**
-     * 管理配置
+     * 惯例配置配置
      * @var array
      */
     protected static $_convention = array(
-        //普通模式获取变量
+        //普通模式 与 兼容模式 获取$_GET变量名称
         'URL_MODULE_VARIABLE'   => 'm',
         'URL_CONTROLLER_VARIABLE'   => 'c',
         'URL_ACTION_VARIABLE'   => 'a',
-        //兼容模式获取变量
         'URL_COMPATIBLE_VARIABLE' => 'pathinfo',
 
         //兼容模式和PATH_INFO模式下的解析配置，也是URL生成配置
         'MM_BRIDGE'     => '+',//模块与模块之间的连接桥
         'MC_BRIDGE'     => '/',
         'CA_BRIDGE'     => '/',
-        'AP_BRIDGE'     => '_',//*** 必须保证操作与控制器之间的符号将是$_SERVER['PATH_INFO']字符串中第一个出现的
-        'PP_BRIDGE'     => '/',//参数与参数之间的连接桥
-        'PKV_BRIDGE'    => '/',//参数的键值对之前的连接桥
+        'AP_BRIDGE'     => '-',//*** 必须保证操作与控制器之间的符号将是$_SERVER['PATH_INFO']字符串中第一个出现的
+        'PP_BRIDGE'     => '-',//参数与参数之间的连接桥
+        'PKV_BRIDGE'    => '-',//参数的键值对之前的连接桥
 
         //伪装的后缀，不包括'.'号
-        'MASQUERADE_TAIL'   => 'html',
+        'MASQUERADE_TAIL'   => '.html',
+        //重写模式下 消除的部分，对应.htaccess文件下
         'REWRITE_HIDDEN'      => '/index.php',
 
-        //参数缺失时
+        //默认的模块，控制器和操作
         'DEFAULT_MODULE'      => 'Home',
         'DEFAULT_CONTROLLER'  => 'Index',
         'DEFAULT_ACTION'      => 'index',
 
-
+        //是否开启子域名部署
         'DOMAIN_DEPLOY_ON'    => false,
-        //完整域名
+        //子域名部署模式下 的 完整域名
         'FUL_DOMAIN'=>'',
         //子域名部署规则
         'SUB_DOMAIN_DEPLOY_RULES' => array(
-            //正式的URL规则是从前往后一次是  [Modulelist,Controller,Action,Query]，如果某一段不想设置却需要设置之后的部分，就需要将不想设置的地方设置为NULL
+            /**
+             * 分别对应子域名模式下 的默认访问模块、控制器、操作和参数
+             * 设置为null是表示不做设置，将使用默认的通用配置
+             */
         ),
     );
 
     /**
-     * 存放原始$_SERVER数组
-     * URL助手类原则上不改变$_SERVER超全局变量
+     * 解析结果 组成部件
      * @var array
      */
-    private static $_server = null;
-
-    /**
-     * 解析结果集
-     * @var array
-     */
-    private static $_parseSet = array();
-
-    private static $_inited = false;
+    private static $_components = array();
 
     /**
      * 初始化
+     * @param array $config 配置
      * @return void
      * @throws \System\Exception\ConfigLoadFailedException
      */
-    public static function init(){
+    public static function init($config=null){
         Util::status('urlhelper_init_begin');
-        if(self::$_inited) return;//只能初始化一次
-        self::$_server = $_SERVER;
-        //获取静态方法调用的类名称使用get_called_class,对象用get_class
-        Util::mergeConf(self::$_convention,ConfigHelper::loadConfig('url'),true);
+        //初始化类
+        Util::mergeConf(self::$_convention,
+            isset($config) ? $config : ConfigHelper::loadConfig('url'),
+            true
+        );
         //参数确实时返回默认配置
-        self::$_parseSet['m'] = self::$_convention['DEFAULT_MODULE'];
-        self::$_parseSet['c'] = self::$_convention['DEFAULT_CONTROLLER'];
-        self::$_parseSet['a'] = self::$_convention['DEFAULT_ACTION'];
-        self::$_parseSet['p'] = array();
+        self::$_components['m'] = self::$_convention['DEFAULT_MODULE'];
+        self::$_components['c'] = self::$_convention['DEFAULT_CONTROLLER'];
+        self::$_components['a'] = self::$_convention['DEFAULT_ACTION'];
+        self::$_components['p'] = array();
 
         Util::status('urlhelper_init_done');
-        //表示已经初始化过了
-        self::$_inited = true;
     }
 
-    /**
-     * 获取解析结果集
-     * @param string $key
-     * @return array
-     */
-    public static function getParsedResult($key = null){
-        return isset($key)?self::$_parseSet[$key]:self::$_parseSet;
-    }
 
     /**
      * 解析URL中的参数信息
      * 兼容四种模式下的url
+     *
+     * 访问如http://localhost/MinShuttler/Public时
+     *  REQUEST_URI : /MinShuttler/Public/
+     *  SCRIPT_NAME : /MinShuttler/Public/index.php
      * @return array 解析结果
      * @throws \Exception
      */
 	public static function parse(){
-        //访问如http://localhost/MinShuttler/Public时
-        //REQUEST_URI : /MinShuttler/Public/
-        //SCRIPT_NAME : /MinShuttler/Public/index.php
-
-//        Util::dump($_SERVER['REQUEST_URI'],$_SERVER['SCRIPT_NAME']);exit;
-
-        self::$_inited or self::init();
         if(URLMODE_TOPSPEED_ON){//极速模式下只使用于common模式
             self::parseByCommon();
         }else{
@@ -142,9 +125,8 @@ final class URLHelper{
             }
         }
         //将参数释放到$_GET数组中
-//        Util::dump($_GET,self::$_parseSet['p']);
-        $_GET = array_merge($_GET,self::$_parseSet['p']);
-        return self::$_parseSet;
+        $_GET = array_merge($_GET,self::$_components['p']);
+        return self::$_components;
 	}
 
     public static function parseDomian(){
@@ -158,7 +140,7 @@ final class URLHelper{
                 Util::redirect($rule);
             }
             if (isset($rule[0])) {
-                self::$_parseSet['m'] = array_map(function ($val) {
+                self::$_components['m'] = array_map(function ($val) {
                     return ucwords($val);
                 }, explode('/', $rule[0]));
             }
@@ -172,7 +154,7 @@ final class URLHelper{
                     parse_str($rule[3], $query);
                 }
                 //query 不为null或者空数组时合并
-                $query and self::$_convention['p'] = array_merge(self::$_parseSet['p'],$rule[3]);
+                $query and self::$_convention['p'] = array_merge(self::$_components['p'],$rule[3]);
             }
         }
     }
@@ -184,24 +166,27 @@ final class URLHelper{
      */
     public static function checkUrlMode(){
         static $mode = null;
-        if(null === $mode){//设置了普通模式变量将被认为是普通模式(必须三个全部被设置)
+        Util::status('parseurl_checkmode_begin');
+        if(null === $mode){
             if(isset($_GET[self::$_convention['URL_MODULE_VARIABLE']]) and
                 isset($_GET[self::$_convention['URL_CONTROLLER_VARIABLE']]) and
                 isset($_GET[self::$_convention['URL_ACTION_VARIABLE']])){
-                //普通模式下不能省略三个url变量才能被认定为common模式
+                //设置了普通模式变量将被认为是普通模式(必须三个全部被设置)
+                //普通模式下不在乎URL有多么不友好，所以参数必须写全
                 $mode = URLMODE_COMMON;
             }elseif(isset($_GET[self::$_convention['URL_COMPATIBLE_VARIABLE']]) and count($_GET) === 1){
                 //未设置普通模式下的变量 且 设置了pathinfo变量(唯一)时将被认定为compatible模式
                 $mode = URLMODE_COMPATIBLE;
             }else{
-                //URL中没有这两个以上的这些变量 可能的情况
-                if(isset($_SERVER['PATH_INFO'])){//省略了
+                if(isset($_SERVER['PATH_INFO'])){
                     $mode = URLMODE_PATHINFO;
                 }else{
+                    //类似访问了 www.a.com/index.php 时将被认为是普通模式
                     $mode = URLMODE_COMMON;
                 }
             }
         }
+        Util::status('parseurl_checkmode_end');
         return $mode;
     }
 
@@ -211,27 +196,35 @@ final class URLHelper{
      * @return void
      */
     public static function parseByCommon(){
+        Util::status('parseurl_in_common_begin');
         $mName  = &self::$_convention['URL_MODULE_VARIABLE'];
         $cName  = &self::$_convention['URL_CONTROLLER_VARIABLE'];
         $aName  = &self::$_convention['URL_ACTION_VARIABLE'];
-
         //获取模块名称
-        isset($_GET[$mName]) and
-            self::$_parseSet['m'] =array_map(function($val){
+//        Util::dump(strpos($_GET[$mName],self::$_convention['MM_BRIDGE']),self::$_convention['MM_BRIDGE'],$_GET[$mName]);exit;
+        if(isset($_GET[$mName])){
+            if(false === strpos($_GET[$mName],self::$_convention['MM_BRIDGE'])){
+                //不存在多个模块
+                self::$_components['m'] = ucwords($_GET[$mName]);
+            }else{
+                self::$_components['m'] =array_map(function($val){
                     return ucwords($val);
-                },explode('/',$_GET[$mName]));
+                },explode(self::$_convention['MM_BRIDGE'],$_GET[$mName]));
+            }
+        }
 
         //获取控制器名称
         isset($_GET[$cName]) and
-            self::$_parseSet['c'] = ucwords($_GET[$cName]);
+            self::$_components['c'] = ucwords($_GET[$cName]);
 
         //获取操作名称
         isset($_GET[$aName]) and
-            self::$_parseSet['a'] = $_GET[$aName];
+            self::$_components['a'] = $_GET[$aName];
         
         unset($_GET[$mName],$_GET[$cName],$_GET[$aName]);
-        //获取参数
-        self::$_parseSet['p'] = $_GET;
+        //参数为剩余的变量
+        self::$_components['p'] = $_GET;
+        Util::status('parseurl_in_common_end');
     }
 
     /**
@@ -240,7 +233,7 @@ final class URLHelper{
      * @return void
      */
     public static function parseByCompatible(){
-        self::$_server['PATH_INFO'] = $_GET[self::$_convention['URL_COMPATIBLE_VARIABLE']];
+        $_SERVER['PATH_INFO'] = $_GET[self::$_convention['URL_COMPATIBLE_VARIABLE']];
         unset($_GET[self::$_convention['URL_COMPATIBLE_VARIABLE']]);
         self::parseByPathinfo();
     }
@@ -251,103 +244,101 @@ final class URLHelper{
      *      ①获取操作及之前的部分 和 参数部分
      *      ②从后往前依次获取操作、控制器和模块列表
      *      ③参数从前往后解析
-     * @param string $pathinfo 优先解析的PATH_INFO信息
      * @return void
      */
-    public static function parseByPathinfo($pathinfo=null){
+    public static function parseByPathinfo(){
         //-- 检查PATH_INFO设置 --//
-        Util::status('check_pathinfo_begin');
-        if(isset($pathinfo)){
-            self::$_server['PATH_INFO'] = $pathinfo;
-        }elseif(!isset(self::$_server['PATH_INFO'])) {
-            //在不支持PATH_INFO或者PATH_INFO不存在的情况下(URL省略)
-            //REQUEST_URI获取原生的URL地址进行解析(返回脚本名称后面的部分),此外特殊情况下可以使用ORIG_PATH_INFO
-            $pos = stripos(self::$_server['REQUEST_URI'],self::$_server['SCRIPT_NAME']);
+        Util::status('parseurl_in_pathinfo_begin');
+        if(!isset($_SERVER['PATH_INFO'])) {
+            //在不支持PATH_INFO...或者PATH_INFO不存在的情况下(URL省略将被认定为普通模式)
+            //REQUEST_URI获取原生的URL地址进行解析(返回脚本名称后面的部分)
+            $pos = stripos($_SERVER['REQUEST_URI'],$_SERVER['SCRIPT_NAME']);
             if(0 === $pos){//PATHINFO模式
-                self::$_server['PATH_INFO'] = substr(self::$_server['REQUEST_URI'], strlen(self::$_server['SCRIPT_NAME']));
+                $_SERVER['PATH_INFO'] = substr($_SERVER['REQUEST_URI'], strlen($_SERVER['SCRIPT_NAME']));
             }else{
                 //重写模式
-                self::$_server['PATH_INFO'] = self::$_server['REQUEST_URI'];
+                $_SERVER['PATH_INFO'] = $_SERVER['REQUEST_URI'];
             }
         }
-        $position = stripos(self::$_server['PATH_INFO'],'.'.self::$_convention['MASQUERADE_TAIL']);
-        if(strlen(self::$_server['PATH_INFO']) ===
-                ($position + strlen(self::$_convention['MASQUERADE_TAIL']) +1)){
-            self::$_server['PATH_INFO'] = substr(self::$_server['PATH_INFO'],0,$position);
+        //检查伪装的后缀
+        $position = stripos($_SERVER['PATH_INFO'],self::$_convention['MASQUERADE_TAIL']);
+        //$position === false 表示 不存在伪装的后缀或者相关带嫌疑的url部分
+        if(false !== $position and
+                strlen($_SERVER['PATH_INFO']) === ($position + strlen(self::$_convention['MASQUERADE_TAIL']))){////伪装的后缀出现在最后的位置时
+            $_SERVER['PATH_INFO'] = substr($_SERVER['PATH_INFO'],0,$position);
+
         }
-        Util::status('check_pathinfo_done');
-//        Log::write('PATHINFO:'.self::$_server['PATH_INFO'],Log::LOG_LEVEL_TRACE);//记录访问的PATHINFO信息
-        //-- 解析PATHINFO信息 --//
-        Util::status('parse_pathinfo_mac_begin');
+        Util::status('parseurl_in_pathinfo_getpathinfo_done');
+
+        //-- 解析PATHINFO --//
         //截取参数段param与定位段local
-        $plpos          = strpos(self::$_server['PATH_INFO'],self::$_convention['AP_BRIDGE']);
-        $mcapart = '';
-        $pparts = '';
-        if(false === $plpos){
-            $mcapart  = self::$_server['PATH_INFO'];//不存在参数则认定PATH_INFO全部是MCA的部分，否则得到结果substr(self::$_server['PATH_INFO'],0,0)即空字符串
+        $papos          = strpos($_SERVER['PATH_INFO'],self::$_convention['AP_BRIDGE']);
+        $mcapart = $pparts = '';
+        if(false === $papos){
+            $mcapart  = trim($_SERVER['PATH_INFO'],'/');//不存在参数则认定PATH_INFO全部是MCA的部分，否则得到结果substr($_SERVER['PATH_INFO'],0,0)即空字符串
         }else{
-            $mcapart  = ltrim(substr(self::$_server['PATH_INFO'],0,$plpos),'/');
-            $pparts   = substr(self::$_server['PATH_INFO'],$plpos+strlen(self::$_convention['AP_BRIDGE']));
+            $mcapart  = trim(substr($_SERVER['PATH_INFO'],0,$papos),'/');
+            $pparts   = substr($_SERVER['PATH_INFO'],$papos + strlen(self::$_convention['AP_BRIDGE']));
         }
 
-        //-- 解析MCA --//
+        //-- 解析MCA部分 --//
+        //逆向检查CA是否存在衔接
         $capos = strrpos($mcapart,self::$_convention['CA_BRIDGE']);
         if(false === $capos){
             //找不到控制器与操作之间分隔符（一定不存在控制器）
             //先判断位置部分是否为空字符串来决定是否有操作名称
             if(strlen($mcapart)){
                 //位置字段全部是字符串的部分
-                self::$_parseSet['a'] = $mcapart;
+                self::$_components['a'] = $mcapart;
             }else{
-                //没有操作部分，则使用默认的
+                //没有操作部分，MCA全部使用默认的
             }
         }else{
-            self::$_parseSet['a'] = substr($mcapart,$capos+strlen(self::$_convention['CA_BRIDGE']));//apos后面的部分全部算作action
+            //apos+CA_BRIDGE 后面的部分全部算作action
+            self::$_components['a'] = substr($mcapart,$capos+strlen(self::$_convention['CA_BRIDGE']));
+
+            //CA存在衔接符 则说明一定存在控制器
             $mcalen = strlen($mcapart);
-            //一定存在控制器
             $mcpart = substr($mcapart,0,$capos-$mcalen);//去除了action的部分
-//            Log::trace($mcpart,$capos-$posSegmentLength);//right
-            $mcpos = strrpos($mcpart,self::$_convention['MC_BRIDGE'],$capos-$mcalen);
-            if(false === $mcpos){
-                //不存在模块 之后 获取控制器部分
-                if(strlen($mcpart)){
-                    //位置字段全部是字符串的部分
-                    self::$_parseSet['c'] = ucwords($mcpart);
-                }else{
-                    //没有控制器部分，则使用默认的
-                }
-            }else{
-//                Log::trace('-----',$mcpart,$mcpos,substr($mcpart,$mcpos+1));
-                $mclen = strlen($mcpart);
-                self::$_parseSet['c']   = ucwords(substr($mcpart,$mcpos+strlen(self::$_convention['MC_BRIDGE'])));
-                //存在模块
-                $mpart = substr($mcpart,0,$mcpos-$mclen);//以下的全是模块部分的字符串
-//                Log::trace($mpart,$mcpos-$mcalen);
-                if(strlen($mpart)){
-                    if(false === stripos($mpart,self::$_convention['MM_BRIDGE'])){
-                        self::$_parseSet['m'] = ucwords($mpart);
+
+            if(strlen($mcapart)){
+                $mcpos = strrpos($mcpart,self::$_convention['MC_BRIDGE'],$capos-$mcalen);
+                if(false === $mcpos){
+                    //不存在模块
+                    if(strlen($mcpart)){
+                        //全部是控制器的部分
+                        self::$_components['c'] = ucwords($mcpart);
                     }else{
-                        self::$_parseSet['m'] =
-                            array_map(function($val){
-                                return ucwords($val);
-                            },explode(self::$_convention['MM_BRIDGE'],$mpart));
+                        //没有控制器部分，则使用默认的
                     }
                 }else{
-                    //模块为空
+                    //截取控制器的部分
+                    self::$_components['c']   = ucwords(substr($mcpart,$mcpos+strlen(self::$_convention['MC_BRIDGE'])));
+
+                    //既然存在MC衔接符 说明一定存在模块
+                    $mpart = substr($mcpart,0,$mcpos-strlen($mcpart));//以下的全是模块部分的字符串
+                    if(strlen($mpart)){
+                        if(false === stripos($mpart,self::$_convention['MM_BRIDGE'])){
+                            self::$_components['m'] = ucwords($mpart);
+                        }else{
+                            self::$_components['m'] =
+                                array_map(function($val){
+                                    return ucwords($val);
+                                },explode(self::$_convention['MM_BRIDGE'],$mpart));
+                        }
+                    }else{
+                        //一般存在衔接符的情况下不为空,但也考虑下特殊情况
+                    }
                 }
+            }else{
+                //一般存在衔接符的情况下不为空,但也考虑下特殊情况
             }
         }
-        Util::status('parse_pathinfo_mac_done');
-        //测试strrposde得到结论:从前往后是从0开始的，从后往前是-1开始的
-//        Util::dump(strrpos('bsabab','ab'));//4
-//        Util::dump(strrpos('bsabab','ab',-1));//4
-//        Util::dump(strrpos('bsabab','ab',-2));//4
-//        Util::dump(strrpos('bsabab','ab',-3));//2
-//        Util::dump(strrpos('bsabab','ab',-4));//2
-        //-- 解析PARAM --//
-        self::$_parseSet['p'] = self::translateParameters($pparts,false);
-        Util::status('parse_pathinfo_params_done');
-//        Log::trace(self::$_parseSet,self::$_convention['AP_BRIDGE'],$mcapart,$pparts);
+        Util::status('parseurl_in_pathinfo_getmac_done');
+
+        //-- 解析参数部分 --//
+        self::$_components['p'] = self::switchTranslateParameters($pparts,false);
+        Util::status('parseurl_in_pathinfo_end');
     }
 
     /**
@@ -356,8 +347,10 @@ final class URLHelper{
      * @param array $pc
      * @return void
      */
-    private static function pushAnonymousParam($value,&$pc=null){
-        null === $pc and  $pc = &self::$_parseSet['p'];
+    private static function pushAnonParam($value,&$pc=null){
+        if(null === $pc){
+            $pc = self::$_components['p'];
+        }
         !isset($pc['anonymous']) and $pc['anonymous'] = array();
         $pc['anonymous'][] = $value;
     }
@@ -372,10 +365,9 @@ final class URLHelper{
      * @throws \Exception
      */
     public static function create($modulelist=null,$controller=null,$action=null,$params=array()){
-        isset($modulelist) or $modulelist = self::$_parseSet['m'];
-        isset($controller) or $controller = self::$_parseSet['c'];
-        isset($action)     or $action     = self::$_parseSet['a'];
-//        Util::dump('URLHelper::create',$modulelist,$controller,$action,$params);
+        isset($modulelist) or $modulelist = self::$_components['m'];
+        isset($controller) or $controller = self::$_components['c'];
+        isset($action)     or $action     = self::$_components['a'];
         $url = null;
         if(URLMODE_TOPSPEED_ON){
             $url = self::createInCommon($modulelist,$controller,$action,$params);
@@ -408,8 +400,7 @@ final class URLHelper{
      */
     public static function createInCommon($modules,$controller,$action,array $params){
         if(is_array($modules)) self::translateModules($modules);
-        Util::dump($modules,$controller,$action,$params);
-        return self::$_server['SCRIPT_NAME'].'?'.http_build_query(array_merge(array(
+        return $_SERVER['SCRIPT_NAME'].'?'.http_build_query(array_merge(array(
             self::$_convention['URL_MODULE_VARIABLE'] => $modules,
             self::$_convention['URL_CONTROLLER_VARIABLE'] => $controller,
             self::$_convention['URL_ACTION_VARIABLE'] => $action,
@@ -428,11 +419,11 @@ final class URLHelper{
     public static function createInPathinfo($modules,$controller,$action,$params,$withtail=true){
         if(is_array($modules)) self::translateModules($modules);
         $conf = &self::$_convention;
-        $params = self::translateParameters($params);
+        $params = self::switchTranslateParameters($params);
         empty($params) or $params = "{$conf['AP_BRIDGE']}{$params}";
-        $url = self::$_server['SCRIPT_NAME']."/{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
+        $url = $_SERVER['SCRIPT_NAME']."/{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
         if(isset(self::$_convention['MASQUERADE_TAIL']) and $withtail){
-            $url .= '.'.self::$_convention['MASQUERADE_TAIL'];
+            $url .= self::$_convention['MASQUERADE_TAIL'];
         }
         REWRITE_ENGINE_ON and self::applyRewriteHidden($url);
         return $url;
@@ -450,11 +441,11 @@ final class URLHelper{
     public static function createInCompatible($modules,$controller,$action,$params,$withtail=true){
         if(is_array($modules)) self::translateModules($modules);
         $conf = &self::$_convention;
-        $params = self::translateParameters($params);
+        $params = self::switchTranslateParameters($params);
         empty($params) or $params = "{$conf['AP_BRIDGE']}{$params}";
-        $url = self::$_server['SCRIPT_NAME']."?{$conf['URL_COMPATIBLE_VARIABLE']}{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
+        $url = $_SERVER['SCRIPT_NAME']."?{$conf['URL_COMPATIBLE_VARIABLE']}{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
         if(isset(self::$_convention['MASQUERADE_TAIL']) and $withtail){
-            $url .= '.'.self::$_convention['MASQUERADE_TAIL'];
+            $url .= self::$_convention['MASQUERADE_TAIL'];
         }
         REWRITE_ENGINE_ON and self::applyRewriteHidden($url);
         return $url;
@@ -471,7 +462,6 @@ final class URLHelper{
                 $modules = implode(self::$_convention['MM_BRIDGE'],$modules);
             }
             $modules = trim($modules,'/');
-//            Util::dump($modules);
         }else{//字符串转数组
             $modules = array_map(function($val){
                 return ucwords($val);
@@ -485,31 +475,31 @@ final class URLHelper{
      * @param bool $toString 是否将参数解析成字符串，默认是
      * @return array|string
      */
-    private static function translateParameters($params,$toString=true){
-        $conf = &self::$_convention;
+    private static function switchTranslateParameters($params,$toString=true){
+        $ppb    = &self::$_convention['PP_BRIDGE']; //参数与参数之间的衔接符
+        $pkvb   = &self::$_convention['PKV_BRIDGE'];//参数键值对之间的衔接符
+
         if($toString){
             //希望返回的是字符串是，返回值是void，直接修改自$params
             $temp = '';
             if($params){
                 foreach($params as $key => $val){
-                    $temp .= "{$key}{$conf['PKV_BRIDGE']}{$val}{$conf['PP_BRIDGE']}";
+                    $temp .= "{$key}{$pkvb}{$val}{$ppb}";
                 }
-                return substr($temp,0,strlen($temp) - strlen($conf['PP_BRIDGE']));
+                return substr($temp,0,strlen($temp) - strlen($ppb));
             }else{
                 return '';
             }
         }else{
             //解析字符串成数组
-            $ppb    = &self::$_convention['PP_BRIDGE'];
-            $pkvb   = &self::$_convention['PKV_BRIDGE'];
             $pc = array();
             if($ppb !== $pkvb){//使用不同的分割符
                 $parampairs = explode($ppb,$params);
                 foreach($parampairs as $val){
-                    $pos = stripos($val,$pkvb);
+                    $pos = strpos($val,$pkvb);
                     if(false === $pos){
                         //非键值对，赋值数字键
-                        self::pushAnonymousParam($val,$pc);
+                        self::pushAnonParam($val,$pc);
                     }else{
                         $key = substr($val,0,$pos);
                         $val = substr($val,$pos+strlen($pkvb));
@@ -523,7 +513,7 @@ final class URLHelper{
                     if(isset($elements[$i+1])){
                         $pc[$elements[$i]] = $elements[$i+1];
                     }else{
-                        self::pushAnonymousParam($elements[$i],$pc);//单个将被投入匿名参数
+                        self::pushAnonParam($elements[$i],$pc);//单个将被投入匿名参数
                     }
                 }
             }
@@ -535,13 +525,12 @@ final class URLHelper{
         $url = null;
         if(URLMODE_TOPSPEED_ON){
             if(is_array($modulelist)) self::translateModules($modulelist);
-//            Util::dump($modulelist,$controller,$action,$params);
             $query = http_build_query(array_merge(array(
                 self::$_convention['URL_MODULE_VARIABLE'] => $modulelist,
                 self::$_convention['URL_CONTROLLER_VARIABLE'] => $controller,
                 self::$_convention['URL_ACTION_VARIABLE'] => $action,
             ),$params));
-            $url = self::$_server['SCRIPT_NAME'].(empty($query)?'':"?{$query}");
+            $url = $_SERVER['SCRIPT_NAME'].(empty($query)?'':"?{$query}");
         }else{
             switch(URL_MODE){
                 case URLMODE_COMMON:
@@ -567,7 +556,6 @@ final class URLHelper{
      */
     private static function applyRewriteHidden(&$url){
         $pos = stripos($url,self::$_convention['REWRITE_HIDDEN']);//获取第一个位置
-//        Util::dump($url,self::$_convention['REWRITE_HIDDEN']);exit;
         if(false !== $pos){
             $url = Util::strReplaceJustOnce(self::$_convention['REWRITE_HIDDEN'],'',$url);
         }

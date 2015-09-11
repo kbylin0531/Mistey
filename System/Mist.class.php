@@ -1,12 +1,11 @@
 <?php
 /**
- * Created by PhpStorm.
+ * Created by Lin.
  * User: Administrator
  * Date: 2015/9/6
  * Time: 9:16
  */
 namespace System;
-
 use System\Core\ConfigHelper;
 use System\Core\Dao;
 use System\Core\Dispatcher;
@@ -20,7 +19,7 @@ defined('BASE_PATH') or die('No Permission!');
 final class Mist{
 
     private static $_config = array(
-        'APP_NAME' => 'Mistight',//写入session时区分
+        'APP_NAME' => 'Mistight',//写入session时区分不同的应用
         'TIME_ZONE'=> 'Asia/Shanghai',
 
         'URL_MODE'          => URLMODE_COMMON,//URL模式
@@ -67,37 +66,51 @@ final class Mist{
 
     private static $_errors = array();
 
+    private static $_url_components = null;
+
     /**
      * 初始化配置
-     * @param array $config
+     * @param array $config 配置数组
      * @return void
      */
     public static function init(array $config = array()){
-        self::$_config = array_merge(self::$_config,$config);
+        //合并配置
+        $config and self::$_config = array_merge(self::$_config,$config);
+
+        //设置失去和类加载函数
         date_default_timezone_set(self::$_config['TIME_ZONE']);
         spl_autoload_register('System\Mist::loadClass') or die('Function spl_autoload_register called failed!');//自动加载类定义
 
+
+
+        Util::status('init_begin');
         //-- 普通常量定义 --//
         define('SYSTEM_PATH',BASE_PATH.'System/');
         define('RUNTIME_PATH',BASE_PATH.'Runtime/');
         define('APP_PATH',BASE_PATH.'Application/');
-
         define('APP_NAME',self::$_config['APP_NAME']);   //定义应用名称
         define('IS_WIN',false !== stripos(PHP_OS, 'WIN')); //运行环境
         define('IS_AJAX', ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ));
-
         //-- 配置常量定义 --//
         define('URL_MODE',self::$_config['URL_MODE']);
         define('LOG_RATE',self::$_config['LOG_RATE']);//日志写入频率
         define('TEMPLATE_ENGINE',self::$_config['TEMPLATE_ENGINE']);
         define('TEMPLATE_EXT',self::$_config['TEMPLATE_EXT']);
-
         //-- 开关常量 --//
         define('DEBUG_MODE_ON',self::$_config['DEBUG_MODE_ON']);
         define('URLMODE_TOPSPEED_ON',self::$_config['URLMODE_TOPSPEED_ON']);
         define('REWRITE_ENGINE_ON',self::$_config['REWRITE_ENGINE_ON']);
         define('PAGE_TRACE_ON',self::$_config['PAGE_TRACE_ON']);
         define('AUTO_CHECK_CONFIG_ON',self::$_config['AUTO_CHECK_CONFIG_ON']);
+
+        //-- 服务器环境常量 --//
+        if(defined('SAE_APPNAME')){
+            define('RUNTIME_ENVIRONMENT','Sae');
+        }else{
+            define('RUNTIME_ENVIRONMENT','Common');
+        }
+        //对应的驱动类都将使用该运行环境的名称为正式名称
+        //....还可以是其他环境
 
 
         //-- 错误信息显示设置 --//
@@ -113,18 +126,6 @@ final class Mist{
             }
         }
 
-        //-- 检测服务器环境 --//
-        if(defined('SAE_APPNAME')){
-            define('RUNTIME_ENVIRONMENT','Sae');
-        }else{
-            define('RUNTIME_ENVIRONMENT','Common');
-        }
-        //对应的驱动类都将使用该运行环境的名称为正式名称
-        //....还可以是其他环境
-
-
-        //-- 开始记录 --//
-        Util::status('init');
         register_shutdown_function('System\Mist::end');
         set_error_handler('System\Mist::handleError',E_ALL|E_STRICT );//报告所有的错误，PHP5.4以后E_STRICT成为E_ALL的一部分
         set_exception_handler('System\Mist::handleException');
@@ -135,26 +136,27 @@ final class Mist{
             'System\Core\Dispatcher' => SYSTEM_PATH.'Core/Dispatcher.class.php',
             'System\Core\URLHelper' => SYSTEM_PATH.'Core/URLHelper.class.php',
             'System\Core\Controller' => SYSTEM_PATH.'Core/Controller.class.php',
+            'System\Core\Log' => SYSTEM_PATH.'Core/Log.class.php',
         );
+        Util::status('init_end');
     }
 
     public static function start(){
-        ob_start();//ob缓存开启，直到结束都不会自动输出
         Util::status('start');
-        //配置环境初始化(检查是否需要生成集合配置文件)
-        ConfigHelper::init();
-        Log::init();
-        Util::status('init_done');
-        //解析URL
-//        URLHelper::init('url');
-        $parseResult = URLHelper::parse();
-        Util::status('done_url_parse');
+        ob_start();//ob缓存开启，直到结束都不会自动输出
 
-//        Util::dump('解析结果',$parseResult); 
-//        Dispatcher::init('guide');
+        //初始化
+        Log::init();
+        ConfigHelper::init();
+        URLHelper::init();
+
+        //解析URL
+        self::$_url_components = URLHelper::parse();
+//Util::dump(self::$_url_components);exit;
+        //执行结果
         Dispatcher::execute(
-            $parseResult['m'], $parseResult['c'],
-            $parseResult['a'], $parseResult['p']);
+            self::$_url_components['m'], self::$_url_components['c'],
+            self::$_url_components['a'], self::$_url_components['p']);
     }
 
     /**
@@ -175,7 +177,7 @@ final class Mist{
      */
     public static function showTrace(){
         //吞吐率  1秒/单次执行时间
-        $stat = Util::status('init','end');
+        $stat = Util::status('init_begin','end');
         $reqs = empty($stat[0])?'Unknown':1000*number_format(1/$stat[0],8).' req/s';
 
         //包含的文件数组
@@ -210,6 +212,7 @@ final class Mist{
                     'SessionID' => session_id(),
                     'Cookie'    => var_export($_COOKIE,true),
                     'Obcache-Size'  => number_format((ob_get_length()/1024),2).' KB (Lack TRACE!)',//不包括trace
+                    'URLComponents' => var_export(self::$_url_components,true),
                 ),
                 'Files'         => array_merge(array('Total'=>count($info)),$info),
                 'Status'        => $cmprst,

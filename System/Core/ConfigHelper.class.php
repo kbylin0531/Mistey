@@ -36,16 +36,18 @@ class ConfigHelper{
         $file = BASE_PATH.'Runtime/configure.php';
         Util::status('config_init_begin');
         if(AUTO_CHECK_CONFIG_ON or $force_refresh){
+            //文件不存在 或者 目录时间更加新 的情况下读取配置并写入配置
+            //可以设置AUTO_CHECK_CONFIG_ON = false来阻止稳定运行情况下的检查(消耗时间减少三分之二)
             if(false === (Storage::hasFile($file) and
                 (Storage::getFileInfo($file,Storage::FILEINFO_LAST_MODIFIED_TIME)
-                    > Storage::getFileInfo($dir,Storage::FILEINFO_LAST_MODIFIED_TIME)))){
-                //如果不存在配置文件或者文件时间
+                    > Storage::getFileInfo($dir,Storage::FILEINFO_LAST_MODIFIED_TIME))))
+            {
                 foreach(Storage::readFolder($dir) as $filename => $filepath){
                     //读取所有的配置文件
                     self::$_configures[substr($filename,0,strpos($filename,'.'))] = self::loadConfigFile($filepath);
                 }
                 Storage::writeFile($file,'<?php return '.var_export(self::$_configures,true).'; ?>'); //闭包函数无法写入
-                Util::status('config_init_and_write_temp_done');
+                Util::status('config_init_and_writetemp_done');
                 return;
             }
         }

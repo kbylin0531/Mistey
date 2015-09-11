@@ -35,8 +35,7 @@ namespace Utils\Koe;
  *     查找方式获取  get('group','','root');
  */
 define('CONFIG_EXIT', '<?php exit;?>');
-class FileCache
-{
+class FileCache{
     private $data;
     private $file;
 
