@@ -9,6 +9,7 @@ namespace System\Core;
 use System\Exception\ClassNotFoundException;
 use System\Exception\MethodNotFoundException;
 use System\Exception\ParameterInvalidException;
+use System\Mist;
 use System\Utils\Util;
 defined('BASE_PATH') or die('No Permission!');
 /**
@@ -39,7 +40,7 @@ class Dispatcher{
      * @throws ParameterInvalidException 参数缺失时的设置
      */
     public static function execute($modules,$ctrler,$action,$parameters=null){
-        Util::status('execute_begin');
+        Mist::status('execute_begin');
         self::$inited or self::init();
         if(!isset($modules,$ctrler,$action)){
             throw new ParameterInvalidException($modules,$ctrler,$action,$parameters);
@@ -59,7 +60,7 @@ class Dispatcher{
             }
         }
 
-        Util::status('execute_instance_build_init_begin');
+        Mist::status('execute_instance_build_init_begin');
         $className = "Application\\{$modules}\\Controller\\{$ctrler}Controller";
 //        if(!class_exists($className)){//此步骤操作比较耗时
 //            //可以检查模块的空控制器函数 模块-全局
@@ -72,10 +73,10 @@ class Dispatcher{
 //            throw new ClassNotFoundException($className);
 //        }
 
-        Util::status('execute_instance_build_begin');
+        Mist::status('execute_instance_build_begin');
         //Controller 子类实例
         $classInstance =  new $className();
-        Util::status('execute_instance_build_end');
+        Mist::status('execute_instance_build_end');
         //检查方法
         $targetMethod = new \ReflectionMethod($classInstance, $action);
         if ($targetMethod->isPublic() && !$targetMethod->isStatic()) {//非静态的公开方法
@@ -115,8 +116,7 @@ class Dispatcher{
         } else {
             throw new MethodNotFoundException($className, $action);
         }
-        Util::status('execute_method_called_end');
-
+        Mist::status('execute_method_called_end');
     }
 
     /**

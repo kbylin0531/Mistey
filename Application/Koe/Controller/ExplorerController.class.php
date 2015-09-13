@@ -17,10 +17,13 @@ use Utils\Koe\PclZip;
 use Utils\Koe\WebTool;
 
 class ExplorerController extends KoeController{
+    /**
+     * @var mixed|string
+     */
     public $path;
+
     public function __construct(){
         parent::__construct();
-        $this->tpl = TEMPLATE.'explorer/';
         if (isset($this->in['path'])) {
             $this->path = KoeTool::_DIR($this->in['path']);
         }

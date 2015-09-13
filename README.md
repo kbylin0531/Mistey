@@ -1,6 +1,7 @@
 注意：
    ①项目中之一写明变量类型等详细注释，这有帮助于编辑器检查变量类型，可以帮助避免低级错误
    ②获取可变参数的第二种方法
+    ** PHP版本需要支持到5.6 **
        function sum(...$numbers) {
             $acc = 0;
             foreach ($numbers as $n) {
@@ -30,6 +31,10 @@
         //        Util::dump(strrpos('bsabab','ab',-2));//4
         //        Util::dump(strrpos('bsabab','ab',-3));//2
         //        Util::dump(strrpos('bsabab','ab',-4));//2
+    ⑩Runtime目录下存放了 Mistight.lite.php文件，其中集中了大量的核心类，可以避免大量访问磁盘的IO消耗
+       每次修改Core文件需要判断是否需要更新
 
-
+   11.URL导向与ThinkPHP的差异是，后者从模块开始向操作解析，Mist则是从操作向模块解析
+      优点:URL地址可以很简短，只需要直接输入操作名称就可以访问(在单个模块下优点突出)
+      缺点:操作与参数之间的分割符需要着重设置，否则会出现解析歧义
 

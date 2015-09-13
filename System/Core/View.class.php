@@ -7,6 +7,9 @@
  */
 namespace System\Core;
 use System\Exception\FileNotFoundException;
+use System\Mist;
+use System\Utils\FileUtil;
+use System\Utils\LiteBuilder;
 use System\Utils\Util;
 
 /**
@@ -49,6 +52,8 @@ class View{
      */
     public static $tpl_engine = null;
 
+    protected static $_smarty_lite_file = null;
+
     protected $_tVars = array();
 
     /**
@@ -58,10 +63,20 @@ class View{
      */
     public function __construct($context){
         self::$_context = $context;
+        defined('SMARTY_DIR') or define('SMARTY_DIR',BASE_PATH.'System/Projects/Smarty/libs/');
+        /*
+        defined('SMARTY_PLUGIN_DIR') or define('SMARTY_PLUGIN_DIR',SMARTY_DIR.'sysplugins/');
+        isset(self::$_smarty_lite_file) or self::$_smarty_lite_file = RUNTIME_PATH.'Smarty.lite.php';
+        if(DEBUG_MODE_ON or !Storage::hasFile(self::$_smarty_lite_file)){
+            self::buildSmartyLite();
+        }
+//        Util::dump(self::$_smarty_lite_file);exit;
+        include_once self::$_smarty_lite_file;
+*/
         if(!isset(self::$tpl_engine)){
-            defined('SMARTY_DIR') or define('SMARTY_DIR',BASE_PATH.'System/Projects/TemplateEngine/Smarty/libs/');
             require_once SMARTY_DIR.'Smarty.class.php';
             static::$tpl_engine = new \Smarty();
+            null === self::$_smarty_lite_file and self::$_smarty_lite_file =  RUNTIME_PATH.'Smarty.lite.php';
         }
     }
     public function setTemplateDir($path){
@@ -96,7 +111,7 @@ class View{
      */
     public function display($template = null, $cache_id = null, $compile_id = null, $parent = null){
 //        Util::dump($template,$this->_context,TEMPLATE_ENGINE);exit;
-        Util::status('display_begin');
+        Mist::status('display_begin');
         $context = &self::$_context;
         if($template){
             $context = array_merge($context,self::parseTemplatePath($template));
@@ -126,10 +141,10 @@ class View{
         self::$tpl_engine->setCompileDir($this->_tpl_cache_dir.'compile/');
         self::$tpl_engine->setCacheDir($this->_tpl_cache_dir.'static/');
 //        Util::dump($this->_context,$template);exit;
-        Util::status('display_gonna_to_begin');
+        Mist::status('display_gonna_to_begin');
         //显示模板文件
         self::$tpl_engine->display(self::$_context['a'],$cache_id,$compile_id,$parent);
-        Util::status('display_end');
+        Mist::status('display_end');
     }
 
     /**
@@ -181,6 +196,59 @@ class View{
         return $rst;
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function buildSmartyLite(){
+        defined('SMARTY_DIR') or define('SMARTY_DIR',BASE_PATH.'System/Projects/Smarty/libs/');
+//        $files = FileUtil::readDirFiles(SMARTY_DIR);//不推荐全部读取
+        //smarty常用的文件
+        $files = array(
+            SMARTY_DIR.'Smarty.class.php',
+//
+//            SMARTY_PLUGIN_DIR.'smarty_config_source.php'                  ,
+//            SMARTY_PLUGIN_DIR.'smarty_security.php'                       ,
+//            SMARTY_PLUGIN_DIR.'smarty_cacheresource.php'                  ,
+//            SMARTY_PLUGIN_DIR.'smarty_compiledresource.php'               ,
+//            SMARTY_PLUGIN_DIR.'smarty_cacheresource_custom.php'           ,
+//            SMARTY_PLUGIN_DIR.'smarty_cacheresource_keyvaluestore.php'    ,
+//            SMARTY_PLUGIN_DIR.'smarty_resource.php'                       ,
+//            SMARTY_PLUGIN_DIR.'smarty_resource_custom.php'                ,
+//            SMARTY_PLUGIN_DIR.'smarty_resource_uncompiled.php'            ,
+//            SMARTY_PLUGIN_DIR.'smarty_resource_recompiled.php'            ,
+//            SMARTY_PLUGIN_DIR.'smarty_template_source.php'                ,
+//            SMARTY_PLUGIN_DIR.'smarty_template_compiled.php'              ,
+//            SMARTY_PLUGIN_DIR.'smarty_template_cached.php'                ,
+//            SMARTY_PLUGIN_DIR.'smarty_template_config.php'                ,
+//            SMARTY_PLUGIN_DIR.'smarty_data.php'                           ,
+//            SMARTY_PLUGIN_DIR.'smarty_variable.php'                       ,
+//            SMARTY_PLUGIN_DIR. 'smarty_undefined_variable.php'             ,
+//            SMARTY_PLUGIN_DIR.'smartyexception.php'                       ,
+//            SMARTY_PLUGIN_DIR.'smartycompilerexception.php'               ,
+//            SMARTY_PLUGIN_DIR.'smarty_internal_data.php'                  ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_template.php'              ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_templatebase.php'          ,
+//            SMARTY_PLUGIN_DIR.'smarty_internal_resource_file.php'         ,
+//            SMARTY_PLUGIN_DIR.'smarty_internal_resource_extends.php'      ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_resource_eval.php'         ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_resource_string.php'       ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_resource_registered.php'   ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_extension_codeframe.php'   ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_extension_config.php'      ,
+//            SMARTY_PLUGIN_DIR.'smarty_internal_filter_handler.php'        ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_function_call_handler.php' ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_cacheresource_file.php'    ,
+//            SMARTY_PLUGIN_DIR. 'smarty_internal_write_file.php'    ,
+
+//            SMARTY_DIR.'sysplugins/smarty_internal_templatebase.php',
+//            SMARTY_DIR.'sysplugins/smarty_internal_data.php',
+//            SMARTY_DIR.'sysplugins/smarty_internal_template.php',
+//            SMARTY_DIR.'sysplugins/smarty_resource.php',
+//            SMARTY_DIR.'sysplugins/smarty_template_compiled.php',
+        );
+//        Util::dump($files);exit;
+        LiteBuilder::build(self::$_smarty_lite_file,$files);
+    }
 
 
 

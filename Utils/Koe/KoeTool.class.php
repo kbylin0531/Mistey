@@ -210,7 +210,7 @@ class KoeTool{
         imagerectangle($im, 0, 0, $width-1, $height-1, $border_color);//画矩形，边框颜色200,200,200
 
         for ($i = 0; $i < $len; $i++) {//写入随机字串
-            $current = $str[mt_rand(0, strlen($str)-1)];
+//            $current = $str[mt_rand(0, strlen($str)-1)];
             $text_color = imagecolorallocate($im,mt_rand(30, 140),mt_rand(30,140),mt_rand(30,140));
             imagechar($im,10,$i*$fontsize+6,rand(1,$height/3),$code[$i],$text_color);
         }
@@ -721,7 +721,7 @@ class KoeTool{
      * 其他为数字字母混合(去掉了 容易混淆的字符oOLl和数字01，)
      * @return string
      */
-    public static function rand_string($len = 4, $type='check_code'){
+    public static function randString($len = 4, $type='check_code'){
         $str = '';
         switch ($type) {
             case 0://大小写中英文

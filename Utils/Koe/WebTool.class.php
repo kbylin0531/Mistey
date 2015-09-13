@@ -145,10 +145,11 @@ class WebTool{
     }
 
     /**
-     * @param $value
+     * 去除非法代码
+     * @param mixed $value
      * @return array|null|string
      */
-    public static function stripslashes_deep($value){
+    public static function stripslashesDeeply($value){
         $value = is_array($value) ? array_map('stripslashes_deep', $value) : (isset($value) ? stripslashes($value) : null);
         return $value;
     }
@@ -159,12 +160,12 @@ class WebTool{
      * 注意如果GET和POST有相同的Key，POST优先
      * @return array $_GET和$_POST数据过滤处理后的值
      */
-    public static function parse_incoming(){
+    public static function parseIncoming(){
         global $_GET, $_POST,$_COOKIE;
 
-        $_COOKIE = self::stripslashes_deep($_COOKIE);
-        $_GET	 = self::stripslashes_deep($_GET);
-        $_POST	 = self::stripslashes_deep($_POST);
+        $_COOKIE = self::stripslashesDeeply($_COOKIE);
+        $_GET	 = self::stripslashesDeeply($_GET);
+        $_POST	 = self::stripslashesDeeply($_POST);
         $rst = array_merge($_GET,$_POST);
         $remote = KoeTool::array_get($rst,0);
         $remote = explode('/',trim($remote[0],'/'));
@@ -344,6 +345,7 @@ endline;
     /**
      * 获取操作系统信息
      * @return null|string
+     * @throws \Exception
      */
     public static function get_os (){
         $agent = $_SERVER['HTTP_USER_AGENT'];

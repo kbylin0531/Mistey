@@ -10,6 +10,21 @@ use Utils\Koe\FileCache;
 use Utils\Koe\KoeTool;
 
 class UserShareController extends KoeController{
+    /**
+     * 用户相关信息
+     * @var mixed
+     */
+    private $user;
+    /**
+     * 用户所属组权限
+     * @var mixed
+     */
+//    private $auth;
+    /**
+     * 是否确认登录了
+     * @var mixed
+     */
+    private $notCheck;
     private $sql;
     function __construct(){
         parent::__construct();
@@ -53,9 +68,9 @@ class UserShareController extends KoeController{
             KoeTool::show_json($this->L['error'],false);
         }else{//插入
             $share_list = $this->sql->get();
-            $new_id = KoeTool::rand_string(8);
+            $new_id = KoeTool::randString(8);
             while (isset($share_list[$new_id])) {
-                $new_id = KoeTool::rand_string(8);
+                $new_id = KoeTool::randString(8);
             }
             $share_info['sid'] = $new_id;
             if($this->sql->add($new_id,$share_info)){

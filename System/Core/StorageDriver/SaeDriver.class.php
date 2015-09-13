@@ -7,14 +7,13 @@
  */
 namespace System\Core\StorageDriver;
 use System\Exception\FileWriteFailedException;
-use System\Utils\Util;
 
 /**
  * Class SaeDriver SAE运行环境下的文件驱动类
  * 拥有自己的一套地址映射方案
  * @package System\Core\StorageDriver
  */
-class SaeDriver extends StorageDriver{
+class SaeDriver extends CommonDriver{
     /**
      * SAE Storage系统的使用
      * <code>

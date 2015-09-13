@@ -5,6 +5,7 @@
  */
 namespace System\Core;
 use System\Exception\URLRewriteFailedException;
+use System\Mist;
 use System\Utils\Util;
 defined('BASE_PATH') or die('No Permission!');
 /**
@@ -79,7 +80,7 @@ final class URLHelper{
      * @throws \System\Exception\ConfigLoadFailedException
      */
     public static function init($config=null){
-        Util::status('urlhelper_init_begin');
+        Mist::status('urlhelper_init_begin');
         //初始化类
         Util::mergeConf(self::$_convention,
             isset($config) ? $config : ConfigHelper::loadConfig('url'),
@@ -91,7 +92,7 @@ final class URLHelper{
         self::$_components['a'] = self::$_convention['DEFAULT_ACTION'];
         self::$_components['p'] = array();
 
-        Util::status('urlhelper_init_done');
+        Mist::status('urlhelper_init_done');
     }
 
 
@@ -166,7 +167,7 @@ final class URLHelper{
      */
     public static function checkUrlMode(){
         static $mode = null;
-        Util::status('parseurl_checkmode_begin');
+        Mist::status('parseurl_checkmode_begin');
         if(null === $mode){
             if(isset($_GET[self::$_convention['URL_MODULE_VARIABLE']]) and
                 isset($_GET[self::$_convention['URL_CONTROLLER_VARIABLE']]) and
@@ -186,7 +187,7 @@ final class URLHelper{
                 }
             }
         }
-        Util::status('parseurl_checkmode_end');
+        Mist::status('parseurl_checkmode_end');
         return $mode;
     }
 
@@ -196,7 +197,7 @@ final class URLHelper{
      * @return void
      */
     public static function parseByCommon(){
-        Util::status('parseurl_in_common_begin');
+        Mist::status('parseurl_in_common_begin');
         $mName  = &self::$_convention['URL_MODULE_VARIABLE'];
         $cName  = &self::$_convention['URL_CONTROLLER_VARIABLE'];
         $aName  = &self::$_convention['URL_ACTION_VARIABLE'];
@@ -224,7 +225,7 @@ final class URLHelper{
         unset($_GET[$mName],$_GET[$cName],$_GET[$aName]);
         //参数为剩余的变量
         self::$_components['p'] = $_GET;
-        Util::status('parseurl_in_common_end');
+        Mist::status('parseurl_in_common_end');
     }
 
     /**
@@ -248,7 +249,7 @@ final class URLHelper{
      */
     public static function parseByPathinfo(){
         //-- 检查PATH_INFO设置 --//
-        Util::status('parseurl_in_pathinfo_begin');
+        Mist::status('parseurl_in_pathinfo_begin');
         if(!isset($_SERVER['PATH_INFO'])) {
             //在不支持PATH_INFO...或者PATH_INFO不存在的情况下(URL省略将被认定为普通模式)
             //REQUEST_URI获取原生的URL地址进行解析(返回脚本名称后面的部分)
@@ -268,7 +269,7 @@ final class URLHelper{
             $_SERVER['PATH_INFO'] = substr($_SERVER['PATH_INFO'],0,$position);
 
         }
-        Util::status('parseurl_in_pathinfo_getpathinfo_done');
+        Mist::status('parseurl_in_pathinfo_getpathinfo_done');
 
         //-- 解析PATHINFO --//
         //截取参数段param与定位段local
@@ -300,9 +301,9 @@ final class URLHelper{
             //CA存在衔接符 则说明一定存在控制器
             $mcalen = strlen($mcapart);
             $mcpart = substr($mcapart,0,$capos-$mcalen);//去除了action的部分
-
+//Util::dump($mcpart,self::$_convention['MC_BRIDGE'],strpos($mcpart,self::$_convention['MC_BRIDGE']),$capos,$mcalen);exit;
             if(strlen($mcapart)){
-                $mcpos = strrpos($mcpart,self::$_convention['MC_BRIDGE'],$capos-$mcalen);
+                $mcpos = strpos($mcpart,self::$_convention['MC_BRIDGE']);
                 if(false === $mcpos){
                     //不存在模块
                     if(strlen($mcpart)){
@@ -318,7 +319,7 @@ final class URLHelper{
                     //既然存在MC衔接符 说明一定存在模块
                     $mpart = substr($mcpart,0,$mcpos-strlen($mcpart));//以下的全是模块部分的字符串
                     if(strlen($mpart)){
-                        if(false === stripos($mpart,self::$_convention['MM_BRIDGE'])){
+                        if(false === strpos($mpart,self::$_convention['MM_BRIDGE'])){
                             self::$_components['m'] = ucwords($mpart);
                         }else{
                             self::$_components['m'] =
@@ -334,11 +335,11 @@ final class URLHelper{
                 //一般存在衔接符的情况下不为空,但也考虑下特殊情况
             }
         }
-        Util::status('parseurl_in_pathinfo_getmac_done');
+        Mist::status('parseurl_in_pathinfo_getmac_done');
 
         //-- 解析参数部分 --//
         self::$_components['p'] = self::switchTranslateParameters($pparts,false);
-        Util::status('parseurl_in_pathinfo_end');
+        Mist::status('parseurl_in_pathinfo_end');
     }
 
     /**
@@ -521,6 +522,14 @@ final class URLHelper{
         }
     }
 
+    /**
+     * 创建网站地址
+     */
+    public static function createRootURL(){
+        static $_root = null;
+        isset($_root) or $_root = str_replace(Util::path($_SERVER['SCRIPT_NAME']),'',Util::path(dirname(dirname(__FILE__))).'/index.php').'/';
+    }
+
     public static function createTemplateConstant($modulelist=null,$controller=null,$action=null,array $params=array()){
         $url = null;
         if(URLMODE_TOPSPEED_ON){
@@ -560,6 +569,8 @@ final class URLHelper{
             $url = Util::strReplaceJustOnce(self::$_convention['REWRITE_HIDDEN'],'',$url);
         }
     }
+
+
 
 	
 }

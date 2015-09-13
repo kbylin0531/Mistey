@@ -12,6 +12,7 @@ use System\Core\Dispatcher;
 use System\Core\Log;
 use System\Core\URLHelper;
 use System\Exception\ClassNotFoundException;
+use System\Utils\LiteBuilder;
 use System\Utils\Util;
 
 defined('BASE_PATH') or die('No Permission!');
@@ -60,9 +61,17 @@ final class Mist{
         'TEMPLATE_EXT'          => 'html',
     );
 
-    private static $_classes = array(
+    /**
+     * 所有使用到的类
+     * @var array
+     */
+    private static $_classes = array();
 
-    );
+    /**
+     * 系统预加载类
+     * @var array
+     */
+    private static $_prev_loaded_classes = array();
 
     private static $_errors = array();
 
@@ -81,9 +90,7 @@ final class Mist{
         date_default_timezone_set(self::$_config['TIME_ZONE']);
         spl_autoload_register('System\Mist::loadClass') or die('Function spl_autoload_register called failed!');//自动加载类定义
 
-
-
-        Util::status('init_begin');
+        self::status('init_begin');
         //-- 普通常量定义 --//
         define('SYSTEM_PATH',BASE_PATH.'System/');
         define('RUNTIME_PATH',BASE_PATH.'Runtime/');
@@ -131,19 +138,58 @@ final class Mist{
         set_exception_handler('System\Mist::handleException');
 
         //-- 常用类的路径定义 --//
-        self::$_classes = array(
-            'System\Core\ConfigHelper' => SYSTEM_PATH.'Core/ConfigHelper.class.php',
-            'System\Core\Dispatcher' => SYSTEM_PATH.'Core/Dispatcher.class.php',
-            'System\Core\URLHelper' => SYSTEM_PATH.'Core/URLHelper.class.php',
-            'System\Core\Controller' => SYSTEM_PATH.'Core/Controller.class.php',
-            'System\Core\Log' => SYSTEM_PATH.'Core/Log.class.php',
+        self::$_prev_loaded_classes = array(
+            //核心类
+            'System\Core\ConfigHelper'  => SYSTEM_PATH.'Core/ConfigHelper.class.php',
+            'System\Core\Dispatcher'    => SYSTEM_PATH.'Core/Dispatcher.class.php',
+            'System\Core\URLHelper'     => SYSTEM_PATH.'Core/URLHelper.class.php',
+            'System\Core\Controller'    => SYSTEM_PATH.'Core/Controller.class.php',
+            'System\Core\Log'           => SYSTEM_PATH.'Core/Log.class.php',
+            'System\Core\Storage'       => SYSTEM_PATH.'Core/Storage.class.php',
+            'System\Core\Dao'           => SYSTEM_PATH.'Core/Dao.class.php',
+            'System\Core\Model'         => SYSTEM_PATH.'Core/Model.class.php',
+            'System\Core\View'          => SYSTEM_PATH.'Core/View.class.php',
+            'System\Core\Router'        => SYSTEM_PATH.'Core/Router.class.php',
+
+            //核心类常用驱动
+            'System\Core\LogDriver\FileDriver'          => SYSTEM_PATH.'Core/LogDriver/FileDriver.class.php',
+            'System\Core\LogDriver\LogDriver'           => SYSTEM_PATH.'Core/LogDriver/LogDriver.class.php',
+            'System\Core\StorageDriver\CommonDriver'    => SYSTEM_PATH.'Core/StorageDriver/CommonDriver.class.php',
+
+            //工具类
+            'System\Utils\Util'     => SYSTEM_PATH.'Utils/Util.class.php',
         );
-        Util::status('init_end');
+        self::$_classes = array_merge(self::$_classes,self::$_prev_loaded_classes);
+
+        define('LITE_FILE_NAME',RUNTIME_PATH.APP_NAME.'.lite.php');//运行时核心文件
+        self::status('init_end');
+    }
+
+    /**
+     * 获取预加载的核心类
+     * @param null|string $clsnm 类名称，传入null时返回全部
+     * @return array
+     */
+    public static function getClasses($clsnm = null){
+        if(isset($clsnm)){
+            return self::$_classes[$clsnm];
+        }else{
+            return self::$_classes;
+        }
     }
 
     public static function start(){
-        Util::status('start');
+        self::status('start');
         ob_start();//ob缓存开启，直到结束都不会自动输出
+
+        self::status('load_lite_begin');
+
+        //考虑到云服务器上lite文件直接使用is_file判断和包含，需要手动上传
+        if(is_file(LITE_FILE_NAME)){
+            self::status('load_lite_mid');
+            include_once LITE_FILE_NAME;
+        }
+        self::status('load_lite_end');
 
         //初始化
         Log::init();
@@ -164,10 +210,13 @@ final class Mist{
      * @return void
      */
     public static function end(){
-        Util::status('end');
+        self::status('end');
         if(DEBUG_MODE_ON and PAGE_TRACE_ON){
             self::showTrace();//页面跟踪信息显示
         }
+//        if(DEBUG_MODE_ON or !is_file(LITE_FILE_NAME)){
+//            LiteBuilder::build(LITE_FILE_NAME,self::$_prev_loaded_classes);
+//        }
         ob_get_level() > 0 and ob_end_flush();
     }
 
@@ -177,7 +226,7 @@ final class Mist{
      */
     public static function showTrace(){
         //吞吐率  1秒/单次执行时间
-        $stat = Util::status('init_begin','end');
+        $stat = self::status('init_begin','end');
         $reqs = empty($stat[0])?'Unknown':1000*number_format(1/$stat[0],8).' req/s';
 
         //包含的文件数组
@@ -188,7 +237,7 @@ final class Mist{
         }
 
         //运行时间与内存开销
-        $_infos = Util::status();
+        $_infos = self::status();
         $fkey = null;
         $cmprst = array(
             'Total' => "{$stat[0]}ms",//一共花费的时间
@@ -239,8 +288,8 @@ final class Mist{
     /**
      * 用于用户自定义闭包加载函数
      * @param callable $closure
-     * @param bool $into_head
-     * @return bool
+     * @param bool $into_head 默认追加到标准函数之后，true时追加到标准函数之前
+     * @return bool 是否注册成功
      * @Exception 注册失败时会抛出错误
      */
     public static function registerClassLoader(callable $closure,$into_head = false){
@@ -362,6 +411,45 @@ final class Mist{
         $endclean and ob_get_level() >0 and ob_end_clean();
         if(is_array($vars)) extract($vars, EXTR_OVERWRITE);
         include SYSTEM_PATH."Tpl/{$type}.php";
+    }
+
+    /**
+     * 获取和设置运行期间内存使用情况
+     * 注：只有在开发模式下查看状态信息，部署模式下失效
+     * <code>
+     *      status();返回全部记录的信息
+     *      status('begin');//记录当前内存使用状态为begin标签
+     *      status('begin','end');//如果设置了end标签则返回begin到end之间的时间和内存差数组
+     *                            //如果未设置end标签，则将当前状态设置为end，并返回begin到end之间的差数组
+     *      status('begin','end'，6);//获取时间差的时候精确到小数点后面6位
+     * </code>
+     * @param null|string $begin 开始标签
+     * @param null|string $end   结束标签
+     * @param int $accuracy 小树点后面的位数
+     * @return array
+     */
+    public static function status($begin=NULL,$end=NULL,$accuracy=6){
+        static $_infos = array();
+        if(DEBUG_MODE_ON) {
+            if(NULL === $begin){//参数1为NULL，返回全部
+                return $_infos;
+            }elseif(NULL === $end){//参数1不为NULL参数2为NULL,设置$begin指向的状态
+//                Log::trace($begin,microtime(true),microtime());
+                return $_infos[$begin] = array(
+                    microtime(true),
+                    memory_get_usage(),
+                );
+            }else{//参数1和参数2都不为NULl
+//                Log::trace($_infos,microtime(true));//
+                if(isset($_infos[$end])){
+                    return array(
+                        1000*round($_infos[$end][0] - $_infos[$begin][0], $accuracy),
+                        number_format(($_infos[$end][1] - $_infos[$begin][1]), $accuracy)
+                    );
+                }
+            }
+        }
+        return null;
     }
 
 }

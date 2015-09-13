@@ -6,7 +6,6 @@
  * Time: 19:25
  */
 namespace Application\Koe\Controller;
-
 use Utils\Koe\FileCache;
 use Utils\Koe\FileTool;
 use Utils\Koe\KoeTool;
@@ -14,31 +13,49 @@ use Utils\Koe\Mcrypt;
 use Utils\Koe\WebTool;
 
 class UserController extends KoeController{
-    private $user;  //用户相关信息
-//    private $auth;  //用户所属组权限
-    private $notCheck;
+
+    /**
+     * 用户相关信息
+     * @var array
+     */
+    private $user;
+    /**
+     * 用户所属组权限
+     * @var array
+     */
+//    private $auth;
+    /**
+     * 不需要判断的action
+     * @var array
+     */
+    private $notCheck = array(
+        'loginFirst',
+        'login',
+        'logout',
+        'loginSubmit',
+        'checkCode',
+        'public_link'
+    );
+
     function __construct(){
         parent::__construct();
-        $this->tpl  = TEMPLATE  . 'user/';
         if(!isset($_SESSION)){//避免session不可写导致循环跳转
             $this->login("session write error!");
         }else{
             $this->user = &$_SESSION['kod_user'];
         }
-        //不需要判断的action
-        $this->notCheck = array('loginFirst','login','logout','loginSubmit','checkCode','public_link');
     }
 
     /**
      * 登陆状态检测;并初始化数据状态
-     * @return bool|void
+     * @return void
      */
     public function loginCheck(){
         defined('ST') or die('ST not defined!');
         defined('ACT') or die('ACT not defined!');
-        if (ST == 'share') return true;//共享页面
-        if(in_array(ACT,$this->notCheck)){//不需要判断的action
-            return false;
+        if (ST == 'share') return ;//共享页面
+        if(in_array(ACT,$this->notCheck)){
+            //不需要判断的action
         }else if($_SESSION['kod_login']===true && $_SESSION['kod_user']['name']!=''){
             define('USER',USER_PATH.$this->user['name'].'/');
             define('USER_TEMP',USER.'data/temp/');
@@ -64,7 +81,6 @@ class UserController extends KoeController{
             if($this->config['user']['theme']==''){
                 $this->config['user'] = $this->config['setting_default'];
             }
-            return false;
         }else if($_COOKIE['kod_name']!='' && $_COOKIE['kod_token']!=''){
             $member = new fileCache(USER_SYSTEM.'member.php');
             $user = $member->get($_COOKIE['kod_name']);
@@ -89,10 +105,62 @@ class UserController extends KoeController{
                     $this->display('install.html');exit;
                 }
                 header('location:./index.php?user/loginSubmit&name=guest&password=guest');
+                exit;
             }
         }
     }
+    /**
+     * 权限验证；统一入口检验
+     */
+    public function authCheck(){
+        defined('ST') or die('ST not defined!');
+        defined('ACT') or die('ACT not defined!');
+        if (isset($GLOBALS['is_root']) && $GLOBALS['is_root'] == 1) return;
+        if (in_array(ACT,$this->notCheck)) return;
+        if (!array_key_exists(ST,$this->config['role_setting']) ) return;
+        if (!in_array(ACT,$this->config['role_setting'][ST]) &&
+            ST.':'.ACT != 'user:common_js') return;//输出处理过的权限
 
+        //有权限限制的函数
+        $key = ST.':'.ACT;
+        $group  = new fileCache(USER_SYSTEM.'group.php');
+        $auth= $group->get($this->user['role']);
+
+
+        //向下版本兼容处理
+        //未定义；新版本首次使用默认开放的功能
+        if(!isset($auth['userShare:set'])){
+            $auth['userShare:set'] = 1;
+        }
+        if(!isset($auth['explorer:fileDownload'])){
+            $auth['explorer:fileDownload'] = 1;
+        }
+        //默认扩展功能 等价权限
+        $auth['user:common_js'] = 1;//权限数据配置后输出到前端
+        $auth['explorer:pathChmod']         = $auth['explorer:pathRname'];
+        $auth['explorer:pathDeleteRecycle'] = $auth['explorer:pathDelete'];
+        $auth['explorer:pathCopyDrag']      = $auth['explorer:pathCuteDrag'];
+
+        $auth['explorer:fileDownloadRemove']= $auth['explorer:fileDownload'];
+        $auth['explorer:zipDownload']       = $auth['explorer:fileDownload'];
+        $auth['explorer:fileProxy']         = $auth['explorer:fileDownload'];
+        $auth['editor:fileGet']             = $auth['explorer:fileDownload'];
+        $auth['explorer:makeFileProxy']     = $auth['explorer:fileDownload'];
+        $auth['userShare:del']              = $auth['userShare:set'];
+        if ($auth[$key] != 1) KoeTool::show_json($this->L['no_permission'],false);
+
+        $GLOBALS['auth'] = $auth;//全局
+        //扩展名限制：新建文件&上传文件&重命名文件&保存文件&zip解压文件
+        $check_arr = array(
+            'mkfile'    =>  $this->check_key('path'),
+            'pathRname' =>  $this->check_key('rname_to'),
+            'fileUpload'=>  isset($_FILES['file']['name'])?$_FILES['file']['name']:'',
+            'fileSave'  =>  $this->check_key('path')
+        );
+        if (array_key_exists(ACT,$check_arr) && !KoeTool::checkExt($check_arr[ACT])){
+            KoeTool::show_json($this->L['no_permission_ext'],false);
+        }
+    }
     //临时文件访问
     public function public_link(){
         KoeTool::load_class('mcrypt');
@@ -233,65 +301,14 @@ class UserController extends KoeController{
         }
     }
 
-    /**
-     * 权限验证；统一入口检验
-     */
-    public function authCheck(){
-        defined('ST') or die('ST not defined!');
-        defined('ACT') or die('ACT not defined!');
-        if (isset($GLOBALS['is_root']) && $GLOBALS['is_root'] == 1) return;
-        if (in_array(ACT,$this->notCheck)) return;
-        if (!array_key_exists(ST,$this->config['role_setting']) ) return;
-        if (!in_array(ACT,$this->config['role_setting'][ST]) &&
-            ST.':'.ACT != 'user:common_js') return;//输出处理过的权限
 
-        //有权限限制的函数
-        $key = ST.':'.ACT;
-        $group  = new fileCache(USER_SYSTEM.'group.php');
-        $auth= $group->get($this->user['role']);
-
-
-        //向下版本兼容处理
-        //未定义；新版本首次使用默认开放的功能
-        if(!isset($auth['userShare:set'])){
-            $auth['userShare:set'] = 1;
-        }
-        if(!isset($auth['explorer:fileDownload'])){
-            $auth['explorer:fileDownload'] = 1;
-        }
-        //默认扩展功能 等价权限
-        $auth['user:common_js'] = 1;//权限数据配置后输出到前端
-        $auth['explorer:pathChmod']         = $auth['explorer:pathRname'];
-        $auth['explorer:pathDeleteRecycle'] = $auth['explorer:pathDelete'];
-        $auth['explorer:pathCopyDrag']      = $auth['explorer:pathCuteDrag'];
-
-        $auth['explorer:fileDownloadRemove']= $auth['explorer:fileDownload'];
-        $auth['explorer:zipDownload']       = $auth['explorer:fileDownload'];
-        $auth['explorer:fileProxy']         = $auth['explorer:fileDownload'];
-        $auth['editor:fileGet']             = $auth['explorer:fileDownload'];
-        $auth['explorer:makeFileProxy']     = $auth['explorer:fileDownload'];
-        $auth['userShare:del']              = $auth['userShare:set'];
-        if ($auth[$key] != 1) KoeTool::show_json($this->L['no_permission'],false);
-
-        $GLOBALS['auth'] = $auth;//全局
-        //扩展名限制：新建文件&上传文件&重命名文件&保存文件&zip解压文件
-        $check_arr = array(
-            'mkfile'    =>  $this->check_key('path'),
-            'pathRname' =>  $this->check_key('rname_to'),
-            'fileUpload'=>  isset($_FILES['file']['name'])?$_FILES['file']['name']:'',
-            'fileSave'  =>  $this->check_key('path')
-        );
-        if (array_key_exists(ACT,$check_arr) && !KoeTool::checkExt($check_arr[ACT])){
-            KoeTool::show_json($this->L['no_permission_ext'],false);
-        }
-    }
     private function check_key($key){
         return isset($this->in[$key])? rawurldecode($this->in[$key]):'';
     }
 
     public function checkCode() {
         session_start();//re start
-        $code = KoeTool::rand_string(4);
+        $code = KoeTool::randString(4);
         $_SESSION['check_code'] = strtolower($code);
         KoeTool::check_code($code);
     }

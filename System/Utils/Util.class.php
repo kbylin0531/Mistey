@@ -15,6 +15,15 @@ defined('BASE_PATH') or die('No Permission!');
 class Util{
 
     /**
+     * 转换地址成网络地址
+     * @param $path
+     * @return mixed
+     */
+    public static function path($path){
+        return str_replace('\\','/',$path);
+    }
+
+    /**
      * 打印变量的详细信息
      * @param $key
      * @param $val
@@ -100,45 +109,6 @@ class Util{
         if(null !== $obcache){
             echo $obcache;
         }
-    }
-
-    /**
-     * 获取和设置运行期间内存使用情况
-     * 注：只有在开发模式下查看状态信息，部署模式下失效
-     * <code>
-     *      status();返回全部记录的信息
-     *      status('begin');//记录当前内存使用状态为begin标签
-     *      status('begin','end');//如果设置了end标签则返回begin到end之间的时间和内存差数组
-     *                            //如果未设置end标签，则将当前状态设置为end，并返回begin到end之间的差数组
-     *      status('begin','end'，6);//获取时间差的时候精确到小数点后面6位
-     * </code>
-     * @param null|string $begin 开始标签
-     * @param null|string $end   结束标签
-     * @param int $accuracy 小树点后面的位数
-     * @return array
-     */
-    public static function status($begin=NULL,$end=NULL,$accuracy=6){
-        static $_infos = array();
-        if(DEBUG_MODE_ON) {
-            if(NULL === $begin){//参数1为NULL，返回全部
-                return $_infos;
-            }elseif(NULL === $end){//参数1不为NULL参数2为NULL,设置$begin指向的状态
-//                Log::trace($begin,microtime(true),microtime());
-                return $_infos[$begin] = array(
-                    microtime(true),
-                    memory_get_usage(),
-                );
-            }else{//参数1和参数2都不为NULl
-//                Log::trace($_infos,microtime(true));//
-                if(isset($_infos[$end])){
-                    return array(
-                        1000*round($_infos[$end][0] - $_infos[$begin][0], $accuracy),
-                        number_format(($_infos[$end][1] - $_infos[$begin][1]), $accuracy)
-                    );
-                }
-            }
-        }
-        return null;
     }
 
     /**

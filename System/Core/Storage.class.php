@@ -7,6 +7,9 @@
  */
 namespace System\Core;
 use System\Exception\FileWriteFailedException;
+use System\Mist;
+use System\Utils\Util;
+
 defined('BASE_PATH') or die('No Permission!');
 /**
  * Class Storage 持久化存储类
@@ -22,16 +25,18 @@ class Storage {
     const FILEINFO_TYPE = 'filetype';//可能的值有 fifo，char，dir，block，link，file 和 unknown。
 
     /**
-     * @var StorageDriver\StorageDriver
+     * @var StorageDriver\CommonDriver
      */
     private static $driver = null;
 
     public static function init($mode = null){
+        Mist::status('storage_init_begin');
         //获取运行环境
         null === $mode and $mode = RUNTIME_ENVIRONMENT;
         //实例化驱动类
         $driverName = "System\\Core\\StorageDriver\\{$mode}Driver";
         self::$driver = new $driverName();
+        Mist::status('storage_init_done');
     }
 
     /**

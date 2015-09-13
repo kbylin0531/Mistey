@@ -196,10 +196,10 @@ class Controller{
 //            Util::dump($trace);exit;
             $this->context['a'] = $trace[1]['function'];
         }
-        Util::status('display_c_begin');
+        Mist::status('display_c_begin');
         if(null === $this->_view) $this->initView();
         $this->_view->assign($this->_tVars);
-        Util::status('display_cc_begin');
+        Mist::status('display_cc_begin');
         $this->_view->display($template,$cache_id,$compile_id,$parent);
     }
 

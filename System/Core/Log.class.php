@@ -7,7 +7,7 @@
  */
 namespace System\Core;
 use System\Exception\ClassNotFoundException;
-use System\Utils\Util;
+use System\Mist;
 defined('BASE_PATH') or die('No Permission!');
 
 class Log{
@@ -38,7 +38,7 @@ class Log{
     private static $_driver = null;
 
     public static function init($type = self::LOGTYPE_FILE){
-        Util::status('log_init_begin');
+        Mist::status('log_init_begin');
         if(null === self::$_driver){
             new LogDriver\FileDriver();
             $clsnm = 'System\\Core\\LogDriver\\'.$type.'Driver';
@@ -47,7 +47,7 @@ class Log{
             }
             self::$_driver = new $clsnm();
         }
-        Util::status('log_init_end');
+        Mist::status('log_init_end');
     }
 
     /**

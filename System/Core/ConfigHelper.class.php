@@ -8,7 +8,7 @@
 namespace System\Core;
 use System\Exception\ConfigLoadFailedException;
 use System\Exception\FileNotFoundException;
-use System\Utils\Util;
+use System\Mist;
 defined('BASE_PATH') or die('No Permission!');
 /**
  * Class ConfigHelper 配置加载帮助类
@@ -34,25 +34,26 @@ class ConfigHelper{
         //Runtime目录下建立了配置集合，并且配置集合是最新的
         $dir = BASE_PATH.'Configure/';
         $file = BASE_PATH.'Runtime/configure.php';
-        Util::status('config_init_begin');
+        Mist::status('config_init_begin');
         if(AUTO_CHECK_CONFIG_ON or $force_refresh){
             //文件不存在 或者 目录时间更加新 的情况下读取配置并写入配置
             //可以设置AUTO_CHECK_CONFIG_ON = false来阻止稳定运行情况下的检查(消耗时间减少三分之二)
-            if(false === (Storage::hasFile($file) and
-                (Storage::getFileInfo($file,Storage::FILEINFO_LAST_MODIFIED_TIME)
-                    > Storage::getFileInfo($dir,Storage::FILEINFO_LAST_MODIFIED_TIME))))
+            $hasfile = Storage::hasFile($file);
+            $filetime = Storage::getFileInfo($file,Storage::FILEINFO_LAST_MODIFIED_TIME);
+            $dirtime  = Storage::getFileInfo($dir,Storage::FILEINFO_LAST_MODIFIED_TIME);
+            if(false === ($hasfile and ($filetime > $dirtime)))
             {
                 foreach(Storage::readFolder($dir) as $filename => $filepath){
                     //读取所有的配置文件
                     self::$_configures[substr($filename,0,strpos($filename,'.'))] = self::loadConfigFile($filepath);
                 }
                 Storage::writeFile($file,'<?php return '.var_export(self::$_configures,true).'; ?>'); //闭包函数无法写入
-                Util::status('config_init_and_writetemp_done');
+                Mist::status('config_init_and_writetemp_done');
                 return;
             }
         }
         self::$_configures = self::loadConfigFile($file);
-        Util::status('config_init_done');
+        Mist::status('config_init_done');
     }
 
     /**
