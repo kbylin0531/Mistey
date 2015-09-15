@@ -10,14 +10,14 @@ use System\Utils\SessionUtil;
 use System\Utils\Util;
 
 /**
- * 不可直接使用
+ * 涓嶅彲鐩存帴浣跨敤
  * Class IndexController
  * @package Application\Koe\Controller
  */
 class IndexController extends KoeController{
 
     /**
-     * KOE入口操作
+     * KOE鍏ュ彛鎿嶄綔
      */
     public function index(){
 //        Util::dump($_SESSION);

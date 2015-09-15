@@ -10,7 +10,7 @@ use Utils\Koe\FileCache;
 use Utils\Koe\KoeTool;
 
 /**
- * Class FavoriteController ÊÕ²Ø¼Ð¿ØÖÆÆ÷
+ * Class FavoriteController æ”¶è—å¤¹æŽ§åˆ¶å™¨
  * @package Application\Koe\Controller
  */
 class FavoriteController extends KoeController{
@@ -21,14 +21,14 @@ class FavoriteController extends KoeController{
     }
 
     /**
-     * »ñÈ¡ÊÕ²Ø¼Ðjson
+     * èŽ·å–æ”¶è—å¤¹json
      */
     public function get() {
         KoeTool::show_json($this->sql->get());
     }
 
     /**
-     * Ìí¼Ó
+     * æ·»åŠ 
      */
     public function add() {
         $res=$this->sql->add($this->in['name'],
@@ -42,10 +42,10 @@ class FavoriteController extends KoeController{
     }
 
     /**
-     * ±à¼­
+     * ç¼–è¾‘
      */
     public function edit() {
-        //²éÕÒµ½Ò»Ìõ¼ÇÂ¼£¬ÐÞ¸ÄÎª¸ÃÊý×é
+        //æŸ¥æ‰¾åˆ°ä¸€æ¡è®°å½•ï¼Œä¿®æ”¹ä¸ºè¯¥æ•°ç»„
         $to_array=array(
             'name'=>$this->in['name_to'],
             'path'=>$this->in['path_to']
@@ -58,7 +58,7 @@ class FavoriteController extends KoeController{
     }
 
     /**
-     * É¾³ý
+     * åˆ é™¤
      */
     public function del() {
         if($this->sql->delete($this->in['name'])){

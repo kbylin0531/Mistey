@@ -10,7 +10,7 @@ namespace Utils\Koe;
 class WebTool{
 
     /**
-     * »ñÈ¡¿Í»§¶ËIPµØÖ·
+     * è·å–å®¢æˆ·ç«¯IPåœ°å€
      * @return string
      */
     public static function get_client_ip(){
@@ -36,7 +36,7 @@ class WebTool{
     }
 
     /**
-     * urlÍ·²¿Êı¾İ
+     * urlå¤´éƒ¨æ•°æ®
      * @param $url
      * @return array|bool
      */
@@ -75,7 +75,7 @@ class WebTool{
     }
 
     /**
-     * url¼ì²é
+     * urlæ£€æŸ¥
      * @param $url
      * @return bool
      */
@@ -91,7 +91,7 @@ class WebTool{
     }
 
     /**
-     * »ñÈ¡ÍøÂçurlÎÄ¼şÄÚÈİ£¬¼ÓÈëua£¬ÒÔ½â¾ö·À²É¼¯µÄÕ¾
+     * è·å–ç½‘ç»œurlæ–‡ä»¶å†…å®¹ï¼ŒåŠ å…¥uaï¼Œä»¥è§£å†³é˜²é‡‡é›†çš„ç«™
      * @param $url
      * @return mixed
      */
@@ -110,7 +110,7 @@ class WebTool{
     }
 
     /**
-     * ·µ»Ørefer URL µØÖ·
+     * è¿”å›refer URL åœ°å€
      * @return string
      */
     public static function refer_url(){
@@ -118,7 +118,7 @@ class WebTool{
     }
 
     /**
-     * ·µ»Øµ±Ç°Ò³ÃæµÄ URL µØÖ·
+     * è¿”å›å½“å‰é¡µé¢çš„ URL åœ°å€
      * @return string
      */
     public static function this_url(){
@@ -145,7 +145,7 @@ class WebTool{
     }
 
     /**
-     * È¥³ı·Ç·¨´úÂë
+     * å»é™¤éæ³•ä»£ç 
      * @param mixed $value
      * @return array|null|string
      */
@@ -155,10 +155,10 @@ class WebTool{
     }
 
     /**
-     * GET/POSTÊı¾İÍ³Ò»Èë¿Ú
-     * ½«GETºÍPOSTµÄÊı¾İ½øĞĞ¹ıÂË£¬È¥µô·Ç·¨×Ö·ûÒÔ¼°hacker code£¬·µ»ØÒ»¸öÊı×é
-     * ×¢ÒâÈç¹ûGETºÍPOSTÓĞÏàÍ¬µÄKey£¬POSTÓÅÏÈ
-     * @return array $_GETºÍ$_POSTÊı¾İ¹ıÂË´¦ÀíºóµÄÖµ
+     * GET/POSTæ•°æ®ç»Ÿä¸€å…¥å£
+     * å°†GETå’ŒPOSTçš„æ•°æ®è¿›è¡Œè¿‡æ»¤ï¼Œå»æ‰éæ³•å­—ç¬¦ä»¥åŠhacker codeï¼Œè¿”å›ä¸€ä¸ªæ•°ç»„
+     * æ³¨æ„å¦‚æœGETå’ŒPOSTæœ‰ç›¸åŒçš„Keyï¼ŒPOSTä¼˜å…ˆ
+     * @return array $_GETå’Œ$_POSTæ•°æ®è¿‡æ»¤å¤„ç†åçš„å€¼
      */
     public static function parseIncoming(){
         global $_GET, $_POST,$_COOKIE;
@@ -198,23 +198,23 @@ class WebTool{
     }
 
     /**
-     * ½«×Ö·û´®×ª»»³ÉURLµÄ±àÂë£¬gbkµÄºÍutf8µÄ $to="gbk" »ò"utf8"
+     * å°†å­—ç¬¦ä¸²è½¬æ¢æˆURLçš„ç¼–ç ï¼Œgbkçš„å’Œutf8çš„ $to="gbk" æˆ–"utf8"
      * @param $str
      * @param $to
      * @return string
      */
     public static function urlcode($str, $to){
         if ($to == "gbk") {
-            $result = RawUrlEncode($str); //gbk×Ö·û(Ö÷ÒªÊÇÖĞÎÄ)×ª»»Îªurl %BA%ECĞÎÊ½
+            $result = RawUrlEncode($str); //gbkå­—ç¬¦(ä¸»è¦æ˜¯ä¸­æ–‡)è½¬æ¢ä¸ºurl %BA%ECå½¢å¼
         } else {
-            $key = mb_convert_encoding($str, "utf-8", "gbk"); //¶ÔÓÚ°Ù¶Èutf8ÖĞÎÄurl
+            $key = mb_convert_encoding($str, "utf-8", "gbk"); //å¯¹äºç™¾åº¦utf8ä¸­æ–‡url
             $result = urlencode($key);
         }
         return $result;
     }
 
     /**
-     * Êä³öjs
+     * è¾“å‡ºjs
      * @param $js
      */
     public static function exec_js($js){
@@ -222,7 +222,7 @@ class WebTool{
     }
 
     /**
-     * ½ûÖ¹»º´æ
+     * ç¦æ­¢ç¼“å­˜
      */
     public static function no_cache(){
         header("Pragma:no-cache\r\n");
@@ -231,7 +231,7 @@ class WebTool{
     }
 
     /**
-     * Éú³Éjavascript×ªÏò
+     * ç”Ÿæˆjavascriptè½¬å‘
      * @param string $url
      * @param string $msg
      */
@@ -244,7 +244,7 @@ class WebTool{
     }
 
     /**
-     * ÏûÏ¢¿ò¡£eg
+     * æ¶ˆæ¯æ¡†ã€‚eg
      * msg("falied","/",10);
      * msg("ok");
      *
@@ -258,21 +258,21 @@ class WebTool{
         $goto = "content='$time;url=$url'";
         if ($isgo != "1") {
             $goto = "";
-        } //ÊÇ·ñ×Ô¶¯Ìø×ª
+        } //æ˜¯å¦è‡ªåŠ¨è·³è½¬
         echo<<<endline
 <html>
 	<meta http-equiv='refresh' $goto charset="utf-8">
 	<style>
-	#msgbox{width:400px;border: 1px solid #ddd;font-family:Î¢ÈíÑÅºÚ;color:888;font-size:13px;margin:0 auto;margin-top:150px;}
+	#msgbox{width:400px;border: 1px solid #ddd;font-family:å¾®è½¯é›…é»‘;color:888;font-size:13px;margin:0 auto;margin-top:150px;}
 	#msgbox #title{background:#3F9AC6;color:#fff;line-height:30px;height:30px;padding-left:20px;font-weight:800;}
 	#msgbox #message{text-align:center;padding:20px;}
 	#msgbox #info{text-align:center;padding:5px;border-top:1px solid #ddd;background:#f2f2f2;color:#888;}
 	</style>
 	<body>
 	<div id="msgbox">
-	<div id="title">ÌáÊ¾ĞÅÏ¢</div>
+	<div id="title">æç¤ºä¿¡æ¯</div>
 	<div id="message">$message</div>
-	<div id="info">$time Ãëºó×Ô¶¯Ìø×ª£¬Èç²»ÏëµÈ´ı¿É <a href='$url'>µã»÷ÕâÀï</a></div></center>
+	<div id="info">$time ç§’åè‡ªåŠ¨è·³è½¬ï¼Œå¦‚ä¸æƒ³ç­‰å¾…å¯ <a href='$url'>ç‚¹å‡»è¿™é‡Œ</a></div></center>
 	</body>
 </html>
 endline;
@@ -343,7 +343,7 @@ endline;
     }
 
     /**
-     * »ñÈ¡²Ù×÷ÏµÍ³ĞÅÏ¢
+     * è·å–æ“ä½œç³»ç»Ÿä¿¡æ¯
      * @return null|string
      * @throws \Exception
      */
@@ -351,7 +351,7 @@ endline;
         $agent = $_SERVER['HTTP_USER_AGENT'];
         $os = null;
         /**
-         * mb_eregi  ÍÆ¼öÌæ»»
+         * mb_eregi  æ¨èæ›¿æ¢
          */
         if (eregi('win', $agent) && strpos($agent, '95')) {
             $os = 'Windows 95';
@@ -411,7 +411,7 @@ endline;
     }
 
     /**
-     * ¸ù¾İÀ©Õ¹Ãû»ñÈ¡mime
+     * æ ¹æ®æ‰©å±•åè·å–mime
      * @param $ext
      * @return string
      */
@@ -611,7 +611,7 @@ endline;
             "zip" => "application/zip"
         );
 
-        //´úÂë »òÎÄ±¾ä¯ÀÀÆ÷Êä³ö
+        //ä»£ç  æˆ–æ–‡æœ¬æµè§ˆå™¨è¾“å‡º
         $text = array('oexe','inc','inf','csv','log','asc','tsv');
         $code = array("abap","abc","as","ada","adb","htgroups","htpasswd","conf","htaccess","htgroups",
             "htpasswd","asciidoc","asm","ahk","bat","cmd","c9search_results","cpp","c","cc","cxx","h","hh","hpp",

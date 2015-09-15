@@ -10,7 +10,7 @@ namespace Utils\Koe;
 class KoeTool{
 
     /**
-     * ·µ»ØÍ¬ÒâµÄpath
+     * è¿”å›åŒæ„çš„path
      * @param $path
      * @return mixed
      */
@@ -19,7 +19,7 @@ class KoeTool{
     }
 
     /**
-     * ÅĞ¶ÏÊÇ·ñÊÇhttpsÇëÇó
+     * åˆ¤æ–­æ˜¯å¦æ˜¯httpsè¯·æ±‚
      * @return bool
      */
     public static function isHttps(){
@@ -28,15 +28,36 @@ class KoeTool{
             return TRUE;
         }elseif($_SERVER['HTTPS'] === 'on'){ //IIS
             return TRUE;
-        }elseif($_SERVER['SERVER_PORT'] == 443){ //ÆäËû
+        }elseif($_SERVER['SERVER_PORT'] == 443){ //å…¶ä»–
             return TRUE;
         }
         return FALSE;
     }
 
+    public static function checkPHPEnv(){
+        $L = $GLOBALS['L'];
+        $error = '';
+//        $base_path = get_path_this(BASIC_PATH).'/';
+        if(!function_exists('iconv')) $error.= '<li>not open iconv</li>';
+        if(!function_exists('mb_convert_encoding')) $error.= '<li>not open mb_string</li>';
+        if(!version_compare(PHP_VERSION,'5.4','>=')) $error.= '<li>PHP version must more than 5.4</li>';
+        if(!function_exists('file_get_contents')) $error.='<li>not open file_get_contents</li>';
+        if(!path_writable(BASIC_PATH)) $error.= '<li>BASIC_PATH is not writable</li>';
+        if(!path_writable(BASIC_PATH.'data')) $error.= '<li>data can not write</li>';
+        if(!path_writable(BASIC_PATH.'data/system')) $error.= '<li>data/system can not write</li>';
+        if(!path_writable(BASIC_PATH.'data/User')) $error.= '<li>data/User can not write</li>';
+        if(!path_writable(BASIC_PATH.'data/thumb')) $error.= '<li>data/thumb can not write</li>';
+        if( !function_exists('imagecreatefromjpeg')||
+            !function_exists('imagecreatefromgif')||
+            !function_exists('imagecreatefrompng')||
+            !function_exists('imagecolorallocate')){
+            $error.= '<li>'.$L['php_env_error_gd'].'</li>';
+        }
+        return $error;
+    }
 
     /**
-     * ¼ÓÔØÀà£¬´ÓclassÄ¿Â¼£»controller£»modelÄ¿Â¼ÖĞÑ°ÕÒclass
+     * åŠ è½½ç±»ï¼Œä»classç›®å½•ï¼›controllerï¼›modelç›®å½•ä¸­å¯»æ‰¾class
      * @param $className
      */
     public static function _autoload($className){
@@ -53,7 +74,7 @@ class KoeTool{
 
 
     /**
-     * Éú²úmodel¶ÔÏó
+     * ç”Ÿäº§modelå¯¹è±¡
      * @param $model_name
      * @return bool
      */
@@ -72,7 +93,7 @@ class KoeTool{
         return $reflectionObj -> newInstanceArgs($args);
     }
     /**
-     * Éú²úcontroller¶ÔÏó
+     * ç”Ÿäº§controllerå¯¹è±¡
      * @param $controller_name
      * @return bool
      */
@@ -91,7 +112,7 @@ class KoeTool{
     }
 
     /**
-     * ¼ÓÔØÀà
+     * åŠ è½½ç±»
      * @param $class
      */
     public static function load_class($class){
@@ -103,7 +124,7 @@ class KoeTool{
         }
     }
     /**
-     * ¼ÓÔØº¯Êı¿â
+     * åŠ è½½å‡½æ•°åº“
      * @param $function
      */
     public static function load_function($function){
@@ -115,7 +136,7 @@ class KoeTool{
         }
     }
     /**
-     * ÎÄ±¾×Ö·û´®×ª»»
+     * æ–‡æœ¬å­—ç¬¦ä¸²è½¬æ¢
      * @param $str
      * @return mixed
      */
@@ -126,7 +147,7 @@ class KoeTool{
     }
 
     /**
-     * Çå³ı¶àÓà¿Õ¸ñºÍ»Ø³µ×Ö·û
+     * æ¸…é™¤å¤šä½™ç©ºæ ¼å’Œå›è½¦å­—ç¬¦
      * @param $str
      * @return mixed
      */
@@ -135,7 +156,7 @@ class KoeTool{
     }
 
     /**
-     * »ñÈ¡¾«È·Ê±¼ä
+     * è·å–ç²¾ç¡®æ—¶é—´
      */
     public static function mtime(){
         $t= explode(' ',microtime());
@@ -143,7 +164,7 @@ class KoeTool{
         return $time;
     }
     /**
-     * ¹ıÂËHTML
+     * è¿‡æ»¤HTML
      * @param $HTML
      * @param bool|true $br
      * @return mixed|string
@@ -159,9 +180,9 @@ class KoeTool{
     }
 
     /**
-     * ½«objÉî¶È×ª»¯³Éarray
-     * @param  mixed $obj Òª×ª»»µÄÊı¾İ ¿ÉÄÜÊÇÊı×é Ò²¿ÉÄÜÊÇ¸ö¶ÔÏó »¹¿ÉÄÜÊÇÒ»°ãÊı¾İÀàĞÍ
-     * @return array || Ò»°ãÊı¾İÀàĞÍ
+     * å°†objæ·±åº¦è½¬åŒ–æˆarray
+     * @param  mixed $obj è¦è½¬æ¢çš„æ•°æ® å¯èƒ½æ˜¯æ•°ç»„ ä¹Ÿå¯èƒ½æ˜¯ä¸ªå¯¹è±¡ è¿˜å¯èƒ½æ˜¯ä¸€èˆ¬æ•°æ®ç±»å‹
+     * @return array || ä¸€èˆ¬æ•°æ®ç±»å‹
      */
     public static function obj2array($obj){
         if (is_array($obj)) {
@@ -178,7 +199,7 @@ class KoeTool{
     }
 
     /**
-     * ¼ÆËãÊ±¼ä²î
+     * è®¡ç®—æ—¶é—´å·®
      * @param float $pretime
      * @return float
      */
@@ -199,27 +220,27 @@ class KoeTool{
         $im = @imagecreatetruecolor($width, $height) or die("create image error!");
         $background_color = imagecolorallocate($im, 255, 255, 255);
         imagefill($im, 0, 0, $background_color);
-        for ($i = 0; $i < 2000; $i++) {//»ñÈ¡Ëæ»úµ­É«
+        for ($i = 0; $i < 2000; $i++) {//è·å–éšæœºæ·¡è‰²
             $line_color = imagecolorallocate($im, mt_rand(180,255),mt_rand(160, 255),mt_rand(100, 255));
-            imageline($im,mt_rand(0,$width),mt_rand(0,$height), //»­Ö±Ïß
+            imageline($im,mt_rand(0,$width),mt_rand(0,$height), //ç”»ç›´çº¿
                 mt_rand(0,$width), mt_rand(0,$height),$line_color);
-            imagearc($im,mt_rand(0,$width),mt_rand(0,$height), //»­»¡Ïß
+            imagearc($im,mt_rand(0,$width),mt_rand(0,$height), //ç”»å¼§çº¿
                 mt_rand(0,$width), mt_rand(0,$height), $height, $width,$line_color);
         }
         $border_color = imagecolorallocate($im, 160, 160, 160);
-        imagerectangle($im, 0, 0, $width-1, $height-1, $border_color);//»­¾ØĞÎ£¬±ß¿òÑÕÉ«200,200,200
+        imagerectangle($im, 0, 0, $width-1, $height-1, $border_color);//ç”»çŸ©å½¢ï¼Œè¾¹æ¡†é¢œè‰²200,200,200
 
-        for ($i = 0; $i < $len; $i++) {//Ğ´ÈëËæ»ú×Ö´®
+        for ($i = 0; $i < $len; $i++) {//å†™å…¥éšæœºå­—ä¸²
 //            $current = $str[mt_rand(0, strlen($str)-1)];
             $text_color = imagecolorallocate($im,mt_rand(30, 140),mt_rand(30,140),mt_rand(30,140));
             imagechar($im,10,$i*$fontsize+6,rand(1,$height/3),$code[$i],$text_color);
         }
-        imagejpeg($im);//ÏÔÊ¾Í¼
-        imagedestroy($im);//Ïú»ÙÍ¼Æ¬
+        imagejpeg($im);//æ˜¾ç¤ºå›¾
+        imagedestroy($im);//é”€æ¯å›¾ç‰‡
     }
 
     /**
-     * ·µ»Øµ±Ç°¸¡µãÊ½µÄÊ±¼ä,µ¥Î»Ãë;Ö÷ÒªÓÃÔÚµ÷ÊÔ³ÌĞò³ÌĞòÊ±¼äÊ±ÓÃ
+     * è¿”å›å½“å‰æµ®ç‚¹å¼çš„æ—¶é—´,å•ä½ç§’;ä¸»è¦ç”¨åœ¨è°ƒè¯•ç¨‹åºç¨‹åºæ—¶é—´æ—¶ç”¨
      * @return float
      */
     public static function microtime_float(){
@@ -227,7 +248,7 @@ class KoeTool{
         return ((float)$usec + (float)$sec);
     }
     /**
-     * ¼ÆËãN´Î·½¸ù
+     * è®¡ç®—Næ¬¡æ–¹æ ¹
      * @param $num
      * @param int $root
      * @return float
@@ -237,7 +258,7 @@ class KoeTool{
         if (!$root) {
             return $num;
         }
-        //exp:·µ»Ø e  µÄ arg ´Î·½Öµ¡£
+        //exp:è¿”å› e  çš„ arg æ¬¡æ–¹å€¼ã€‚
         return exp(log($num) / $root);
     }
 
@@ -257,7 +278,7 @@ class KoeTool{
     }
 
     /**
-     * ×Ö·û´®¼Ó×ªÒå
+     * å­—ç¬¦ä¸²åŠ è½¬ä¹‰
      * @param $string
      * @return array|string
      */
@@ -284,13 +305,13 @@ class KoeTool{
     }
 
     /**
-     * ¶şÎ¬Êı×é°´ÕÕÖ¸¶¨µÄ¼üÖµ½øĞĞÅÅĞò
+     * äºŒç»´æ•°ç»„æŒ‰ç…§æŒ‡å®šçš„é”®å€¼è¿›è¡Œæ’åº
      * @param array $arr
-     * @param string $keys ¸ù¾İ¼üÖµ
-     * @param string $type ÉıĞò½µĞò
+     * @param string $keys æ ¹æ®é”®å€¼
+     * @param string $type å‡åºé™åº
      * @return array  array(
-     * array('name'=>'ÊÖ»ú','brand'=>'Åµ»ùÑÇ','price'=>1050),
-     * array('name'=>'ÊÖ±í','brand'=>'¿¨Î÷Å·','price'=>960)
+     * array('name'=>'æ‰‹æœº','brand'=>'è¯ºåŸºäºš','price'=>1050),
+     * array('name'=>'æ‰‹è¡¨','brand'=>'å¡è¥¿æ¬§','price'=>960)
      * );$out = array_sort($array,'price');
      */
     public static function array_sort($arr, $keys, $type = 'asc'){
@@ -310,8 +331,8 @@ class KoeTool{
         return $new_array;
     }
     /**
-     * ±éÀúÊı×é£¬¶ÔÃ¿¸öÔªËØµ÷ÓÃ $callback£¬¼ÙÈç·µ»ØÖµ²»Îª¼ÙÖµ£¬ÔòÖ±½Ó·µ»Ø¸Ã·µ»ØÖµ£»
-     * ¼ÙÈçÃ¿´Î $callback ¶¼·µ»Ø¼ÙÖµ£¬×îÖÕ·µ»Ø false
+     * éå†æ•°ç»„ï¼Œå¯¹æ¯ä¸ªå…ƒç´ è°ƒç”¨ $callbackï¼Œå‡å¦‚è¿”å›å€¼ä¸ä¸ºå‡å€¼ï¼Œåˆ™ç›´æ¥è¿”å›è¯¥è¿”å›å€¼ï¼›
+     * å‡å¦‚æ¯æ¬¡ $callback éƒ½è¿”å›å‡å€¼ï¼Œæœ€ç»ˆè¿”å› false
      * @param  $array
      * @param  $callback
      * @return mixed
@@ -336,7 +357,7 @@ class KoeTool{
         }
         return false;
     }
-    // Çó¶à¸öÊı×éµÄ²¢¼¯
+    // æ±‚å¤šä¸ªæ•°ç»„çš„å¹¶é›†
     public static function array_union(){
         $argsCount = func_num_args();
         if ($argsCount < 2) {
@@ -348,7 +369,7 @@ class KoeTool{
                 if (!in_array($v, $arr1)) $arr1[] = $v;
             }
             return $arr1;
-        } else { // Èı¸öÒÔÉÏµÄÊı×éºÏ²¢
+        } else { // ä¸‰ä¸ªä»¥ä¸Šçš„æ•°ç»„åˆå¹¶
             $arg_list = func_get_args();
             $all = call_user_func_array('array_union', $arg_list);
             return self::array_union($arg_list[0], $all);
@@ -356,7 +377,7 @@ class KoeTool{
     }
 
     /**
-     * È¡³öÊı×éÖĞµÚnÏî
+     * å–å‡ºæ•°ç»„ä¸­ç¬¬né¡¹
      * @param array $arr
      * @param int $index
      * @return array
@@ -369,10 +390,10 @@ class KoeTool{
     }
 
     /**
-     * ´ò°ü·µ»ØAJAXÇëÇóµÄÊı¾İ
+     * æ‰“åŒ…è¿”å›AJAXè¯·æ±‚çš„æ•°æ®
      * @param $data
-     * @param bool|true $code ·µ»Ø×´Ì¬Âë£¬ Í¨³£0±íÊ¾Õı³£
-     * @param string $info ·µ»ØµÄÊı¾İ¼¯ºÏ
+     * @param bool|true $code è¿”å›çŠ¶æ€ç ï¼Œ é€šå¸¸0è¡¨ç¤ºæ­£å¸¸
+     * @param string $info è¿”å›çš„æ•°æ®é›†åˆ
      */
     public static function show_json($data,$code = true,$info=''){
         $use_time = self::mtime() - $GLOBALS['config']['app_startTime'];
@@ -386,12 +407,12 @@ class KoeTool{
     }
 
     /**
-     * ¼òµ¥Ä£°æ×ª»»£¬ÓÃÓÚ¸ù¾İÅäÖÃ»ñÈ¡ÁĞ±í£º
-     * ²ÎÊı£ºcute1:µÚÒ»´ÎÇĞ¸îµÄ×Ö·û´®£¬cute2µÚ¶ş´ÎÇĞ¸îµÄ×Ö·û´®,
-     * arraylistÎª´ı´¦ÀíµÄ×Ö·û´®£¬$this Îª±ê¼Çµ±Ç°Ïî£¬$this_strÎªµ±Ïî±ê¼ÇµÄÌæ»»¡£
-     * $tplÎª´¦ÀíºóÌî³äµ½¾²Ì¬Ä£°æ({0}´ú±íÇĞ¸îºó×óÖµ,{1}´ú±íÇĞ¸îºóÓÒÖµ,{this}´ú±íµ±Ç°ÏîÌî³äÖµ)
-     * Àı×Ó£º
-     * $arr="default=µ­À¶(Ä¬ÈÏ)=5|mac=macº£Ñó=6|mac1=mac1º£Ñó=7";
+     * ç®€å•æ¨¡ç‰ˆè½¬æ¢ï¼Œç”¨äºæ ¹æ®é…ç½®è·å–åˆ—è¡¨ï¼š
+     * å‚æ•°ï¼šcute1:ç¬¬ä¸€æ¬¡åˆ‡å‰²çš„å­—ç¬¦ä¸²ï¼Œcute2ç¬¬äºŒæ¬¡åˆ‡å‰²çš„å­—ç¬¦ä¸²,
+     * arraylistä¸ºå¾…å¤„ç†çš„å­—ç¬¦ä¸²ï¼Œ$this ä¸ºæ ‡è®°å½“å‰é¡¹ï¼Œ$this_strä¸ºå½“é¡¹æ ‡è®°çš„æ›¿æ¢ã€‚
+     * $tplä¸ºå¤„ç†åå¡«å……åˆ°é™æ€æ¨¡ç‰ˆ({0}ä»£è¡¨åˆ‡å‰²åå·¦å€¼,{1}ä»£è¡¨åˆ‡å‰²åå³å€¼,{this}ä»£è¡¨å½“å‰é¡¹å¡«å……å€¼)
+     * ä¾‹å­ï¼š
+     * $arr="default=æ·¡è“(é»˜è®¤)=5|mac=macæµ·æ´‹=6|mac1=mac1æµ·æ´‹=7";
      * $tpl="<li class='list {this}' theme='{0}'>{1}_{2}</li>\n";
      * echo getTplList('|','=',$arr,$tpl,'mac'),'<br/>';
      * @param $cute1
@@ -425,7 +446,7 @@ class KoeTool{
     }
 
     /**
-     * »ñÈ¡µ±Ç°urlµØÖ·
+     * è·å–å½“å‰urlåœ°å€
      * @return string
      */
     public static function get_url() {
@@ -439,15 +460,15 @@ class KoeTool{
     }
 
     /**
-     * È¥µôHTML´úÂëÖĞµÄHTML±êÇ©£¬·µ»Ø´¿ÎÄ±¾
-     * @param string $document ´ı´¦ÀíµÄ×Ö·û´®
+     * å»æ‰HTMLä»£ç ä¸­çš„HTMLæ ‡ç­¾ï¼Œè¿”å›çº¯æ–‡æœ¬
+     * @param string $document å¾…å¤„ç†çš„å­—ç¬¦ä¸²
      * @return string
      */
     public static function html2txt($document){
-        $search = array ("'<script[^>]*?>.*?</script>'si", // È¥µô javascript
-            "'<[\\/\\!]*?[^<>]*?>'si", // È¥µô HTML ±ê¼Ç
-            "'([\r\n])[\\s]+'", // È¥µô¿Õ°××Ö·û
-            "'&(quot|#34);'i", // Ìæ»» HTML ÊµÌå
+        $search = array ("'<script[^>]*?>.*?</script>'si", // å»æ‰ javascript
+            "'<[\\/\\!]*?[^<>]*?>'si", // å»æ‰ HTML æ ‡è®°
+            "'([\r\n])[\\s]+'", // å»æ‰ç©ºç™½å­—ç¬¦
+            "'&(quot|#34);'i", // æ›¿æ¢ HTML å®ä½“
             "'&(amp|#38);'i",
             "'&(lt|#60);'i",
             "'&(gt|#62);'i",
@@ -456,7 +477,7 @@ class KoeTool{
             "'&(cent|#162);'i",
             "'&(pound|#163);'i",
             "'&(copy|#169);'i",
-            "'&#(\\d+);'e"); // ×÷Îª PHP ´úÂëÔËĞĞ
+            "'&#(\\d+);'e"); // ä½œä¸º PHP ä»£ç è¿è¡Œ
         $replace = array ("",
             "",
             "",
@@ -475,7 +496,7 @@ class KoeTool{
     }
 
     /**
-     * »ñÈ¡ÄÚÈİµÚÒ»Ìõ
+     * è·å–å†…å®¹ç¬¬ä¸€æ¡
      * @param $content
      * @param $preg
      * @return mixed
@@ -487,7 +508,7 @@ class KoeTool{
     }
 
     /**
-     * »ñÈ¡ÄÚÈİ,»ñÈ¡Ò»¸öÒ³ÃæÈô¸ÉĞÅÏ¢.½á¹ûÔÚ 1,2,3¡­¡­ÖĞ
+     * è·å–å†…å®¹,è·å–ä¸€ä¸ªé¡µé¢è‹¥å¹²ä¿¡æ¯.ç»“æœåœ¨ 1,2,3â€¦â€¦ä¸­
      * @param $content
      * @param $preg
      * @return mixed
@@ -499,7 +520,7 @@ class KoeTool{
     }
 
     /**
-     * »ñÈ¡Ö¸¶¨³¤¶ÈµÄ utf8 ×Ö·û´®
+     * è·å–æŒ‡å®šé•¿åº¦çš„ utf8 å­—ç¬¦ä¸²
      * @param string $string
      * @param int $length
      * @param string $dot
@@ -554,13 +575,13 @@ class KoeTool{
     }
 
     /**
-     * ×Ö·û´®½ØÈ¡£¬Ö§³ÖÖĞÎÄºÍÆäËû±àÂë
+     * å­—ç¬¦ä¸²æˆªå–ï¼Œæ”¯æŒä¸­æ–‡å’Œå…¶ä»–ç¼–ç 
      *
-     * @param string $str ĞèÒª×ª»»µÄ×Ö·û´®
-     * @param int $start ¿ªÊ¼Î»ÖÃ
-     * @param string $length ½ØÈ¡³¤¶È
-     * @param string $charset ±àÂë¸ñÊ½
-     * @param bool|true $suffix ½Ø¶ÏÏÔÊ¾×Ö·û
+     * @param string $str éœ€è¦è½¬æ¢çš„å­—ç¬¦ä¸²
+     * @param int $start å¼€å§‹ä½ç½®
+     * @param string $length æˆªå–é•¿åº¦
+     * @param string $charset ç¼–ç æ ¼å¼
+     * @param bool|true $suffix æˆªæ–­æ˜¾ç¤ºå­—ç¬¦
      * @return string
      */
     public static function msubstr($str, $start = 0, $length, $charset = "utf-8", $suffix = true){
@@ -580,7 +601,7 @@ class KoeTool{
         $re['big5'] = "/[\x01-\x7f]|[\x81-\xfe]([\x40-\x7e]|\xa1-\xfe])/";
         preg_match_all($re[$charset], $str, $match);
         $slice = join("", array_slice($match[0], $start, $length));
-        if ($suffix) return $slice . "¡­";
+        if ($suffix) return $slice . "â€¦";
         return $slice;
     }
 
@@ -590,10 +611,10 @@ class KoeTool{
             "'<br[^>]*>'si",
             "'<p>'si",
             "'</p>'si",
-            "'<script[^>]*?>.*?</script>'si", // È¥µô javascript
-            "'<[\\/\\!]*?[^<>]*?>'si", // È¥µô HTML ±ê¼Ç
-            "'([\r\n])[\\s]+'", // È¥µô¿Õ°××Ö·û
-        ); // ×÷Îª PHP ´úÂëÔËĞĞ
+            "'<script[^>]*?>.*?</script>'si", // å»æ‰ javascript
+            "'<[\\/\\!]*?[^<>]*?>'si", // å»æ‰ HTML æ ‡è®°
+            "'([\r\n])[\\s]+'", // å»æ‰ç©ºç™½å­—ç¬¦
+        ); // ä½œä¸º PHP ä»£ç è¿è¡Œ
         $replace = array ("#img#\\1#/img#",
             "#link#\\1#\\2#/link#",
             "[br]",
@@ -617,8 +638,8 @@ class KoeTool{
     }
 
     /**
-     * »ñÈ¡±äÁ¿µÄÃû×Ö
-     * eg hello="123" »ñÈ¡ss×Ö·û´®
+     * è·å–å˜é‡çš„åå­—
+     * eg hello="123" è·å–sså­—ç¬¦ä¸²
      * @param $aVar
      * @return int|string
      */
@@ -630,9 +651,9 @@ class KoeTool{
         }
         return null;
     }
-    // -----------------±äÁ¿µ÷ÊÔ-------------------
+    // -----------------å˜é‡è°ƒè¯•-------------------
     /**
-     * ¸ñÊ½»¯Êä³ö±äÁ¿£¬»òÕß¶ÔÏó
+     * æ ¼å¼åŒ–è¾“å‡ºå˜é‡ï¼Œæˆ–è€…å¯¹è±¡
      *
      * @param mixed $var
      * @param boolean $exit
@@ -658,15 +679,15 @@ class KoeTool{
         } else {
             var_dump($var);
         }
-        $out = ob_get_clean(); //»º³åÊä³ö¸ø$out ±äÁ¿
-        $out = preg_replace('/"(.*)"/', '<b id="debug_var_str">"' . '\\1' . '"</b>', $out); //¸ßÁÁ×Ö·û´®±äÁ¿
-        $out = preg_replace('/=\>(.*)/', '=>' . '<b id="debug_str">' . '\\1' . '</b>', $out); //¸ßÁÁ=>ºóÃæµÄÖµ
-        $out = preg_replace('/\[(.*)\]/', '<b id="debug_tag1">[</b><b id="debug_var">' . '\\1' . '</b><b id="debug_tag1">]</b>', $out); //¸ßÁÁ±äÁ¿
+        $out = ob_get_clean(); //ç¼“å†²è¾“å‡ºç»™$out å˜é‡
+        $out = preg_replace('/"(.*)"/', '<b id="debug_var_str">"' . '\\1' . '"</b>', $out); //é«˜äº®å­—ç¬¦ä¸²å˜é‡
+        $out = preg_replace('/=\>(.*)/', '=>' . '<b id="debug_str">' . '\\1' . '</b>', $out); //é«˜äº®=>åé¢çš„å€¼
+        $out = preg_replace('/\[(.*)\]/', '<b id="debug_tag1">[</b><b id="debug_var">' . '\\1' . '</b><b id="debug_tag1">]</b>', $out); //é«˜äº®å˜é‡
         $from = array('    ', '(', ')', '=>');
         $to = array('  ', '<b id="debug_tag2">(</i>', '<b id="debug_tag2">)</b>', '<b id="debug_set">=></b>');
         $out = str_replace($from, $to, $out);
 
-        $keywords = array('Array', 'int', 'string', 'class', 'object', 'null'); //¹Ø¼ü×Ö¸ßÁÁ
+        $keywords = array('Array', 'int', 'string', 'class', 'object', 'null'); //å…³é”®å­—é«˜äº®
         $keywords_to = $keywords;
         foreach($keywords as $key => $val) {
             $keywords_to[$key] = '<b id="debug_keywords">' . $val . '</b>';
@@ -674,12 +695,12 @@ class KoeTool{
         $out = str_replace($keywords, $keywords_to, $out);
         $out = str_replace("\n\n", "\n", $out);
         echo $style . '<pre id="debug"><b id="debug_keywords">' . self::get_var_name($var) . '</b> = ' . $out . '</pre>';
-        if ($exit) exit; //ÎªÕæÔòÍË³ö
+        if ($exit) exit; //ä¸ºçœŸåˆ™é€€å‡º
     }
 
     /**
-     * µ÷ÊÔÊä³ö±äÁ¿£¬¶ÔÏóµÄÖµ¡£
-     * ²ÎÊıÈÎÒâ¸ö(ÈÎÒâÀàĞÍµÄ±äÁ¿)
+     * è°ƒè¯•è¾“å‡ºå˜é‡ï¼Œå¯¹è±¡çš„å€¼ã€‚
+     * å‚æ•°ä»»æ„ä¸ª(ä»»æ„ç±»å‹çš„å˜é‡)
      */
     public static function debug_out(){
         $avg_num = func_num_args();
@@ -694,14 +715,14 @@ class KoeTool{
     }
 
     /**
-     * È¡$from~$to·¶Î§ÄÚµÄËæ»úÊı
-     * @param mixed $from  ÏÂÏŞ
-     * @param mixed $to ÉÏÏŞ
+     * å–$from~$toèŒƒå›´å†…çš„éšæœºæ•°
+     * @param mixed $from  ä¸‹é™
+     * @param mixed $to ä¸Šé™
      * @return mixed
      */
     public static function rand_from_to($from, $to){
-        $size = $from - $to; //ÊıÖµÇø¼ä
-        $max = 30000; //×î´ó
+        $size = $from - $to; //æ•°å€¼åŒºé—´
+        $max = 30000; //æœ€å¤§
         if ($size < $max) {
             return $from + mt_rand(0, $size);
         } else {
@@ -714,41 +735,41 @@ class KoeTool{
     }
 
     /**
-     * ²úÉúËæ»ú×Ö´®£¬¿ÉÓÃÀ´×Ô¶¯Éú³ÉÃÜÂë Ä¬ÈÏ³¤¶È6Î» ×ÖÄ¸ºÍÊı×Ö»ìºÏ
+     * äº§ç”Ÿéšæœºå­—ä¸²ï¼Œå¯ç”¨æ¥è‡ªåŠ¨ç”Ÿæˆå¯†ç  é»˜è®¤é•¿åº¦6ä½ å­—æ¯å’Œæ•°å­—æ··åˆ
      *
-     * @param int $len ³¤¶È
-     * @param string $type ×Ö´®ÀàĞÍ£º0 ×ÖÄ¸ 1 Êı×Ö 2 ´óĞ´×ÖÄ¸ 3 Ğ¡Ğ´×ÖÄ¸  4 ÖĞÎÄ
-     * ÆäËûÎªÊı×Ö×ÖÄ¸»ìºÏ(È¥µôÁË ÈİÒ×»ìÏıµÄ×Ö·ûoOLlºÍÊı×Ö01£¬)
+     * @param int $len é•¿åº¦
+     * @param string $type å­—ä¸²ç±»å‹ï¼š0 å­—æ¯ 1 æ•°å­— 2 å¤§å†™å­—æ¯ 3 å°å†™å­—æ¯  4 ä¸­æ–‡
+     * å…¶ä»–ä¸ºæ•°å­—å­—æ¯æ··åˆ(å»æ‰äº† å®¹æ˜“æ··æ·†çš„å­—ç¬¦oOLlå’Œæ•°å­—01ï¼Œ)
      * @return string
      */
     public static function randString($len = 4, $type='check_code'){
         $str = '';
         switch ($type) {
-            case 0://´óĞ¡Ğ´ÖĞÓ¢ÎÄ
+            case 0://å¤§å°å†™ä¸­è‹±æ–‡
                 $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
                 break;
-            case 1://Êı×Ö
+            case 1://æ•°å­—
                 $chars = str_repeat('0123456789', 3);
                 break;
-            case 2://´óĞ´×ÖÄ¸
+            case 2://å¤§å†™å­—æ¯
                 $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 break;
-            case 3://Ğ¡Ğ´×ÖÄ¸
+            case 3://å°å†™å­—æ¯
                 $chars = 'abcdefghijklmnopqrstuvwxyz';
                 break;
             default:
-                // Ä¬ÈÏÈ¥µôÁËÈİÒ×»ìÏıµÄ×Ö·ûoOLlºÍÊı×Ö01£¬ÒªÌí¼ÓÇëÊ¹ÓÃaddChars²ÎÊı
+                // é»˜è®¤å»æ‰äº†å®¹æ˜“æ··æ·†çš„å­—ç¬¦oOLlå’Œæ•°å­—01ï¼Œè¦æ·»åŠ è¯·ä½¿ç”¨addCharså‚æ•°
                 $chars = 'ABCDEFGHIJKMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
                 break;
         }
-        if ($len > 10) { // Î»Êı¹ı³¤ÖØ¸´×Ö·û´®Ò»¶¨´ÎÊı
+        if ($len > 10) { // ä½æ•°è¿‡é•¿é‡å¤å­—ç¬¦ä¸²ä¸€å®šæ¬¡æ•°
             $chars = $type == 1 ? str_repeat($chars, $len) : str_repeat($chars, 5);
         }
         if ($type != 4) {
             $chars = str_shuffle($chars);
             $str = substr($chars, 0, $len);
         } else {
-            // ÖĞÎÄËæ»ú×Ö
+            // ä¸­æ–‡éšæœºå­—
             for($i = 0; $i < $len; $i ++) {
                 $str .= self::msubstr($chars, floor(mt_rand(0, mb_strlen($chars, 'utf-8') - 1)), 1);
             }
@@ -757,7 +778,7 @@ class KoeTool{
     }
 
     /**
-     * Éú³É×Ô¶¯ÃÜÂë
+     * ç”Ÿæˆè‡ªåŠ¨å¯†ç 
      */
     public static function make_password(){
         $temp = '0123456789abcdefghijklmnopqrstuvwxyz'.
@@ -770,39 +791,39 @@ class KoeTool{
 
 
     /**
-     * php DES½âÃÜº¯Êı
+     * php DESè§£å¯†å‡½æ•°
      *
-     * @param string $key ÃÜÔ¿
-     * @param string $encrypted ¼ÓÃÜ×Ö·û´®
+     * @param string $key å¯†é’¥
+     * @param string $encrypted åŠ å¯†å­—ç¬¦ä¸²
      * @return string
      */
     public static function des_decode($key, $encrypted){
         $encrypted = base64_decode($encrypted);
-        $td = mcrypt_module_open(MCRYPT_DES, '', MCRYPT_MODE_CBC, ''); //Ê¹ÓÃMCRYPT_DESËã·¨,cbcÄ£Ê½
+        $td = mcrypt_module_open(MCRYPT_DES, '', MCRYPT_MODE_CBC, ''); //ä½¿ç”¨MCRYPT_DESç®—æ³•,cbcæ¨¡å¼
 //        $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
 //        $ks = mcrypt_enc_get_key_size($td);
 
-        mcrypt_generic_init($td, $key, $key); //³õÊ¼´¦Àí
-        $decrypted = mdecrypt_generic($td, $encrypted); //½âÃÜ
+        mcrypt_generic_init($td, $key, $key); //åˆå§‹å¤„ç†
+        $decrypted = mdecrypt_generic($td, $encrypted); //è§£å¯†
 
-        mcrypt_generic_deinit($td); //½áÊø
+        mcrypt_generic_deinit($td); //ç»“æŸ
         mcrypt_module_close($td);
         return self::pkcs5_unpad($decrypted);
     }
     /**
-     * php DES¼ÓÃÜº¯Êı
+     * php DESåŠ å¯†å‡½æ•°
      *
-     * @param string $key ÃÜÔ¿
-     * @param string $text ×Ö·û´®
+     * @param string $key å¯†é’¥
+     * @param string $text å­—ç¬¦ä¸²
      * @return string
      */
     public static function des_encode($key, $text){
         $y = self::pkcs5_pad($text);
-        $td = mcrypt_module_open(MCRYPT_DES, '', MCRYPT_MODE_CBC, ''); //Ê¹ÓÃMCRYPT_DESËã·¨,cbcÄ£Ê½
+        $td = mcrypt_module_open(MCRYPT_DES, '', MCRYPT_MODE_CBC, ''); //ä½¿ç”¨MCRYPT_DESç®—æ³•,cbcæ¨¡å¼
 //        $ks = mcrypt_enc_get_key_size($td);
-        mcrypt_generic_init($td, $key, $key); //³õÊ¼´¦Àí
-        $encrypted = mcrypt_generic($td, $y); //½âÃÜ
-        mcrypt_generic_deinit($td); //½áÊø
+        mcrypt_generic_init($td, $key, $key); //åˆå§‹å¤„ç†
+        $encrypted = mcrypt_generic($td, $y); //è§£å¯†
+        mcrypt_generic_deinit($td); //ç»“æŸ
         mcrypt_module_close($td);
         return base64_encode($encrypted);
     }
@@ -824,20 +845,20 @@ class KoeTool{
 
 
 
-    //---------------- Ô­ Controller/util.php -----------------------//
+    //---------------- åŸ Controller/util.php -----------------------//
 
-    //´¦Àí³É±ê×¼Ä¿Â¼
+    //å¤„ç†æˆæ ‡å‡†ç›®å½•
     public static function _DIR_CLEAR($path){
         $path = self::htmlspecial_decode($path);
         $path = str_replace('\\','/',trim($path));
-        if (strstr($path,'../')) {//pregºÄĞÔÄÜ
+        if (strstr($path,'../')) {//pregè€—æ€§èƒ½
             $path = preg_replace('/\.+\/+/', '/', $path);
         }
         $path = preg_replace('/\/+/', '/', $path);
         return $path;
     }
 
-//´¦Àí³ÉÓÃ»§Ä¿Â¼£¬²¢ÇÒ²»ÔÊĞíÏà¶ÔÄ¿Â¼µÄÇëÇó²Ù×÷
+//å¤„ç†æˆç”¨æˆ·ç›®å½•ï¼Œå¹¶ä¸”ä¸å…è®¸ç›¸å¯¹ç›®å½•çš„è¯·æ±‚æ“ä½œ
     public static function _DIR($path){
         $path = self::_DIR_CLEAR(rawurldecode($path));
         $path = FileTool::iconv_system($path);
@@ -856,7 +877,7 @@ class KoeTool{
         return $path;
     }
 
-//´¦Àí³ÉÓÃ»§Ä¿Â¼Êä³ö
+//å¤„ç†æˆç”¨æˆ·ç›®å½•è¾“å‡º
     public static function _DIR_OUT(&$arr){
         self::xxsClear($arr);
         if ($GLOBALS['is_root']) return;
@@ -871,7 +892,7 @@ class KoeTool{
             $arr = self::pre_clear($arr);
         }
     }
-//Ç°×º´¦Àí ·ÇrootÓÃ»§Ä¿Â¼/´ÓHOME¿ªÊ¼
+//å‰ç¼€å¤„ç† érootç”¨æˆ·ç›®å½•/ä»HOMEå¼€å§‹
     public static function pre_clear($path){
         if (ST=='share') {
             return str_replace(HOME,'',$path);
@@ -912,7 +933,7 @@ class KoeTool{
     }
 
     /**
-     * À©Õ¹ÃûÈ¨ÏŞÅĞ¶Ï
+     * æ‰©å±•åæƒé™åˆ¤æ–­
      * @param $s
      * @param $info
      * @return mixed
@@ -922,7 +943,7 @@ class KoeTool{
     }
 
     /**
-     * À©Õ¹ÃûÈ¨ÏŞÅĞ¶Ï ÓĞÈ¨ÏŞÔò·µ»Ø1 ²»ÊÇtrue
+     * æ‰©å±•åæƒé™åˆ¤æ–­ æœ‰æƒé™åˆ™è¿”å›1 ä¸æ˜¯true
      * @param $file
      * @param bool|false $changExt
      * @return int
@@ -936,7 +957,7 @@ class KoeTool{
         $ext_arr = explode('|',$not_allow);
         foreach ($ext_arr as $current) {
             $current = trim($current);
-            if ($current !== '' && stristr($file,'.'.$current)){//º¬ÓĞÀ©Õ¹Ãû
+            if ($current !== '' && stristr($file,'.'.$current)){//å«æœ‰æ‰©å±•å
                 return 0;
             }
         }
@@ -966,13 +987,13 @@ class KoeTool{
     }
 
     /**
-     * ÓïÑÔ°ü¼ÓÔØ£ºÓÅÏÈ¼¶£ºcookie»ñÈ¡>×Ô¶¯Ê¶±ğ
-     * Ê×´ÎÃ»ÓĞcookieÔò×Ô¶¯Ê¶±ğ¡ª¡ª´æÈëcookie,¹ıÆÚÊ±¼äÎŞÏŞ
+     * è¯­è¨€åŒ…åŠ è½½ï¼šä¼˜å…ˆçº§ï¼šcookieè·å–>è‡ªåŠ¨è¯†åˆ«
+     * é¦–æ¬¡æ²¡æœ‰cookieåˆ™è‡ªåŠ¨è¯†åˆ«â€”â€”å­˜å…¥cookie,è¿‡æœŸæ—¶é—´æ— é™
      */
     public static function init_lang(){
         if (isset($_COOKIE['kod_user_language'])) {
             $lang = $_COOKIE['kod_user_language'];
-        }else{//Ã»ÓĞcookie
+        }else{//æ²¡æœ‰cookie
             preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
             $lang = $matches[1];
             switch (substr($lang,0,2)) {
@@ -997,7 +1018,7 @@ class KoeTool{
 
     public static function init_setting(){
         $setting_file = USER_SYSTEM.'system_setting.php';
-        if (!file_exists($setting_file)){//²»´æÔÚÔò½¨Á¢
+        if (!file_exists($setting_file)){//ä¸å­˜åœ¨åˆ™å»ºç«‹
             $setting = $GLOBALS['config']['setting_system_default'];
             $setting['menu'] = $GLOBALS['config']['setting_menu_default'];
             fileCache::save($setting_file,$setting);
@@ -1011,10 +1032,10 @@ class KoeTool{
             $setting['menu'] = $GLOBALS['config']['setting_menu_default'];
         }
 
-        $GLOBALS['app']->setDefaultController($setting['first_in']);//ÉèÖÃÄ¬ÈÏ¿ØÖÆÆ÷
-        $GLOBALS['app']->setDefaultAction('index');    //ÉèÖÃÄ¬ÈÏ¿ØÖÆÆ÷º¯Êı
+        $GLOBALS['app']->setDefaultController($setting['first_in']);//è®¾ç½®é»˜è®¤æ§åˆ¶å™¨
+        $GLOBALS['app']->setDefaultAction('index');    //è®¾ç½®é»˜è®¤æ§åˆ¶å™¨å‡½æ•°
 
-        $GLOBALS['config']['setting_system'] = $setting;//È«¾Ö
+        $GLOBALS['config']['setting_system'] = $setting;//å…¨å±€
         $GLOBALS['L']['kod_name'] = $setting['system_name'];
         $GLOBALS['L']['kod_name_desc'] = $setting['system_desc'];
         if (isset($setting['powerby'])) {

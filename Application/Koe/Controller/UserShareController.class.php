@@ -11,17 +11,17 @@ use Utils\Koe\KoeTool;
 
 class UserShareController extends KoeController{
     /**
-     * ÓÃ»§Ïà¹ØĞÅÏ¢
+     * ç”¨æˆ·ç›¸å…³ä¿¡æ¯
      * @var mixed
      */
     private $user;
     /**
-     * ÓÃ»§ËùÊô×éÈ¨ÏŞ
+     * ç”¨æˆ·æ‰€å±ç»„æƒé™
      * @var mixed
      */
 //    private $auth;
     /**
-     * ÊÇ·ñÈ·ÈÏµÇÂ¼ÁË
+     * æ˜¯å¦ç¡®è®¤ç™»å½•äº†
      * @var mixed
      */
     private $notCheck;
@@ -32,7 +32,7 @@ class UserShareController extends KoeController{
     }
 
     /**
-     * »ñÈ¡
+     * è·å–
      */
     public function get() {
         return $this->sql->get();
@@ -42,7 +42,7 @@ class UserShareController extends KoeController{
         //show_json($this->sql->get(),true,$this->in['path']);
 
         if (count($share_list)==0) {
-            KoeTool::show_json('',false);//Ã»ÓĞÕÒµ½
+            KoeTool::show_json('',false);//æ²¡æœ‰æ‰¾åˆ°
         }else{
             $val = array_values($share_list);
             KoeTool::show_json($val[0],true);
@@ -50,15 +50,15 @@ class UserShareController extends KoeController{
     }
 
     /**
-     * ±à¼­
+     * ç¼–è¾‘
      */
     public function set(){
         $share_info = $this->_getData();
 
-        //º¬ÓĞsidÔòÎª¸üĞÂ£¬·ñÔòÎª²åÈë
+        //å«æœ‰sidåˆ™ä¸ºæ›´æ–°ï¼Œå¦åˆ™ä¸ºæ’å…¥
         if (isset($this->in['sid']) && strlen($this->in['sid']) == 8) {
             $info_new = $this->sql->get($this->in['sid']);
-            //Ö»¸üĞÂÖ¸¶¨key
+            //åªæ›´æ–°æŒ‡å®škey
             foreach ($share_info as $key=>$val) {
                 $info_new[$key] = $val;
             }
@@ -66,7 +66,7 @@ class UserShareController extends KoeController{
                 KoeTool::show_json($info_new,true);
             }
             KoeTool::show_json($this->L['error'],false);
-        }else{//²åÈë
+        }else{//æ’å…¥
             $share_list = $this->sql->get();
             $new_id = KoeTool::randString(8);
             while (isset($share_list[$new_id])) {
@@ -82,7 +82,7 @@ class UserShareController extends KoeController{
     }
 
     /**
-     * É¾³ı
+     * åˆ é™¤
      */
     public function del() {
         $list = json_decode($this->in['list'],true);
@@ -97,7 +97,7 @@ class UserShareController extends KoeController{
             KoeTool::show_json($this->L["data_not_full"],false);
         }
         $in = array(
-            'mtime'=>time(),//¸üĞÂÔò¼ÇÂ¼×îºóÊ±¼ä
+            'mtime'=>time(),//æ›´æ–°åˆ™è®°å½•æœ€åæ—¶é—´
             'sid'=>$this->in['sid'],
             'type'=>$this->in['type'],
             'path'=>$this->in['path'],

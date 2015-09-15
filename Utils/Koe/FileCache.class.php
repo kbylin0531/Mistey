@@ -7,32 +7,32 @@
  */
 namespace Utils\Koe;
 /**
- * Êı¾İµÄ»º´æ´æ´¢Àà£»key=>value Ä£Ê½£»value¿ÉÒÔÊÇÈÎÒâÀàĞÍÊı¾İ¡£
- * ÍêÕûÁ÷³Ì²âÊÔ£»¶ÁÈ¡×îµÍ5000´Î/s  º¬ÓĞĞ´µÄ1000´Î/s
- * add   Ìí¼Óµ¥ÌõÊı¾İ£»ÒÑ´æÔÚÔò·µ»Øfalse
- * reset ÖØÖÃËùÓĞÊı¾İ£»²»´«²ÎÊı´ú±íÇå¿ÕÊı¾İ
- * get:  »ñÈ¡Êı¾İ£»»ñÈ¡È«²¿£»»ñÈ¡Ö¸¶¨keyÊı¾İ£»»ñÈ¡Ö¸¶¨¶à¸ökeyµÄÊı¾İ;²éÕÒ·½Ê½»ñÈ¡¶àÌõÊı¾İ
+ * æ•°æ®çš„ç¼“å­˜å­˜å‚¨ç±»ï¼›key=>value æ¨¡å¼ï¼›valueå¯ä»¥æ˜¯ä»»æ„ç±»å‹æ•°æ®ã€‚
+ * å®Œæ•´æµç¨‹æµ‹è¯•ï¼›è¯»å–æœ€ä½5000æ¬¡/s  å«æœ‰å†™çš„1000æ¬¡/s
+ * add   æ·»åŠ å•æ¡æ•°æ®ï¼›å·²å­˜åœ¨åˆ™è¿”å›false
+ * reset é‡ç½®æ‰€æœ‰æ•°æ®ï¼›ä¸ä¼ å‚æ•°ä»£è¡¨æ¸…ç©ºæ•°æ®
+ * get:  è·å–æ•°æ®ï¼›è·å–å…¨éƒ¨ï¼›è·å–æŒ‡å®škeyæ•°æ®ï¼›è·å–æŒ‡å®šå¤šä¸ªkeyçš„æ•°æ®;æŸ¥æ‰¾æ–¹å¼è·å–å¤šæ¡æ•°æ®
  *     1. get();
  *     2. get("demo")
  *     3. get(array('demo','admin'))
  *     4. get('group','','root')
- * update: ¸üĞÂÊı¾İ£»¸üĞÂÖ¸¶¨keyÊı¾İ£»»ñÈ¡Ö¸¶¨¶à¸ökeyµÄÊı¾İ; ²éÕÒ·½Ê½¸üĞÂ¶àÌõÊı¾İ
+ * update: æ›´æ–°æ•°æ®ï¼›æ›´æ–°æŒ‡å®škeyæ•°æ®ï¼›è·å–æŒ‡å®šå¤šä¸ªkeyçš„æ•°æ®; æŸ¥æ‰¾æ–¹å¼æ›´æ–°å¤šæ¡æ•°æ®
  *     1. update("demo",array('name'=>'ddd',...))
  *     2. update(array('demo','admin'),array(array('name'...),array('name'...)))
  *     3. update('group','system','root')
  *
- * replace_update($key_old,$key_new,$value_new)Ìæ»»·½Ê½¸üĞÂ£»Âú×ãkey¸üĞÂµÄĞèÇó
+ * replace_update($key_old,$key_new,$value_new)æ›¿æ¢æ–¹å¼æ›´æ–°ï¼›æ»¡è¶³keyæ›´æ–°çš„éœ€æ±‚
  *
- * delete:  »ñÈ¡Êı¾İ£»»ñÈ¡È«²¿£»»ñÈ¡Ö¸¶¨keyÊı¾İ£»»ñÈ¡Ö¸¶¨¶à¸ökeyµÄÊı¾İ;²éÕÒ·½Ê½»ñÈ¡¶àÌõÊı¾İ
+ * delete:  è·å–æ•°æ®ï¼›è·å–å…¨éƒ¨ï¼›è·å–æŒ‡å®škeyæ•°æ®ï¼›è·å–æŒ‡å®šå¤šä¸ªkeyçš„æ•°æ®;æŸ¥æ‰¾æ–¹å¼è·å–å¤šæ¡æ•°æ®
  *     1. delete("demo")
  *     2. delete(array('demo','admin'))
  *     3. delete('group','','root')
- *     ÀıÈç:====================================
+ *     ä¾‹å¦‚:====================================
  *     ['sss':['name':'sss','group':'root'],'bbb':['name':'bbb','group':'root']
  *     ,'ccc':['name':'ccc','group':'system'],'ddd':['name':'ddd','group':'root']
- *     ²éÕÒ·½Ê½É¾³ı  delete('group','','root');
- *     ²éÕÒ·½Ê½¸üĞÂ  update('group','system','root');
- *     ²éÕÒ·½Ê½»ñÈ¡  get('group','','root');
+ *     æŸ¥æ‰¾æ–¹å¼åˆ é™¤  delete('group','','root');
+ *     æŸ¥æ‰¾æ–¹å¼æ›´æ–°  update('group','system','root');
+ *     æŸ¥æ‰¾æ–¹å¼è·å–  get('group','','root');
  */
 class FileCache{
     private $data;
@@ -47,7 +47,7 @@ class FileCache{
     }
 
     /**
-     * ÖØÖÃËùÓĞÊı¾İ£»²»´«²ÎÊı´ú±íÇå¿ÕÊı¾İ
+     * é‡ç½®æ‰€æœ‰æ•°æ®ï¼›ä¸ä¼ å‚æ•°ä»£è¡¨æ¸…ç©ºæ•°æ®
      * @param array $list
      */
     public function reset($list = array())
@@ -57,7 +57,7 @@ class FileCache{
     }
 
     /**
-     * Ìí¼ÓÒ»ÌõÊı¾İ£¬²»ÄÜÖØ¸´£»Èç¹ûÒÑ´æÔÚÔò·µ»Øfalse;1k´Î/s
+     * æ·»åŠ ä¸€æ¡æ•°æ®ï¼Œä¸èƒ½é‡å¤ï¼›å¦‚æœå·²å­˜åœ¨åˆ™è¿”å›false;1kæ¬¡/s
      * @param $k
      * @param $v
      * @return bool
@@ -73,10 +73,10 @@ class FileCache{
     }
 
     /**
-     * »ñÈ¡Êı¾İ;²»´æÔÚÔò·µ»Øfalse;100w´Î/s
-     * @param string $k ²»´«Ôò·µ»ØÈ«²¿;
-     * @param string $v Îª×Ö·û´®£»Ôò¸ù¾İkey»ñÈ¡Êı¾İ£¬Ö»ÓĞÒ»ÌõÊı¾İ
-     * @param bool|false $search_value ÉèÖÃÊ±£»±íÊ¾ÒÔ²éÕÒµÄ·½Ê½É¸Ñ¡Êı¾İÉ¸Ñ¡Ìõ¼şÎª $key=$k ÖµÎª$search_valueµÄÊı¾İ£»¶àÌõ
+     * è·å–æ•°æ®;ä¸å­˜åœ¨åˆ™è¿”å›false;100wæ¬¡/s
+     * @param string $k ä¸ä¼ åˆ™è¿”å›å…¨éƒ¨;
+     * @param string $v ä¸ºå­—ç¬¦ä¸²ï¼›åˆ™æ ¹æ®keyè·å–æ•°æ®ï¼Œåªæœ‰ä¸€æ¡æ•°æ®
+     * @param bool|false $search_value è®¾ç½®æ—¶ï¼›è¡¨ç¤ºä»¥æŸ¥æ‰¾çš„æ–¹å¼ç­›é€‰æ•°æ®ç­›é€‰æ¡ä»¶ä¸º $key=$k å€¼ä¸º$search_valueçš„æ•°æ®ï¼›å¤šæ¡
      * @return array|bool|mixed
      */
     public function get($k = '', $v = '', $search_value = false)
@@ -86,18 +86,18 @@ class FileCache{
         $search = array();
         if ($search_value === false) {
             if (is_array($k)) {
-                //¶àÌõÊı¾İ»ñÈ¡
+                //å¤šæ¡æ•°æ®è·å–
                 $num = count($k);
                 for ($i = 0; $i < $num; $i++) {
                     $search[$k[$i]] = $this->data[$k[$i]];
                 }
                 return $search;
             } else if (isset($this->data[$k])) {
-                //µ¥ÌõÊı¾İ»ñÈ¡
+                //å•æ¡æ•°æ®è·å–
                 return $this->data[$k];
             }
         } else {
-            //²éÕÒÄÚÈİÊı¾İ·½Ê½»ñÈ¡£»·µ»Ø¶àÌõ
+            //æŸ¥æ‰¾å†…å®¹æ•°æ®æ–¹å¼è·å–ï¼›è¿”å›å¤šæ¡
             foreach ($this->data as $key => $val) {
                 if ($val[$k] == $search_value) {
                     $search[$key] = $this->data[$key];
@@ -109,18 +109,18 @@ class FileCache{
     }
 
     /**
-     * ¸üĞÂÊı¾İ;²»´æÔÚ;»òÕßÈÎÒâÒ»Ìõ²»´æÔÚÔò·µ»Øfalse;²»½øĞĞ±£´æ
-     * @param string $k Îª×Ö·û´®£»Ôò¸ù¾İkeyÖ»¸üĞÂÒ»ÌõÊı¾İ
+     * æ›´æ–°æ•°æ®;ä¸å­˜åœ¨;æˆ–è€…ä»»æ„ä¸€æ¡ä¸å­˜åœ¨åˆ™è¿”å›false;ä¸è¿›è¡Œä¿å­˜
+     * @param string $k ä¸ºå­—ç¬¦ä¸²ï¼›åˆ™æ ¹æ®keyåªæ›´æ–°ä¸€æ¡æ•°æ®
      * @param array $v array  array($key1,$key2,...),array($value1,$value2,...)
-     *              Ôò±íÊ¾¸üĞÂ¶àÌõÊı¾İ
+     *              åˆ™è¡¨ç¤ºæ›´æ–°å¤šæ¡æ•°æ®
      * @param bool|false $search_value
-     * @return bool ÉèÖÃÊ±£»±íÊ¾ÒÔ²éÕÒµÄ·½Ê½¸üĞÂÊı¾İÖĞµÄÊı¾İ
+     * @return bool è®¾ç½®æ—¶ï¼›è¡¨ç¤ºä»¥æŸ¥æ‰¾çš„æ–¹å¼æ›´æ–°æ•°æ®ä¸­çš„æ•°æ®
      */
     public function update($k, $v, $search_value = false)
     {
         if ($search_value === false) {
             if (is_array($k)) {
-                //¶àÌõÊı¾İ¸üĞÂ
+                //å¤šæ¡æ•°æ®æ›´æ–°
                 $num = count($k);
                 for ($i = 0; $i < $num; $i++) {
                     $this->data[$k[$i]] = $v[$i];
@@ -128,13 +128,13 @@ class FileCache{
                 self::save($this->file, $this->data);
                 return true;
             } else if (isset($this->data[$k])) {
-                //µ¥ÌõÊı¾İ¸üĞÂ
+                //å•æ¡æ•°æ®æ›´æ–°
                 $this->data[$k] = $v;
                 self::save($this->file, $this->data);
                 return true;
             }
         } else {
-            //²éÕÒ·½Ê½¸üĞÂ£»¸üĞÂ¶àÌõ
+            //æŸ¥æ‰¾æ–¹å¼æ›´æ–°ï¼›æ›´æ–°å¤šæ¡
             foreach ($this->data as $key => $val) {
                 if ($val[$k] == $search_value) {
                     $this->data[$key][$k] = $v;
@@ -147,7 +147,7 @@ class FileCache{
     }
 
     /**
-     * Ìæ»»·½Ê½¸üĞÂ£»Âú×ãkey¸üĞÂµÄĞèÇó
+     * æ›¿æ¢æ–¹å¼æ›´æ–°ï¼›æ»¡è¶³keyæ›´æ–°çš„éœ€æ±‚
      * @param $key_old
      * @param $key_new
      * @param $value_new
@@ -166,7 +166,7 @@ class FileCache{
     }
 
     /**
-     * É¾³ı;²»´æÔÚ·µ»Øfalse
+     * åˆ é™¤;ä¸å­˜åœ¨è¿”å›false
      * @param $k
      * @param string $v
      * @param bool|false $search_value
@@ -176,7 +176,7 @@ class FileCache{
     {
         if ($search_value === false) {
             if (is_array($k)) {
-                //¶àÌõÊı¾İ¸üĞÂ
+                //å¤šæ¡æ•°æ®æ›´æ–°
                 $num = count($k);
                 for ($i = 0; $i < $num; $i++) {
                     unset($this->data[$k[$i]]);
@@ -184,13 +184,13 @@ class FileCache{
                 self::save($this->file, $this->data);
                 return true;
             } else if (isset($this->data[$k])) {
-                //µ¥ÌõÊı¾İÉ¾³ı
+                //å•æ¡æ•°æ®åˆ é™¤
                 unset($this->data[$k]);
                 self::save($this->file, $this->data);
                 return true;
             }
         } else {
-            //²éÕÒÄÚÈİÊı¾İ·½Ê½É¾³ı£»É¾³ı¶àÌõ
+            //æŸ¥æ‰¾å†…å®¹æ•°æ®æ–¹å¼åˆ é™¤ï¼›åˆ é™¤å¤šæ¡
             foreach ($this->data as $key => $val) {
                 if ($val[$k] == $search_value) {
                     unset($this->data[$key]);
@@ -204,7 +204,7 @@ class FileCache{
 
 
     /**
-     * ÅÅĞò
+     * æ’åº
      * @param $arr
      * @param $key
      * @param string $type
@@ -229,12 +229,12 @@ class FileCache{
     }
 
     /**
-     * ¼ÓÔØÊı¾İ£»²¢½âÎö³É³ÌĞòÊı¾İ
+     * åŠ è½½æ•°æ®ï¼›å¹¶è§£ææˆç¨‹åºæ•°æ®
      * @param $file
      * @return array|mixed
      */
     public static function load($file)
-    {//10000´ÎĞèÒª4s Êı¾İÁ¿²îÒì²»´ó¡£
+    {//10000æ¬¡éœ€è¦4s æ•°æ®é‡å·®å¼‚ä¸å¤§ã€‚
         if (!file_exists($file)) touch($file);
         $str = file_get_contents($file);
         $str = substr($str, strlen(CONFIG_EXIT));
@@ -244,19 +244,19 @@ class FileCache{
     }
 
     /**
-     * ±£´æÊı¾İ£»
+     * ä¿å­˜æ•°æ®ï¼›
      * @param $file
      * @param $data
      */
     public static function save($file, $data)
-    {//10000´ÎĞèÒª6s
+    {//10000æ¬¡éœ€è¦6s
         if (!$file) return;
         if ($fp = fopen($file, "w")) {
-            if (flock($fp, LOCK_EX)) {  // ½øĞĞÅÅËüĞÍËø¶¨
+            if (flock($fp, LOCK_EX)) {  // è¿›è¡Œæ’å®ƒå‹é”å®š
                 $str = CONFIG_EXIT . json_encode($data);
                 fwrite($fp, $str);
                 fflush($fp);            // flush output before releasing the lock
-                flock($fp, LOCK_UN);    // ÊÍ·ÅËø¶¨
+                flock($fp, LOCK_UN);    // é‡Šæ”¾é”å®š
             }
             fclose($fp);
         }

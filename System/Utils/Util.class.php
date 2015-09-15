@@ -23,6 +23,23 @@ class Util{
         return str_replace('\\','/',$path);
     }
 
+
+    /**
+     * 判断是否是https请求
+     * @return bool
+     */
+    public static function isHttps(){
+        if(!isset($_SERVER['HTTPS']))  return FALSE;
+        if($_SERVER['HTTPS'] === 1){  //Apache
+            return TRUE;
+        }elseif($_SERVER['HTTPS'] === 'on'){ //IIS
+            return TRUE;
+        }elseif($_SERVER['SERVER_PORT'] == 443){ //其他
+            return TRUE;
+        }
+        return FALSE;
+    }
+
     /**
      * 打印变量的详细信息
      * @param $key

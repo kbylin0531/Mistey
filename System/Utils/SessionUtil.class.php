@@ -10,22 +10,22 @@ namespace System\Utils;
 use System\Exception\ParameterInvalidException;
 
 /**
- * Class SessionUtil »á»°²Ù×÷Àà
+ * Class SessionUtil ä¼šè¯æ“ä½œç±»
  * @package System\Utils
  *
- * ²»ÔÙÊ¹ÓÃµÄº¯ÊıÁĞ±í£º
- * ¢Ùsession_is_registered
- * ¢Úsession_register
- * ¢Ûsession_unregister
+ * ä¸å†ä½¿ç”¨çš„å‡½æ•°åˆ—è¡¨ï¼š
+ * â‘ session_is_registered
+ * â‘¡session_register
+ * â‘¢session_unregister
  */
 class SessionUtil{
     /**
-     * ¿Í»§¶Ë»º´æ¿ØÖÆ²ßÂÔ
-     * ¿Í»§¶Ë»òÕß´úÀí·şÎñÆ÷Í¨¹ı¼ì²âÕâ¸öÏìÓ¦Í·ĞÅÏ¢À´ È·¶¨¶ÔÓÚÒ³ÃæÄÚÈİµÄ»º´æ¹æÔò
-     * nocache »á½ûÖ¹¿Í»§¶Ë»òÕß´úÀí·şÎñÆ÷»º´æÄÚÈİ
-     * public ±íÊ¾ÔÊĞí¿Í»§¶Ë»ò´úÀí·şÎñÆ÷»º´æÄÚÈİ
-     * private ±íÊ¾ÔÊĞí¿Í»§¶Ë»º´æ£¬ µ«ÊÇ²»ÔÊĞí´úÀí·şÎñÆ÷»º´æÄÚÈİ
-     * private Ä£Ê½ÏÂ£¬ °üÀ¨ Mozilla ÔÚÄÚµÄÒ»Ğ©ä¯ÀÀÆ÷¿ÉÄÜÎŞ·¨ÕıÈ·´¦Àí Expire ÏìÓ¦Í·£¬ Í¨¹ıÊ¹ÓÃ private_no_expire Ä£Ê½¿ÉÒÔ½â¾öÕâ¸öÎÊÌâ£ºÔÚÕâÖÖÄ£Ê½ÏÂ£¬ ²»»áÏò¿Í»§¶Ë·¢ËÍ Expire ÏìÓ¦Í·
+     * å®¢æˆ·ç«¯ç¼“å­˜æ§åˆ¶ç­–ç•¥
+     * å®¢æˆ·ç«¯æˆ–è€…ä»£ç†æœåŠ¡å™¨é€šè¿‡æ£€æµ‹è¿™ä¸ªå“åº”å¤´ä¿¡æ¯æ¥ ç¡®å®šå¯¹äºé¡µé¢å†…å®¹çš„ç¼“å­˜è§„åˆ™
+     * nocache ä¼šç¦æ­¢å®¢æˆ·ç«¯æˆ–è€…ä»£ç†æœåŠ¡å™¨ç¼“å­˜å†…å®¹
+     * public è¡¨ç¤ºå…è®¸å®¢æˆ·ç«¯æˆ–ä»£ç†æœåŠ¡å™¨ç¼“å­˜å†…å®¹
+     * private è¡¨ç¤ºå…è®¸å®¢æˆ·ç«¯ç¼“å­˜ï¼Œ ä½†æ˜¯ä¸å…è®¸ä»£ç†æœåŠ¡å™¨ç¼“å­˜å†…å®¹
+     * private æ¨¡å¼ä¸‹ï¼Œ åŒ…æ‹¬ Mozilla åœ¨å†…çš„ä¸€äº›æµè§ˆå™¨å¯èƒ½æ— æ³•æ­£ç¡®å¤„ç† Expire å“åº”å¤´ï¼Œ é€šè¿‡ä½¿ç”¨ private_no_expire æ¨¡å¼å¯ä»¥è§£å†³è¿™ä¸ªé—®é¢˜ï¼šåœ¨è¿™ç§æ¨¡å¼ä¸‹ï¼Œ ä¸ä¼šå‘å®¢æˆ·ç«¯å‘é€ Expire å“åº”å¤´
      */
 
     /**
@@ -35,34 +35,34 @@ class SessionUtil{
      */
     const LIMITER_NOCACHE = 'nocache';
     /**
-     * Expires£º£¨¸ù¾İ session.cache_expire µÄÉè¶¨¼ÆËãµÃ³ö£©
-     * Cache-Control£º public, max-age=£¨¸ù¾İ session.cache_expire µÄÉè¶¨¼ÆËãµÃ³ö£©
-     * Last-Modified£º£¨»á»°×îºó±£´æÊ±¼ä£©
+     * Expiresï¼šï¼ˆæ ¹æ® session.cache_expire çš„è®¾å®šè®¡ç®—å¾—å‡ºï¼‰
+     * Cache-Controlï¼š public, max-age=ï¼ˆæ ¹æ® session.cache_expire çš„è®¾å®šè®¡ç®—å¾—å‡ºï¼‰
+     * Last-Modifiedï¼šï¼ˆä¼šè¯æœ€åä¿å­˜æ—¶é—´ï¼‰
      */
     const LIMITER_PUBLIC  = 'public';
     /**
      * Expires: Thu, 19 Nov 1981 08:52:00 GMT
-     * Cache-Control: private, max-age=£¨¸ù¾İ session.cache_expire µÄÉè¶¨¼ÆËãµÃ³ö£©,
-     *      pre-check=£¨¸ù¾İ session.cache_expire µÄÉè¶¨¼ÆËãµÃ³ö£©
-     * Last-Modified: £¨»á»°×îºó±£´æÊ±¼ä£©
+     * Cache-Control: private, max-age=ï¼ˆæ ¹æ® session.cache_expire çš„è®¾å®šè®¡ç®—å¾—å‡ºï¼‰,
+     *      pre-check=ï¼ˆæ ¹æ® session.cache_expire çš„è®¾å®šè®¡ç®—å¾—å‡ºï¼‰
+     * Last-Modified: ï¼ˆä¼šè¯æœ€åä¿å­˜æ—¶é—´ï¼‰
      */
     const LIMITER_PEIVATE = 'private';
     /**
-     * Cache-Control: private, max-age=£¨¸ù¾İ session.cache_expire µÄÉè¶¨¼ÆËãµÃ³ö£©,
-     *      pre-check=£¨¸ù¾İ session.cache_expire µÄÉè¶¨¼ÆËãµÃ³ö£©
-     * Last-Modified: £¨»á»°×îºó±£´æÊ±¼ä£©
+     * Cache-Control: private, max-age=ï¼ˆæ ¹æ® session.cache_expire çš„è®¾å®šè®¡ç®—å¾—å‡ºï¼‰,
+     *      pre-check=ï¼ˆæ ¹æ® session.cache_expire çš„è®¾å®šè®¡ç®—å¾—å‡ºï¼‰
+     * Last-Modified: ï¼ˆä¼šè¯æœ€åä¿å­˜æ—¶é—´ï¼‰
      */
     const LIMITER_PEIVATE_WITHOUT_EXPIRE = 'private_no_expire';
 
 
     private static $_config = array(
-        'cache_expire'  => 180,//Ä¬ÈÏsessionµ½ÆÚÊ±¼ä
-        'name'          => APP_NAME,//»á»°Ãû³Æ
+        'cache_expire'  => 180,//é»˜è®¤sessionåˆ°æœŸæ—¶é—´
+        'name'          => APP_NAME,//ä¼šè¯åç§°
 
     );
 
     /**
-     * ¶Ôsession²Ù×÷Àà½øĞĞ³õÊ¼»¯ÅäÖÃ
+     * å¯¹sessionæ“ä½œç±»è¿›è¡Œåˆå§‹åŒ–é…ç½®
      * @param array $config
      * @return bool
      */
@@ -75,10 +75,10 @@ class SessionUtil{
     }
 
     /**
-     * »ñÈ¡ »òÕß ÉèÖÃµ±Ç°»º´æµÄµ½ÆÚÊ±¼ä
-     * ×¢ÒâĞèÒªÔÚsession_startÖ®Ç°µ÷ÓÃ²ÅÓĞĞ§
-     * @param string|null $new_cache_expire ĞÂµÄµ½ÆÚÊ±¼ä£¬µ¥Î»Îª·ÖÖÓ£¬Èç¹ûÎªnull±íÊ¾»ñÈ¡
-     * @return bool|int falseÊ±±íÊ¾ÉèÖÃÊ§°Ü
+     * è·å– æˆ–è€… è®¾ç½®å½“å‰ç¼“å­˜çš„åˆ°æœŸæ—¶é—´
+     * æ³¨æ„éœ€è¦åœ¨session_startä¹‹å‰è°ƒç”¨æ‰æœ‰æ•ˆ
+     * @param string|null $new_cache_expire æ–°çš„åˆ°æœŸæ—¶é—´ï¼Œå•ä½ä¸ºåˆ†é’Ÿï¼Œå¦‚æœä¸ºnullè¡¨ç¤ºè·å–
+     * @return bool|int falseæ—¶è¡¨ç¤ºè®¾ç½®å¤±è´¥
      */
     public static function cacheExpire($new_cache_expire =null){
         if(isset($new_cache_expire)){
@@ -91,9 +91,9 @@ class SessionUtil{
     }
 
     /**
-     * »ñÈ¡ºÍÉèÖÃµ±Ç°»º´æÏŞÖÆÆ÷µÄÃû³Æ
-     * ×¢ÒâĞèÒªÔÚsession_startÖ®Ç°µ÷ÓÃ²ÅÓĞĞ§
-     * @param null|string $cache_limiter ÎªnullÊ±»ñÈ¡µ±Ç°»º´æÏŞÖÆÆ÷Ãû³Æ
+     * è·å–å’Œè®¾ç½®å½“å‰ç¼“å­˜é™åˆ¶å™¨çš„åç§°
+     * æ³¨æ„éœ€è¦åœ¨session_startä¹‹å‰è°ƒç”¨æ‰æœ‰æ•ˆ
+     * @param null|string $cache_limiter ä¸ºnullæ—¶è·å–å½“å‰ç¼“å­˜é™åˆ¶å™¨åç§°
      * @return string
      */
     public static function cacheLimiter($cache_limiter = null){
@@ -104,12 +104,12 @@ class SessionUtil{
     }
 
     /**
-     * ¶ÁÈ¡/ÉèÖÃ»á»°Ãû³Æ
-     * ÓÃÔÚ cookie »òÕß URL ÖĞµÄ»á»°Ãû³Æ£¬ ÀıÈç£ºPHPSESSID¡£
-     * Ö»ÄÜÊ¹ÓÃ×ÖÄ¸ºÍÊı×Ö×÷Îª»á»°Ãû³Æ£¬½¨Òé¾¡¿ÉÄÜµÄ¶ÌÒ»Ğ©£¬
-     * ²¢ÇÒÊÇÍûÎÄÖªÒâµÄÃû×Ö£¨¶ÔÓÚÆôÓÃÁË cookie ¾¯¸æµÄÓÃ»§À´Ëµ£¬·½±ãÆäÅĞ¶ÏÊÇ·ñÒªÔÊĞí´Ë cookie£©¡£
-     * Èç¹ûÖ¸¶¨ÁË name ²ÎÊı£¬ ÄÇÃ´µ±Ç°»á»°Ò²»áÊ¹ÓÃÖ¸¶¨Öµ×÷ÎªÃû³Æ
-     * @param string $newname nullÊ±·µ»Øµ±Ç°µÄsessionÃû³Æ£¬·ñÔòÉèÖÃ²¢·µ»ØÖ®Ç°µÄÃû³Æ
+     * è¯»å–/è®¾ç½®ä¼šè¯åç§°
+     * ç”¨åœ¨ cookie æˆ–è€… URL ä¸­çš„ä¼šè¯åç§°ï¼Œ ä¾‹å¦‚ï¼šPHPSESSIDã€‚
+     * åªèƒ½ä½¿ç”¨å­—æ¯å’Œæ•°å­—ä½œä¸ºä¼šè¯åç§°ï¼Œå»ºè®®å°½å¯èƒ½çš„çŸ­ä¸€äº›ï¼Œ
+     * å¹¶ä¸”æ˜¯æœ›æ–‡çŸ¥æ„çš„åå­—ï¼ˆå¯¹äºå¯ç”¨äº† cookie è­¦å‘Šçš„ç”¨æˆ·æ¥è¯´ï¼Œæ–¹ä¾¿å…¶åˆ¤æ–­æ˜¯å¦è¦å…è®¸æ­¤ cookieï¼‰ã€‚
+     * å¦‚æœæŒ‡å®šäº† name å‚æ•°ï¼Œ é‚£ä¹ˆå½“å‰ä¼šè¯ä¹Ÿä¼šä½¿ç”¨æŒ‡å®šå€¼ä½œä¸ºåç§°
+     * @param string $newname nullæ—¶è¿”å›å½“å‰çš„sessionåç§°ï¼Œå¦åˆ™è®¾ç½®å¹¶è¿”å›ä¹‹å‰çš„åç§°
      * @return string
      */
     public static function name($newname=null){
@@ -117,13 +117,13 @@ class SessionUtil{
     }
     /**
      * Session data is usually stored after your script terminated without the need to call session_write_close()
-     * sessionÊı¾İÍ¨³£ÔÚ½Å±¾Ö´ĞĞ½áÊøºó´æ´¢£¬¶ø²»ĞèÒªµ÷ÓÃº¯Êısession_write_close
+     * sessionæ•°æ®é€šå¸¸åœ¨è„šæœ¬æ‰§è¡Œç»“æŸåå­˜å‚¨ï¼Œè€Œä¸éœ€è¦è°ƒç”¨å‡½æ•°session_write_close
      * but as session data is locked to prevent concurrent writes only one script may operate on a session at any time
-     * µ«ÊÇÓÉÓÚÎª×èÖ¹²¢ĞĞµÄĞ´ÈësessionÊı¾İ»á±»ÉÏËø£¬Æä½á¹ûÊÇÈÎºÎÊ±ºòÖ»ÓĞÒ»¸ö½Å±¾²ÅÄÜ²Ù×÷Ò»¸ösession
+     * ä½†æ˜¯ç”±äºä¸ºé˜»æ­¢å¹¶è¡Œçš„å†™å…¥sessionæ•°æ®ä¼šè¢«ä¸Šé”ï¼Œå…¶ç»“æœæ˜¯ä»»ä½•æ—¶å€™åªæœ‰ä¸€ä¸ªè„šæœ¬æ‰èƒ½æ“ä½œä¸€ä¸ªsession
      * When using framesets together with sessions you will experience the frames loading one by one due to this locking
-     * ä¯ÀÀÆ÷ÖĞÊ¹ÓÃframesetºÍsessionµÄÊ±ºò£¬Äã»á¾­Àúµ½frame»áÖğÒ»¼ÓÔØframe£¬Õâ¹éÒòÓÚ´Ë
+     * æµè§ˆå™¨ä¸­ä½¿ç”¨framesetå’Œsessionçš„æ—¶å€™ï¼Œä½ ä¼šç»å†åˆ°frameä¼šé€ä¸€åŠ è½½frameï¼Œè¿™å½’å› äºæ­¤
      * You can reduce the time needed to load all the frames by ending the session as soon as all changes to session variables are done.
-     * Äã¿ÉÒÔ¼õÉÙËùÓĞµÄframeµÄ¼ÓÔØÊ±¼ä£¬Í¨¹ıµ±sessionÊı¾İ²Ù×÷Íê³Éºó¾¡¿ì½áÊøsessionµÄ·½Ê½
+     * ä½ å¯ä»¥å‡å°‘æ‰€æœ‰çš„frameçš„åŠ è½½æ—¶é—´ï¼Œé€šè¿‡å½“sessionæ•°æ®æ“ä½œå®Œæˆåå°½å¿«ç»“æŸsessionçš„æ–¹å¼
      * @return void
      */
     public static function commit(){
@@ -131,7 +131,7 @@ class SessionUtil{
     }
 
     /**
-     * ·µ»Øµ±Ç°»á»°±àÂëºóµÄÊı¾İ£¬¼´$_SESSION
+     * è¿”å›å½“å‰ä¼šè¯ç¼–ç åçš„æ•°æ®ï¼Œå³$_SESSION
      * @return string
      */
     public static function encode(){
@@ -139,8 +139,8 @@ class SessionUtil{
     }
 
     /**
-     * ¶Ô²ÎÊı½øĞĞsession½âÂë£¬²¢Ìî³äµ½$_SESSION±äÁ¿ÖĞ
-     * @param string $code_data ´ı½âÂëµÄÊı¾İ
+     * å¯¹å‚æ•°è¿›è¡Œsessionè§£ç ï¼Œå¹¶å¡«å……åˆ°$_SESSIONå˜é‡ä¸­
+     * @param string $code_data å¾…è§£ç çš„æ•°æ®
      * @return bool
      */
     public static function decode($code_data){
@@ -149,7 +149,7 @@ class SessionUtil{
 
     /**
      * Re-initialize session array with original values
-     * ÖØÖÃsessionµÄ¸Ä¶¯£¬»Ö¸´µ½×î³õµÄ×´Ì¬
+     * é‡ç½®sessionçš„æ”¹åŠ¨ï¼Œæ¢å¤åˆ°æœ€åˆçš„çŠ¶æ€
      * @return void
      */
     public static function reset(){
@@ -157,8 +157,8 @@ class SessionUtil{
     }
 
     /**
-     * »ñÈ¡ºÍÉèÖÃsessionµÄ±£´æÂ·¾¶
-     * @param string|null $path ²ÎÊıÎªnullÊ±»ñÈ¡±£´æÂ·¾¶
+     * è·å–å’Œè®¾ç½®sessionçš„ä¿å­˜è·¯å¾„
+     * @param string|null $path å‚æ•°ä¸ºnullæ—¶è·å–ä¿å­˜è·¯å¾„
      * @return string
      */
     public static function savePath($path=null){
@@ -166,17 +166,17 @@ class SessionUtil{
     }
 
     /**
-     * »ñÈ¡sessionµÄ×´Ì¬(5.4)
+     * è·å–sessionçš„çŠ¶æ€(5.4)
      * PHP_SESSION_DISABLED if sessions are disabled.
      * PHP_SESSION_NONE if sessions are enabled, but none exists.
      * PHP_SESSION_ACTIVE if sessions are enabled, and one or more exists.
-     * @return int ×´Ì¬³£Á¿
+     * @return int çŠ¶æ€å¸¸é‡
      */
     public static function getStatus(){
         return session_status();
     }
     /**
-     * Çå³şsession
+     * æ¸…æ¥šsession
      * @param string|array $name
      * @return void
      * @throws ParameterInvalidException
@@ -201,12 +201,12 @@ class SessionUtil{
     }
 
     /**
-     * ¼ì²éÊÇ·ñÉèÖÃ
+     * æ£€æŸ¥æ˜¯å¦è®¾ç½®
      * @param string $name
      * @return bool
      */
     public static function has($name){
-        if(strpos($name,'.')){ // Ö§³ÖÊı×é
+        if(strpos($name,'.')){ // æ”¯æŒæ•°ç»„
             list($name1,$name2) =   explode('.',$name);
             return isset($_SESSION[$name1][$name2]);
         }else{
@@ -215,11 +215,11 @@ class SessionUtil{
     }
 
     /**
-     * @param null|string $name ÎªnullÊ±»ñÈ¡È«²¿session
+     * @param null|string $name ä¸ºnullæ—¶è·å–å…¨éƒ¨session
      * @return null
      */
     public static function get($name=null){
-        if(!isset($name)){//»ñÈ¡È«²¿
+        if(!isset($name)){//è·å–å…¨éƒ¨
             return $_SESSION;
         }else{
             if(strpos($name,'.')){
@@ -236,8 +236,8 @@ class SessionUtil{
     }
 
     /**
-     * ¿ªÆô»á»°
-     * ±ØĞëÔÚ½Å±¾Êä³öÖ®Ç°µ÷ÓÃ
+     * å¼€å¯ä¼šè¯
+     * å¿…é¡»åœ¨è„šæœ¬è¾“å‡ºä¹‹å‰è°ƒç”¨
      * @return bool
      */
     public static function start(){
@@ -252,22 +252,22 @@ class SessionUtil{
     }
 
     /**
-     * Ïú»Ù»á»°ÖĞÈ«²¿Êı¾İ
-     * ÒªÏëÖØĞÂÊ¹ÓÃsession£¬ĞèÒªÖØĞÂµ÷ÓÃsession_startº¯Êı
+     * é”€æ¯ä¼šè¯ä¸­å…¨éƒ¨æ•°æ®
+     * è¦æƒ³é‡æ–°ä½¿ç”¨sessionï¼Œéœ€è¦é‡æ–°è°ƒç”¨session_startå‡½æ•°
      * @return bool
      */
     public static function destroy(){
 //        $_SESSION =  array();
-        //unset($_SESSION)»áµ¼ÖÂ$_SESSIONÊı×é³¹µ×µØ²»ÄÜÊ¹ÓÃ
-        //µ÷ÓÃsession_unset¿ÉÒÔÊÍ·ÅËùÓĞµÄ×¢²áµÄsession±äÁ¿
+        //unset($_SESSION)ä¼šå¯¼è‡´$_SESSIONæ•°ç»„å½»åº•åœ°ä¸èƒ½ä½¿ç”¨
+        //è°ƒç”¨session_unsetå¯ä»¥é‡Šæ”¾æ‰€æœ‰çš„æ³¨å†Œçš„sessionå˜é‡
         session_unset();
         return session_destroy();
     }
 
     /**
-     * sessionID²Ù×÷
-     * @param string|null  $id ÉèÖÃµÄsessionID
-     * @param bool|false $regenerate ÊÇ·ñÖØĞÂÉú³ÉsessionID
+     * sessionIDæ“ä½œ
+     * @param string|null  $id è®¾ç½®çš„sessionID
+     * @param bool|false $regenerate æ˜¯å¦é‡æ–°ç”ŸæˆsessionID
      * @return string
      */
     public static function id($id=null,$regenerate=false){
@@ -276,11 +276,11 @@ class SessionUtil{
     }
 
     /**
-     * ÒªÇóPHP°æ±¾ÔÚ5.4Ö®ºó²ÅÄÜÊ¹ÓÃ
-     *  ÉèÖÃÓÃ»§×Ô¶¨Òå»á»°´æ´¢´¦ÀíÀà£¨°æ±¾5.4ÒÔºóÊ¹ÓÃ£©
-     * @param \SessionHandlerInterface $session_handler ÊµÏÖÁË SessionHandlerInterface ½Ó¿ÚµÄ¶ÔÏó,ÀıÈç SessionHandler
-     * @param bool|true $register_shutdown ½«º¯Êı session_write_close() ×¢²áÎª register_shutdown_function() º¯Êı
-     *                                     Ä¬ÈÏÎªtrue±íÊ¾session×Ô¶¯ÔÚ½Å±¾Ö´ĞĞ½áÊøµÄÊ±ºòµ÷ÓÃ
+     * è¦æ±‚PHPç‰ˆæœ¬åœ¨5.4ä¹‹åæ‰èƒ½ä½¿ç”¨
+     *  è®¾ç½®ç”¨æˆ·è‡ªå®šä¹‰ä¼šè¯å­˜å‚¨å¤„ç†ç±»ï¼ˆç‰ˆæœ¬5.4ä»¥åä½¿ç”¨ï¼‰
+     * @param \SessionHandlerInterface $session_handler å®ç°äº† SessionHandlerInterface æ¥å£çš„å¯¹è±¡,ä¾‹å¦‚ SessionHandler
+     * @param bool|true $register_shutdown å°†å‡½æ•° session_write_close() æ³¨å†Œä¸º register_shutdown_function() å‡½æ•°
+     *                                     é»˜è®¤ä¸ºtrueè¡¨ç¤ºsessionè‡ªåŠ¨åœ¨è„šæœ¬æ‰§è¡Œç»“æŸçš„æ—¶å€™è°ƒç”¨
      * @return bool
      */
     public static function setSaveHandler(\SessionHandlerInterface $session_handler, $register_shutdown= true){
@@ -288,15 +288,15 @@ class SessionUtil{
     }
 
     /**
-     * »ñÈ¡/ÉèÖÃ»á»° cookie ²ÎÊı
-     * ·µ»ØÊı×é array(
-     *      "lifetime",// - cookie µÄÉúÃüÖÜÆÚ£¬ÒÔÃëÎªµ¥Î»¡£
-     *      "path",// - cookie µÄ·ÃÎÊÂ·¾¶¡£
-     *      "domain",// - cookie µÄÓò¡£
-     *      "secure",// - ½öÔÚÊ¹ÓÃ°²È«Á¬½ÓÊ±·¢ËÍ cookie¡£
-     *      "httponly",// - Ö»ÄÜÍ¨¹ı http Ğ­Òé·ÃÎÊ cookie
+     * è·å–/è®¾ç½®ä¼šè¯ cookie å‚æ•°
+     * è¿”å›æ•°ç»„ array(
+     *      "lifetime",// - cookie çš„ç”Ÿå‘½å‘¨æœŸï¼Œä»¥ç§’ä¸ºå•ä½ã€‚
+     *      "path",// - cookie çš„è®¿é—®è·¯å¾„ã€‚
+     *      "domain",// - cookie çš„åŸŸã€‚
+     *      "secure",// - ä»…åœ¨ä½¿ç”¨å®‰å…¨è¿æ¥æ—¶å‘é€ cookieã€‚
+     *      "httponly",// - åªèƒ½é€šè¿‡ http åè®®è®¿é—® cookie
      * )
-     * ÒÔÏÂ·½·¨µÈĞ§
+     * ä»¥ä¸‹æ–¹æ³•ç­‰æ•ˆ
      * ini_get('session.cookie_lifetime'),
      * ini_get('session.cookie_path'),
      * ini_get('session.cookie_domain'),
@@ -304,7 +304,7 @@ class SessionUtil{
      * ini_get('session.cookie_httponly'),
      *      <==>
      * session_get_cookie_params()
-     * @param array $params cookie²ÎÊıÉèÖÃ
+     * @param array $params cookieå‚æ•°è®¾ç½®
      * @return mixed
      */
     public static function cookieParams($params=null){
@@ -321,7 +321,7 @@ class SessionUtil{
     }
 
     /**
-     * ÉèÖÃsession
+     * è®¾ç½®session
      * @param string $name
      * @param mixed $value
      * @return void

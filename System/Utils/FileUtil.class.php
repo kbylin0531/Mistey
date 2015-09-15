@@ -8,16 +8,16 @@
 namespace System\Utils;
 
 /**
- * Class FileUtil ÎÄ¼ş²Ù×÷¹¤¾ß
+ * Class FileUtil æ–‡ä»¶æ“ä½œå·¥å…·
  * @package System\Utils
  */
 class FileUtil {
 
     /**
-     * ¶ÁÈ¡Ä¿Â¼ÏÂµÄËùÓĞÎÄ¼ş
-     * @param string $path Ä¿Â¼µÄÂ·¾¶
-     * @param bool|true $clear Çå¿ÕÔ­À´µÄ¼ÇÂ¼
-     * @return array ÎÄ¼şÃûºÍ¶ÔÓ¦µÄÂ·¾¶
+     * è¯»å–ç›®å½•ä¸‹çš„æ‰€æœ‰æ–‡ä»¶
+     * @param string $path ç›®å½•çš„è·¯å¾„
+     * @param bool|true $clear æ¸…ç©ºåŸæ¥çš„è®°å½•
+     * @return array æ–‡ä»¶åå’Œå¯¹åº”çš„è·¯å¾„
      * @throws \Exception
      */
     public static function readDirFiles($path,$clear=true){
@@ -25,16 +25,16 @@ class FileUtil {
         $clear and $_file = array();
         if (is_dir($path)) {
             $handler = opendir ($path);
-            while (($filename = readdir( $handler )) !== false) {//Î´¶Áµ½×îºóÒ»¸öÎÄ¼ş   ¼ÌĞø¶Á
-                if ($filename !== '.' && $filename !== '..' ) {//ÎÄ¼ş³ıÈ¥ .ºÍ..
+            while (($filename = readdir( $handler )) !== false) {//æœªè¯»åˆ°æœ€åä¸€ä¸ªæ–‡ä»¶   ç»§ç»­è¯»
+                if ($filename !== '.' && $filename !== '..' ) {//æ–‡ä»¶é™¤å» .å’Œ..
                     if(is_file($path . '/' . $filename)) {
                         $_file[$filename] = $path . '/' . $filename;
                     }elseif(is_dir($path . '/' . $filename)) {
-                        self::readDirFiles($path . '/' . $filename,false);//µİ¹é
+                        self::readDirFiles($path . '/' . $filename,false);//é€’å½’
                     }
                 }
             }
-            closedir($handler);//¹Ø±ÕÄ¿Â¼Ö¸Õë
+            closedir($handler);//å…³é—­ç›®å½•æŒ‡é’ˆ
         }else{
             throw new \Exception("Path '{$path}' is not a dirent!");
         }

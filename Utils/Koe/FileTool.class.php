@@ -8,36 +8,36 @@
 namespace Utils\Koe;
 
 /**
- * ÏµÍ³º¯Êı£º				filesize(),file_exists(),pathinfo(),rname(),unlink(),filemtime(),is_readable(),is_wrieteable();
- * »ñÈ¡ÎÄ¼şÏêÏ¸ĞÅÏ¢		file_info($file_name)
- * »ñÈ¡ÎÄ¼ş¼ĞÏêÏ¸ĞÅÏ¢		path_info($dir)
- * µİ¹é»ñÈ¡ÎÄ¼ş¼ĞĞÅÏ¢		path_info_more($dir,&$file_num=0,&$path_num=0,&$size=0)
- * »ñÈ¡ÎÄ¼ş¼ĞÏÂÎÄ¼şÁĞ±í	path_list($dir)
- * Â·¾¶µ±Ç°ÎÄ¼ş[¼Ğ]Ãû		get_path_this($path)
- * »ñÈ¡Â·¾¶¸¸Ä¿Â¼			get_path_father($path)
- * É¾³ıÎÄ¼ş				del_file($file)
- * µİ¹éÉ¾³ıÎÄ¼ş¼Ğ			del_dir($dir)
- * µİ¹é¸´ÖÆÎÄ¼ş¼Ğ			copy_dir($source, $dest)
- * ´´½¨Ä¿Â¼				mk_dir($dir, $mode = 0777)
- * ÎÄ¼ş´óĞ¡¸ñÊ½»¯			size_format($bytes, $precision = 2)
- * ÅĞ¶ÏÊÇ·ñ¾ø¶ÔÂ·¾¶		path_is_absolute( $path )
- * À©Õ¹ÃûµÄÎÄ¼şÀàĞÍ		ext_type($ext)
- * ÎÄ¼şÏÂÔØ				file_download($file)
- * ÎÄ¼şÏÂÔØµ½·şÎñÆ÷		file_download_this($from, $file_name)
- * »ñÈ¡ÎÄ¼ş(¼Ğ)È¨ÏŞ		get_mode($file)  //rwx_rwx_rwx [ÎÄ¼şÃûĞèÒªÏµÍ³±àÂë]
- * ÉÏ´«ÎÄ¼ş(µ¥¸ö£¬¶à¸ö)	upload($fileInput, $path = './');//
- * »ñÈ¡ÅäÖÃÎÄ¼şÏî			get_config($file, $ini, $type="string")
- * ĞŞ¸ÄÅäÖÃÎÄ¼şÏî			update_config($file, $ini, $value,$type="string")
- * Ğ´ÈÕÖ¾µ½LOG_PATHÏÂ		write_log('dd','default|.×Ô½¨Ä¿Â¼.','log|error|warning|debug|info|db')
+ * ç³»ç»Ÿå‡½æ•°ï¼š				filesize(),file_exists(),pathinfo(),rname(),unlink(),filemtime(),is_readable(),is_wrieteable();
+ * è·å–æ–‡ä»¶è¯¦ç»†ä¿¡æ¯		file_info($file_name)
+ * è·å–æ–‡ä»¶å¤¹è¯¦ç»†ä¿¡æ¯		path_info($dir)
+ * é€’å½’è·å–æ–‡ä»¶å¤¹ä¿¡æ¯		path_info_more($dir,&$file_num=0,&$path_num=0,&$size=0)
+ * è·å–æ–‡ä»¶å¤¹ä¸‹æ–‡ä»¶åˆ—è¡¨	path_list($dir)
+ * è·¯å¾„å½“å‰æ–‡ä»¶[å¤¹]å		get_path_this($path)
+ * è·å–è·¯å¾„çˆ¶ç›®å½•			get_path_father($path)
+ * åˆ é™¤æ–‡ä»¶				del_file($file)
+ * é€’å½’åˆ é™¤æ–‡ä»¶å¤¹			del_dir($dir)
+ * é€’å½’å¤åˆ¶æ–‡ä»¶å¤¹			copy_dir($source, $dest)
+ * åˆ›å»ºç›®å½•				mk_dir($dir, $mode = 0777)
+ * æ–‡ä»¶å¤§å°æ ¼å¼åŒ–			size_format($bytes, $precision = 2)
+ * åˆ¤æ–­æ˜¯å¦ç»å¯¹è·¯å¾„		path_is_absolute( $path )
+ * æ‰©å±•åçš„æ–‡ä»¶ç±»å‹		ext_type($ext)
+ * æ–‡ä»¶ä¸‹è½½				file_download($file)
+ * æ–‡ä»¶ä¸‹è½½åˆ°æœåŠ¡å™¨		file_download_this($from, $file_name)
+ * è·å–æ–‡ä»¶(å¤¹)æƒé™		get_mode($file)  //rwx_rwx_rwx [æ–‡ä»¶åéœ€è¦ç³»ç»Ÿç¼–ç ]
+ * ä¸Šä¼ æ–‡ä»¶(å•ä¸ªï¼Œå¤šä¸ª)	upload($fileInput, $path = './');//
+ * è·å–é…ç½®æ–‡ä»¶é¡¹			get_config($file, $ini, $type="string")
+ * ä¿®æ”¹é…ç½®æ–‡ä»¶é¡¹			update_config($file, $ini, $value,$type="string")
+ * å†™æ—¥å¿—åˆ°LOG_PATHä¸‹		write_log('dd','default|.è‡ªå»ºç›®å½•.','log|error|warning|debug|info|db')
  *
- * Class FileTool ÎÄ¼ş²Ù×÷¹¤¾ß
+ * Class FileTool æ–‡ä»¶æ“ä½œå·¥å…·
  * @package Utils
  */
 class FileTool{
 
     /**
-     * ´«Èë²ÎÊıÎª³ÌĞò±àÂëÊ±£¬ÓĞ´«³ö£¬ÔòÓÃ³ÌĞò±àÂë£¬
-     * ´«Èë²ÎÊıÃ»ÓĞºÍÊä³öÎŞ¹ØÊ±£¬Ôò´«ÈëÊ±´¦Àí³ÉÏµÍ³±àÂë¡£
+     * ä¼ å…¥å‚æ•°ä¸ºç¨‹åºç¼–ç æ—¶ï¼Œæœ‰ä¼ å‡ºï¼Œåˆ™ç”¨ç¨‹åºç¼–ç ï¼Œ
+     * ä¼ å…¥å‚æ•°æ²¡æœ‰å’Œè¾“å‡ºæ— å…³æ—¶ï¼Œåˆ™ä¼ å…¥æ—¶å¤„ç†æˆç³»ç»Ÿç¼–ç ã€‚
      * @param $str
      * @return string
      */
@@ -68,12 +68,12 @@ class FileTool{
      * @return int
      */
     public static function get_filesize($path){
-        // Ä³Ğ©Çé¿öÏÂfilesize»á³ö´í
+        // æŸäº›æƒ…å†µä¸‹filesizeä¼šå‡ºé”™
         @$ret = abs(sprintf("%u",filesize($path)));
         return (int)$ret;}
     /**
-     * »ñÈ¡ÎÄ¼şÏêÏ¸ĞÅÏ¢
-     * ÎÄ¼şÃû´Ó³ÌĞò±àÂë×ª»»³ÉÏµÍ³±àÂë,´«Èëutf8£¬ÏµÍ³º¯ÊıĞèÒªÎªgbk
+     * è·å–æ–‡ä»¶è¯¦ç»†ä¿¡æ¯
+     * æ–‡ä»¶åä»ç¨‹åºç¼–ç è½¬æ¢æˆç³»ç»Ÿç¼–ç ,ä¼ å…¥utf8ï¼Œç³»ç»Ÿå‡½æ•°éœ€è¦ä¸ºgbk
      * @param $path
      * @return array
      */
@@ -86,9 +86,9 @@ class FileTool{
             'ext'			=> self::get_path_ext($path),
             'type' 			=> 'file',
             'mode'			=> self::get_mode($path),
-            'atime'			=> fileatime($path), //×îºó·ÃÎÊÊ±¼ä
-            'ctime'			=> filectime($path), //´´½¨Ê±¼ä
-            'mtime'			=> filemtime($path), //×îºóĞŞ¸ÄÊ±¼ä
+            'atime'			=> fileatime($path), //æœ€åè®¿é—®æ—¶é—´
+            'ctime'			=> filectime($path), //åˆ›å»ºæ—¶é—´
+            'mtime'			=> filemtime($path), //æœ€åä¿®æ”¹æ—¶é—´
             'is_readable'	=> intval(is_readable($path)),
             'is_writeable'	=> intval(is_writeable($path)),
             'size'			=> $size,
@@ -97,7 +97,7 @@ class FileTool{
         return $info;
     }
     /**
-     * »ñÈ¡ÎÄ¼ş¼ĞÏ¸ĞÅÏ¢
+     * è·å–æ–‡ä»¶å¤¹ç»†ä¿¡æ¯
      * @param $path
      * @return array
      */
@@ -107,9 +107,9 @@ class FileTool{
             'path'			=> self::iconv_app(self::get_path_father($path)),
             'type' 			=> 'folder',
             'mode'			=> self::get_mode($path),
-            'atime'			=> fileatime($path), //·ÃÎÊÊ±¼ä
-            'ctime'			=> filectime($path), //´´½¨Ê±¼ä
-            'mtime'			=> filemtime($path), //×îºóĞŞ¸ÄÊ±¼ä
+            'atime'			=> fileatime($path), //è®¿é—®æ—¶é—´
+            'ctime'			=> filectime($path), //åˆ›å»ºæ—¶é—´
+            'mtime'			=> filemtime($path), //æœ€åä¿®æ”¹æ—¶é—´
             'is_readable'	=> intval(is_readable($path)),
             'is_writeable'	=> intval(is_writeable($path))
         );
@@ -118,7 +118,7 @@ class FileTool{
 
 
     /**
-     * »ñÈ¡Ò»¸öÂ·¾¶(ÎÄ¼ş¼Ğ&ÎÄ¼ş) µ±Ç°ÎÄ¼ş[¼Ğ]Ãû
+     * è·å–ä¸€ä¸ªè·¯å¾„(æ–‡ä»¶å¤¹&æ–‡ä»¶) å½“å‰æ–‡ä»¶[å¤¹]å
      * test/11/ ==>11 test/1.c  ==>1.c
      * @param $path
      * @return string
@@ -128,7 +128,7 @@ class FileTool{
         return substr($path,strrpos($path,'/')+1);
     }
     /**
-     * »ñÈ¡Ò»¸öÂ·¾¶(ÎÄ¼ş¼Ğ&ÎÄ¼ş) ¸¸Ä¿Â¼
+     * è·å–ä¸€ä¸ªè·¯å¾„(æ–‡ä»¶å¤¹&æ–‡ä»¶) çˆ¶ç›®å½•
      * /test/11/==>/test/   /test/1.c ==>/www/test/
      * @param $path
      * @return string
@@ -138,7 +138,7 @@ class FileTool{
         return substr($path, 0, strrpos($path,'/')+1);
     }
     /**
-     * »ñÈ¡À©Õ¹Ãû
+     * è·å–æ‰©å±•å
      * @param $path
      * @return string
      */
@@ -156,8 +156,8 @@ class FileTool{
     }
 
     /**
-     * ×Ô¶¯»ñÈ¡²»ÖØ¸´ÎÄ¼ş(¼Ğ)Ãû
-     * Èç¹û´«Èë$file_add Ôò¼ì²â´æÔÚÔò×Ô¶¨ÖØÃüÃû  a.txt Îªa{$file_add}.txt
+     * è‡ªåŠ¨è·å–ä¸é‡å¤æ–‡ä»¶(å¤¹)å
+     * å¦‚æœä¼ å…¥$file_add åˆ™æ£€æµ‹å­˜åœ¨åˆ™è‡ªå®šé‡å‘½å  a.txt ä¸ºa{$file_add}.txt
      * @param $path
      * @param string $file_add
      * @return string
@@ -184,7 +184,7 @@ class FileTool{
     }
 
     /**
-     * ÅĞ¶ÏÎÄ¼ş¼ĞÊÇ·ñ¿ÉĞ´
+     * åˆ¤æ–­æ–‡ä»¶å¤¹æ˜¯å¦å¯å†™
      * @param $path
      * @return bool
      */
@@ -197,19 +197,19 @@ class FileTool{
     }
 
     /**
-     * »ñÈ¡ÎÄ¼ş¼ĞÏêÏ¸ĞÅÏ¢,ÎÄ¼ş¼ĞÊôĞÔÊ±µ÷ÓÃ£¬°üº¬×ÓÎÄ¼ş¼ĞÊıÁ¿£¬ÎÄ¼şÊıÁ¿£¬×Ü´óĞ¡
+     * è·å–æ–‡ä»¶å¤¹è¯¦ç»†ä¿¡æ¯,æ–‡ä»¶å¤¹å±æ€§æ—¶è°ƒç”¨ï¼ŒåŒ…å«å­æ–‡ä»¶å¤¹æ•°é‡ï¼Œæ–‡ä»¶æ•°é‡ï¼Œæ€»å¤§å°
      * @param $path
      * @return array
      */
     public static function path_info($path){
         //if (!is_dir($path)) return false;
-        $pathinfo = self::_path_info_more($path);//×ÓÄ¿Â¼ÎÄ¼ş´óĞ¡Í³¼ÆĞÅÏ¢
+        $pathinfo = self::_path_info_more($path);//å­ç›®å½•æ–‡ä»¶å¤§å°ç»Ÿè®¡ä¿¡æ¯
         $folderinfo = self::folder_info($path);
         return array_merge($pathinfo,$folderinfo);
     }
 
     /**
-     * ¼ì²éÃû³ÆÊÇ·ñºÏ·¨
+     * æ£€æŸ¥åç§°æ˜¯å¦åˆæ³•
      * @param $path
      * @return bool
      */
@@ -226,7 +226,7 @@ class FileTool{
     }
 
     /**
-     * µİ¹é»ñÈ¡ÎÄ¼ş¼ĞĞÅÏ¢£º ×ÓÎÄ¼ş¼ĞÊıÁ¿£¬ÎÄ¼şÊıÁ¿£¬×Ü´óĞ¡
+     * é€’å½’è·å–æ–‡ä»¶å¤¹ä¿¡æ¯ï¼š å­æ–‡ä»¶å¤¹æ•°é‡ï¼Œæ–‡ä»¶æ•°é‡ï¼Œæ€»å¤§å°
      * @param $dir
      * @param int $file_num
      * @param int $path_num
@@ -257,7 +257,7 @@ class FileTool{
 
 
     /**
-     * »ñÈ¡¶àÑ¡ÎÄ¼şĞÅÏ¢,°üº¬×ÓÎÄ¼ş¼ĞÊıÁ¿£¬ÎÄ¼şÊıÁ¿£¬×Ü´óĞ¡£¬¸¸Ä¿Â¼È¨ÏŞ
+     * è·å–å¤šé€‰æ–‡ä»¶ä¿¡æ¯,åŒ…å«å­æ–‡ä»¶å¤¹æ•°é‡ï¼Œæ–‡ä»¶æ•°é‡ï¼Œæ€»å¤§å°ï¼Œçˆ¶ç›®å½•æƒé™
      * @param $list
      * @param $time_type
      * @return array
@@ -297,9 +297,9 @@ class FileTool{
     }
 
     /**
-     * »ñÈ¡ÎÄ¼ş¼ĞÏÂÁĞ±íĞÅÏ¢
-     * ´«ÈëĞèÒª¶ÁÈ¡µÄÎÄ¼ş¼ĞÂ·¾¶,Îª³ÌĞò±àÂë
-     * @param string $dir °üº¬½áÎ²/   d:/wwwroot/test/
+     * è·å–æ–‡ä»¶å¤¹ä¸‹åˆ—è¡¨ä¿¡æ¯
+     * ä¼ å…¥éœ€è¦è¯»å–çš„æ–‡ä»¶å¤¹è·¯å¾„,ä¸ºç¨‹åºç¼–ç 
+     * @param string $dir åŒ…å«ç»“å°¾/   d:/wwwroot/test/
      * @param bool|true $list_file
      * @param bool|false $check_children
      * @return array
@@ -309,7 +309,7 @@ class FileTool{
         if (!is_dir($dir) || !($dh = opendir($dir))){
             return array('folderlist'=>array(),'filelist'=>array());
         }
-        $folderlist = array();$filelist = array();//ÎÄ¼ş¼ĞÓëÎÄ¼ş
+        $folderlist = array();$filelist = array();//æ–‡ä»¶å¤¹ä¸æ–‡ä»¶
         while (($file = readdir($dh)) !== false) {
             if ($file != "." && $file != ".." && $file != ".svn" ) {
                 $fullpath = $dir . $file;
@@ -319,7 +319,7 @@ class FileTool{
                         $info['isParent'] = self::path_haschildren($fullpath,$list_file);
                     }
                     $folderlist[] = $info;
-                } else if($list_file) {//ÊÇ·ñÁĞ³öÎÄ¼ş
+                } else if($list_file) {//æ˜¯å¦åˆ—å‡ºæ–‡ä»¶
                     $info = self::file_info($fullpath);
                     if($check_children) $info['isParent'] = false;
                     $filelist[] = $info;
@@ -331,7 +331,7 @@ class FileTool{
     }
 
     /**
-     * ÅĞ¶ÏÎÄ¼ş¼ĞÊÇ·ñº¬ÓĞ×ÓÄÚÈİ¡¾Çø·ÖÎªÎÄ¼ş»òÕßÖ»É¸Ñ¡ÎÄ¼ş¼Ğ²ÅËã¡¿
+     * åˆ¤æ–­æ–‡ä»¶å¤¹æ˜¯å¦å«æœ‰å­å†…å®¹ã€åŒºåˆ†ä¸ºæ–‡ä»¶æˆ–è€…åªç­›é€‰æ–‡ä»¶å¤¹æ‰ç®—ã€‘
      * @param $dir
      * @param bool|false $check_file
      * @return bool
@@ -342,9 +342,9 @@ class FileTool{
         while (($file = readdir($dh)) !== false){
             if ($file != "." && $file != "..") {
                 $fullpath = $dir.$file;
-                if ($check_file) {//ÓĞ×ÓÄ¿Â¼»òÕßÎÄ¼ş¶¼ËµÃ÷ÓĞ×ÓÄÚÈİ
+                if ($check_file) {//æœ‰å­ç›®å½•æˆ–è€…æ–‡ä»¶éƒ½è¯´æ˜æœ‰å­å†…å®¹
                     if(is_dir($fullpath.'/') || is_file($fullpath)) return true;
-                }else{//Ö»¼ì²éÓĞÃ»ÓĞÎÄ¼ş
+                }else{//åªæ£€æŸ¥æœ‰æ²¡æœ‰æ–‡ä»¶
                     @$ret =(is_dir($fullpath.'/'));
                     return (bool)$ret;
                 }
@@ -355,12 +355,12 @@ class FileTool{
     }
 
     /**
-     * É¾³ıÎÄ¼ş ´«Èë²ÎÊı±àÂëÎª²Ù×÷ÏµÍ³±àÂë. win--gbk
+     * åˆ é™¤æ–‡ä»¶ ä¼ å…¥å‚æ•°ç¼–ç ä¸ºæ“ä½œç³»ç»Ÿç¼–ç . win--gbk
      * @param $fullpath
      * @return bool
      */
     public static function del_file($fullpath){
-        if (!@unlink($fullpath)) { // É¾³ı²»ÁË£¬³¢ÊÔĞŞ¸ÄÎÄ¼şÈ¨ÏŞ
+        if (!@unlink($fullpath)) { // åˆ é™¤ä¸äº†ï¼Œå°è¯•ä¿®æ”¹æ–‡ä»¶æƒé™
             @chmod($fullpath, 0777);
             if (!@unlink($fullpath)) {
                 return false;
@@ -370,7 +370,7 @@ class FileTool{
     }
 
     /**
-     * É¾³ıÎÄ¼ş¼Ğ ´«Èë²ÎÊı±àÂëÎª²Ù×÷ÏµÍ³±àÂë. win--gbk
+     * åˆ é™¤æ–‡ä»¶å¤¹ ä¼ å…¥å‚æ•°ç¼–ç ä¸ºæ“ä½œç³»ç»Ÿç¼–ç . win--gbk
      * @param $dir
      * @return bool
      */
@@ -380,7 +380,7 @@ class FileTool{
             if ($file != "." && $file != "..") {
                 $fullpath = $dir . '/' . $file;
                 if (!is_dir($fullpath)) {
-                    if (!unlink($fullpath)) { // É¾³ı²»ÁË£¬³¢ÊÔĞŞ¸ÄÎÄ¼şÈ¨ÏŞ
+                    if (!unlink($fullpath)) { // åˆ é™¤ä¸äº†ï¼Œå°è¯•ä¿®æ”¹æ–‡ä»¶æƒé™
                         chmod($fullpath, 0777);
                         if (!unlink($fullpath)) {
                             return false;
@@ -403,11 +403,11 @@ class FileTool{
     }
 
     /**
-     * ¸´ÖÆÎÄ¼ş¼Ğ
-     * eg:½«D:/wwwroot/ÏÂÃæwordpress¸´ÖÆµ½
+     * å¤åˆ¶æ–‡ä»¶å¤¹
+     * eg:å°†D:/wwwroot/ä¸‹é¢wordpresså¤åˆ¶åˆ°
      *	D:/wwwroot/www/explorer/0000/del/1/
-     * Ä©Î²¶¼²»ĞèÒª¼ÓĞ±¸Ü£¬¸´ÖÆµ½µØÖ·Èç¹û²»¼ÓÔ´ÎÄ¼ş¼ĞÃû£¬
-     * ¾Í»á½«wordpressÏÂÃæÎÄ¼ş¸´ÖÆµ½D:/wwwroot/www/explorer/0000/del/1/ÏÂÃæ
+     * æœ«å°¾éƒ½ä¸éœ€è¦åŠ æ–œæ ï¼Œå¤åˆ¶åˆ°åœ°å€å¦‚æœä¸åŠ æºæ–‡ä»¶å¤¹åï¼Œ
+     * å°±ä¼šå°†wordpressä¸‹é¢æ–‡ä»¶å¤åˆ¶åˆ°D:/wwwroot/www/explorer/0000/del/1/ä¸‹é¢
      * $from = 'D:/wwwroot/wordpress';
      * $to = 'D:/wwwroot/www/explorer/0000/del/1/wordpress';
      * @param $source
@@ -416,7 +416,7 @@ class FileTool{
      */
     public static function copy_dir($source, $dest){
         if (!$dest) return false;
-        if ($source == substr($dest,0,strlen($source))) return false;//·ÀÖ¹ÎŞÏŞµİ¹é
+        if ($source == substr($dest,0,strlen($source))) return false;//é˜²æ­¢æ— é™é€’å½’
         $result = false;
         if (is_file($source)) {
             if ($dest[strlen($dest)-1] == '/') {
@@ -450,7 +450,7 @@ class FileTool{
     }
 
     /**
-     * ´´½¨Ä¿Â¼
+     * åˆ›å»ºç›®å½•
      * @param string $dir
      * @param int $mode
      * @return bool
@@ -464,10 +464,10 @@ class FileTool{
     }
 
     /**
-     * @param string $path ÎÄ¼ş¼Ğ $dir ¡ª¡ª·µ»ØµÄÎÄ¼ş¼Ğarray files ¡ª¡ª·µ»ØµÄÎÄ¼şarray
+     * @param string $path æ–‡ä»¶å¤¹ $dir â€”â€”è¿”å›çš„æ–‡ä»¶å¤¹array files â€”â€”è¿”å›çš„æ–‡ä»¶array
      * @param $dir
      * @param $file
-     * @param int $deepest ÊÇ·ñÍêÕûµİ¹é£»$deep µİ¹é²ã¼¶
+     * @param int $deepest æ˜¯å¦å®Œæ•´é€’å½’ï¼›$deep é€’å½’å±‚çº§
      * @param int $deep
      * @return bool
      */
@@ -492,14 +492,14 @@ class FileTool{
         return true;
     }
     /*
-     * $search Îª°üº¬µÄ×Ö·û´®
-     * is_content ±íÊ¾ÊÇ·ñËÑË÷ÎÄ¼şÄÚÈİ;Ä¬ÈÏ²»ËÑË÷
-     * is_case  ±íÊ¾Çø·Ö´óĞ¡Ğ´,Ä¬ÈÏ²»Çø·Ö
+     * $search ä¸ºåŒ…å«çš„å­—ç¬¦ä¸²
+     * is_content è¡¨ç¤ºæ˜¯å¦æœç´¢æ–‡ä»¶å†…å®¹;é»˜è®¤ä¸æœç´¢
+     * is_case  è¡¨ç¤ºåŒºåˆ†å¤§å°å†™,é»˜è®¤ä¸åŒºåˆ†
      */
     public static function path_search($path,$search,$is_content=false,$file_ext='',$is_case=false){
         $ext_arr=explode("|",$file_ext);
         self::recursion_dir($path,$dirs,$files,-1,0);
-        $strpos = 'stripos';//ÊÇ·ñÇø·Ö´óĞ¡Ğ´
+        $strpos = 'stripos';//æ˜¯å¦åŒºåˆ†å¤§å°å†™
         if ($is_case) $strpos = 'strpos';
 
         $filelist = array();
@@ -507,8 +507,8 @@ class FileTool{
         foreach($files as $f){
             $ext = self::get_path_ext($f);
             $path_this = self::get_path_this($f);
-            if ($file_ext !='' && !in_array($ext,$ext_arr)) continue;//ÎÄ¼şÀàĞÍ²»ÔÚÓÃ»§ÏŞ¶¨ÄÚ
-            if ($strpos($path_this,$search) !== false){//ËÑË÷ÎÄ¼şÃû;ËÑµ½¾Í·µ»Ø£»ËÑ²»µ½¼ÌĞø
+            if ($file_ext !='' && !in_array($ext,$ext_arr)) continue;//æ–‡ä»¶ç±»å‹ä¸åœ¨ç”¨æˆ·é™å®šå†…
+            if ($strpos($path_this,$search) !== false){//æœç´¢æ–‡ä»¶å;æœåˆ°å°±è¿”å›ï¼›æœä¸åˆ°ç»§ç»­
                 $filelist[] = self::file_info($f);
                 continue;
             }
@@ -521,7 +521,7 @@ class FileTool{
                 }
             }
         }
-        if ($file_ext == '') {//Ã»ÏŞ¶¨À©Õ¹ÃûÔò²ÅËÑË÷ÎÄ¼ş¼Ğ
+        if ($file_ext == '') {//æ²¡é™å®šæ‰©å±•ååˆ™æ‰æœç´¢æ–‡ä»¶å¤¹
             foreach($dirs as $f){
                 $path_this = self::get_path_this($f);
                 if ($strpos($path_this,$search) !== false){
@@ -536,7 +536,7 @@ class FileTool{
     }
 
     /**
-     * ĞŞ¸ÄÎÄ¼ş¡¢ÎÄ¼ş¼ĞÈ¨ÏŞ
+     * ä¿®æ”¹æ–‡ä»¶ã€æ–‡ä»¶å¤¹æƒé™
      * @param $path
      * @param $mod
      * @return bool
@@ -557,9 +557,9 @@ class FileTool{
     }
 
     /**
-     * ÎÄ¼ş´óĞ¡¸ñÊ½»¯
-     * @param int $bytes ÎÄ¼ş´óĞ¡
-     * @param int $precision ±£ÁôµÄĞ¡Êıµã
+     * æ–‡ä»¶å¤§å°æ ¼å¼åŒ–
+     * @param int $bytes æ–‡ä»¶å¤§å°
+     * @param int $precision ä¿ç•™çš„å°æ•°ç‚¹
      * @return string
      */
     public static function size_format($bytes, $precision = 2){
@@ -579,24 +579,24 @@ class FileTool{
     }
 
     /**
-     * ÅĞ¶ÏÂ·¾¶ÊÇ²»ÊÇ¾ø¶ÔÂ·¾¶
-     * ·µ»Øtrue('/foo/bar','c:\windows').
+     * åˆ¤æ–­è·¯å¾„æ˜¯ä¸æ˜¯ç»å¯¹è·¯å¾„
+     * è¿”å›true('/foo/bar','c:\windows').
      * @param $path
-     * @return bool ·µ»ØtrueÔòÎª¾ø¶ÔÂ·¾¶£¬·ñÔòÎªÏà¶ÔÂ·¾¶
+     * @return bool è¿”å›trueåˆ™ä¸ºç»å¯¹è·¯å¾„ï¼Œå¦åˆ™ä¸ºç›¸å¯¹è·¯å¾„
      */
     public static function path_is_absolute($path){
-        if (realpath($path) == $path)// *nux µÄ¾ø¶ÔÂ·¾¶ /home/my
+        if (realpath($path) == $path)// *nux çš„ç»å¯¹è·¯å¾„ /home/my
             return true;
         if (strlen($path) == 0 || $path[0] == '.')
             return false;
-        if (preg_match('#^[a-zA-Z]:\\\\#', $path))// windows µÄ¾ø¶ÔÂ·¾¶ c:\aaa\
+        if (preg_match('#^[a-zA-Z]:\\\\#', $path))// windows çš„ç»å¯¹è·¯å¾„ c:\aaa\
             return true;
-        return (bool)preg_match('#^[/\\\\]#', $path); //¾ø¶ÔÂ·¾¶ ÔËĞĞ / ºÍ \¾ø¶ÔÂ·¾¶£¬ÆäËûµÄÔòÎªÏà¶ÔÂ·¾¶
+        return (bool)preg_match('#^[/\\\\]#', $path); //ç»å¯¹è·¯å¾„ è¿è¡Œ / å’Œ \ç»å¯¹è·¯å¾„ï¼Œå…¶ä»–çš„åˆ™ä¸ºç›¸å¯¹è·¯å¾„
     }
 
     /**
-     * »ñÈ¡À©Õ¹ÃûµÄÎÄ¼şÀàĞÍ
-     * @param string $ext À©Õ¹Ãû
+     * è·å–æ‰©å±•åçš„æ–‡ä»¶ç±»å‹
+     * @param string $ext æ‰©å±•å
      * @return int|string
      */
     public static function ext_type($ext){
@@ -621,15 +621,15 @@ class FileTool{
     }
 
     /**
-     * Êä³ö¡¢ÎÄ¼şÏÂÔØ
-     * Ä¬ÈÏÒÔ¸½¼ş·½Ê½ÏÂÔØ£»$downloadÎªfalseÊ±ÔòÎªÊä³öÎÄ¼ş
+     * è¾“å‡ºã€æ–‡ä»¶ä¸‹è½½
+     * é»˜è®¤ä»¥é™„ä»¶æ–¹å¼ä¸‹è½½ï¼›$downloadä¸ºfalseæ—¶åˆ™ä¸ºè¾“å‡ºæ–‡ä»¶
      * @param $file
      * @param bool|false $download
      */
     public static function file_put_out($file,$download=false){
         if (!is_file($file)) KoeTool::show_json('not a file!');
         set_time_limit(0);
-        //ob_clean();//Çå³ıÖ®Ç°ËùÓĞÊä³ö»º³å
+        //ob_clean();//æ¸…é™¤ä¹‹å‰æ‰€æœ‰è¾“å‡ºç¼“å†²
         if (!file_exists($file)) KoeTool::show_json('file not exists',false);
         if (isset($_SERVER['HTTP_RANGE']) && ($_SERVER['HTTP_RANGE'] != "") &&
             preg_match("/^bytes=([0-9]+)-$/i", $_SERVER['HTTP_RANGE'], $match) && ($match[1] < filesize($file)/* $fsize*/)) {
@@ -642,7 +642,7 @@ class FileTool{
         header("X-Powered-By: kodExplorer.");
         if ($download) {
             header("Content-Type: application/octet-stream");
-            $filename = self::get_path_this($file);//½â¾öÔÚIEÖĞÏÂÔØÊ±ÖĞÎÄÂÒÂëÎÊÌâ
+            $filename = self::get_path_this($file);//è§£å†³åœ¨IEä¸­ä¸‹è½½æ—¶ä¸­æ–‡ä¹±ç é—®é¢˜
             if(preg_match('/MSIE/',$_SERVER['HTTP_USER_AGENT'])){
                 $filename = str_replace('+','%20',urlencode($filename));
             }
@@ -663,7 +663,7 @@ class FileTool{
         $fp = fopen($file, "rb");
         fseek($fp, $start);
         while (!feof($fp)) {
-            print (fread($fp, 1024 * 8)); //Êä³öÎÄ¼ş
+            print (fread($fp, 1024 * 8)); //è¾“å‡ºæ–‡ä»¶
             flush();
             ob_flush();
         }
@@ -671,7 +671,7 @@ class FileTool{
     }
 
     /**
-     * ÎÄ¼şÏÂÔØµ½·şÎñÆ÷
+     * æ–‡ä»¶ä¸‹è½½åˆ°æœåŠ¡å™¨
      * @param $from
      * @param $file_name
      * @return bool
@@ -686,7 +686,7 @@ class FileTool{
             $temp_file = $file_name.'.download';
             $download_fp = @fopen ($temp_file, "wb");
             while(!feof($fp)){
-                if(!file_exists($file_name)){//É¾³ıÄ¿±êÎÄ¼ş£»ÔòÖÕÖ¹ÏÂÔØ
+                if(!file_exists($file_name)){//åˆ é™¤ç›®æ ‡æ–‡ä»¶ï¼›åˆ™ç»ˆæ­¢ä¸‹è½½
                     fclose($download_fp);
                     self::del_file($temp_file);
                     self::del_file($file_name);
@@ -694,7 +694,7 @@ class FileTool{
                 }
                 fwrite($download_fp, fread($fp, 1024 * 8 ), 1024 * 8);
             }
-            //ÏÂÔØÍê³É£¬ÖØÃüÃûÁÙÊ±ÎÄ¼şµ½Ä¿±êÎÄ¼ş
+            //ä¸‹è½½å®Œæˆï¼Œé‡å‘½åä¸´æ—¶æ–‡ä»¶åˆ°ç›®æ ‡æ–‡ä»¶
             self::del_file($file_name);
             $rename_ret = @rename($temp_file,$file_name);
             return (bool)$rename_ret;
@@ -704,7 +704,7 @@ class FileTool{
     }
 
     /**
-     * »ñÈ¡ÎÄ¼ş(¼Ğ)È¨ÏŞ rwx_rwx_rwx
+     * è·å–æ–‡ä»¶(å¤¹)æƒé™ rwx_rwx_rwx
      * @param $file
      * @return string
      */
@@ -742,7 +742,7 @@ class FileTool{
     }
 
     /**
-     * »ñÈ¡¿ÉÒÔÉÏ´«µÄ×î´óÖµ
+     * è·å–å¯ä»¥ä¸Šä¼ çš„æœ€å¤§å€¼
      * return * byte
      */
     public static function get_post_max(){
@@ -755,8 +755,8 @@ class FileTool{
     }
 
     /**
-     * ÎÄ¼şÉÏ´«´¦Àí¡£µ¥¸öÎÄ¼şÉÏ´«,¶à¸ö·Ö¶à´ÎÇëÇó
-     * µ÷ÓÃdemo
+     * æ–‡ä»¶ä¸Šä¼ å¤„ç†ã€‚å•ä¸ªæ–‡ä»¶ä¸Šä¼ ,å¤šä¸ªåˆ†å¤šæ¬¡è¯·æ±‚
+     * è°ƒç”¨demo
      * upload('file','D:/www/');
      * @param $fileInput
      * @param string $path
@@ -776,7 +776,7 @@ class FileTool{
         }
     }
 
-    //·ÖÆ¬ÉÏ´«´¦Àí
+    //åˆ†ç‰‡ä¸Šä¼ å¤„ç†
     public static function upload_chunk($fileInput, $path = './',$temp_path){
 //        global $config,$L;
         global $L;
@@ -786,7 +786,7 @@ class FileTool{
         if (!isset($file)) KoeTool::show_json($L['upload_error_null'],false);
         $file_name = self::iconv_system($file['name']);
 
-        if ($chunks>1) {//²¢·¢ÉÏ´«£¬²»Ò»¶¨ÓĞÇ°ºóË³Ğò
+        if ($chunks>1) {//å¹¶å‘ä¸Šä¼ ï¼Œä¸ä¸€å®šæœ‰å‰åé¡ºåº
             $temp_file_pre = $temp_path.md5($temp_path.$file_name).'.part';
             if (self::get_filesize($file['tmp_name']) ==0) {
                 KoeTool::show_json($L['upload_success'],false,'chunk_'.$chunk.' error!');
@@ -823,8 +823,8 @@ class FileTool{
             }
         }
 
-        //Õı³£ÉÏ´«
-        $save_path = self::get_filename_auto($path.$file_name); //×Ô¶¯ÖØÃüÃû
+        //æ­£å¸¸ä¸Šä¼ 
+        $save_path = self::get_filename_auto($path.$file_name); //è‡ªåŠ¨é‡å‘½å
         if(move_uploaded_file($file['tmp_name'],$save_path)){
             KoeTool::show_json($L['upload_success'],true,self::iconv_app($save_path));
         }else {
@@ -833,20 +833,20 @@ class FileTool{
     }
 
     /**
-     * Ğ´ÈÕÖ¾
-     * @param string $log   ÈÕÖ¾ĞÅÏ¢
-     * @param string $type  ÈÕÖ¾ÀàĞÍ [system|app|...]
-     * @param string $level ÈÕÖ¾¼¶±ğ
+     * å†™æ—¥å¿—
+     * @param string $log   æ—¥å¿—ä¿¡æ¯
+     * @param string $type  æ—¥å¿—ç±»å‹ [system|app|...]
+     * @param string $level æ—¥å¿—çº§åˆ«
      * @return boolean
      */
     public static function write_log($log, $type = 'default', $level = 'log'){
         $now_time = date('[y-m-d H:i:s]');
         $now_day  = date('Y_m_d');
-        // ¸ù¾İÀàĞÍÉèÖÃÈÕÖ¾Ä¿±êÎ»ÖÃ
+        // æ ¹æ®ç±»å‹è®¾ç½®æ—¥å¿—ç›®æ ‡ä½ç½®
         $target   = LOG_PATH . strtolower($type) . '/';
         self::mk_dir($target, 0777);
         if (! is_writable($target)) exit('path can not write!');
-        switch($level){// ·Ö¼¶Ğ´ÈÕÖ¾
+        switch($level){// åˆ†çº§å†™æ—¥å¿—
             case 'error':	$target .= 'Error_' . $now_day . '.log';break;
             case 'warning':	$target .= 'Warning_' . $now_day . '.log';break;
             case 'debug':	$target .= 'Debug_' . $now_day . '.log';break;
@@ -854,7 +854,7 @@ class FileTool{
             case 'db':		$target .= 'Db_' . $now_day . '.log';break;
             default:		$target .= 'Log_' . $now_day . '.log';break;
         }
-        //¼ì²âÈÕÖ¾ÎÄ¼ş´óĞ¡, ³¬¹ıÅäÖÃ´óĞ¡ÔòÖØÃüÃû
+        //æ£€æµ‹æ—¥å¿—æ–‡ä»¶å¤§å°, è¶…è¿‡é…ç½®å¤§å°åˆ™é‡å‘½å
         if (file_exists($target) && self::get_filesize($target) <= 100000) {
             $file_name = substr(basename($target),0,strrpos(basename($target),'.log')).'.log';
             rename($target, dirname($target) .'/'. $file_name);

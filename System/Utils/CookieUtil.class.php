@@ -10,16 +10,16 @@ namespace System\Utils;
 class CookieUtil {
 
     private static $_config = array(
-        'prefix'    =>  '', // cookie Ãû³ÆÇ°×º
-        'expire'    =>  0, // cookie ±£´æÊ±¼ä
-        'path'      =>  '/', // cookie ±£´æÂ·¾¶
-        'domain'    =>  '', // cookie ÓĞĞ§ÓòÃû
-        'secure'    =>  false, //  cookie ÆôÓÃ°²È«´«Êä
-        'httponly'  =>  0, // httponlyÉèÖÃ
+        'prefix'    =>  '', // cookie åç§°å‰ç¼€
+        'expire'    =>  0, // cookie ä¿å­˜æ—¶é—´
+        'path'      =>  '/', // cookie ä¿å­˜è·¯å¾„
+        'domain'    =>  '', // cookie æœ‰æ•ˆåŸŸå
+        'secure'    =>  false, //  cookie å¯ç”¨å®‰å…¨ä¼ è¾“
+        'httponly'  =>  0, // httponlyè®¾ç½®
     );
 
     /**
-     * ¶Ôsession²Ù×÷Àà½øĞĞ³õÊ¼»¯ÅäÖÃ
+     * å¯¹sessionæ“ä½œç±»è¿›è¡Œåˆå§‹åŒ–é…ç½®
      * @param array $config
      * @return bool
      */
@@ -32,14 +32,14 @@ class CookieUtil {
     }
     public static function clear($name=''){
         if('' === $name){
-            //Çå³ıËùÓĞ
+            //æ¸…é™¤æ‰€æœ‰
             if($_COOKIE){
                 $prefix = empty($value) ? self::$_config['prefix'] : $value;
-                //Èç¹ûÉèÖÃÁËÇ°×º£¬ÔòÉ¾³ıÖ¸¶¨µÄÇ°×ºµÄcookie
+                //å¦‚æœè®¾ç½®äº†å‰ç¼€ï¼Œåˆ™åˆ é™¤æŒ‡å®šçš„å‰ç¼€çš„cookie
                 if($prefix){
                     foreach ($_COOKIE as $key => $val) {
                         if (0 === stripos($key, $prefix)) {
-                            setcookie($key, '', time() - 3600,//Ê±¼äÉèÖÃÎªÖ®Ç°¾Í¿ÉÒÔÁË
+                            setcookie($key, '', time() - 3600,//æ—¶é—´è®¾ç½®ä¸ºä¹‹å‰å°±å¯ä»¥äº†
                                 self::$_config['path'],
                                 self::$_config['domain'],
                                 self::$_config['secure'],
@@ -50,7 +50,7 @@ class CookieUtil {
                     }
                 }
             }else{
-                //Îª¿ÕÊı×é
+                //ä¸ºç©ºæ•°ç»„
             }
         }else{
 
@@ -58,7 +58,7 @@ class CookieUtil {
     }
 
     /**
-     * Ïò¿Í»§¶Ë·¢ËÍcookie
+     * å‘å®¢æˆ·ç«¯å‘é€cookie
      * @param $name
      * @param $value
      */
@@ -76,7 +76,7 @@ class CookieUtil {
     }
 
     /**
-     * »ñÈ¡cookieÊı¾İ
+     * è·å–cookieæ•°æ®
      * @param $name
      * @param null $defult_value
      * @return null

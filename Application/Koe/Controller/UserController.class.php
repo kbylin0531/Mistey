@@ -6,6 +6,7 @@
  * Time: 19:25
  */
 namespace Application\Koe\Controller;
+use System\Utils\Util;
 use Utils\Koe\FileCache;
 use Utils\Koe\FileTool;
 use Utils\Koe\KoeTool;
@@ -15,17 +16,17 @@ use Utils\Koe\WebTool;
 class UserController extends KoeController{
 
     /**
-     * ÓÃ»§Ïà¹ØÐÅÏ¢
+     * ç”¨æˆ·ç›¸å…³ä¿¡æ¯
      * @var array
      */
     private $user;
     /**
-     * ÓÃ»§ËùÊô×éÈ¨ÏÞ
+     * ç”¨æˆ·æ‰€å±žç»„æƒé™
      * @var array
      */
 //    private $auth;
     /**
-     * ²»ÐèÒªÅÐ¶ÏµÄaction
+     * ä¸éœ€è¦åˆ¤æ–­çš„action
      * @var array
      */
     private $notCheck = array(
@@ -39,23 +40,70 @@ class UserController extends KoeController{
 
     function __construct(){
         parent::__construct();
-        if(!isset($_SESSION)){//±ÜÃâsession²»¿ÉÐ´µ¼ÖÂÑ­»·Ìø×ª
+        if(!isset($_SESSION)){//é¿å…sessionä¸å¯å†™å¯¼è‡´å¾ªçŽ¯è·³è½¬
             $this->login("session write error!");
         }else{
             $this->user = &$_SESSION['kod_user'];
         }
     }
+    /**
+     * ç™»é™†view
+     * @param string $msg
+     */
+    public function login($msg = ''){
+        if (!file_exists(USER_SYSTEM.'install.lock')) {
+            $this->display('install.php');exit;
+        }
+        $this->assign('msg',$msg);
+        $this->display('login.php');
+        exit;
+    }
 
     /**
-     * µÇÂ½×´Ì¬¼ì²â;²¢³õÊ¼»¯Êý¾Ý×´Ì¬
+     * å®‰è£…æ£€æµ‹ç•Œé¢
+     */
+    public function install(){
+        $arr = array(4,5,7,7,7,10,11,12);
+        $wall_page_url = URL_KOE_STATIC_PATH."/images/wall_page/".$arr[mt_rand(0,count($arr)-1)].".jpg";
+        $errors = $this->checkEnvironment();
+        $this->assign('wall_page_url',$wall_page_url);
+        $this->assign('errors',$errors);
+        $this->display('install');exit;
+    }
+
+    /**
+     * èŽ·å–è¿è¡ŒçŽ¯å¢ƒæ£€æµ‹æ•°æ®
+     * @return array
+     */
+    private function checkEnvironment(){
+        $error = array();
+        if(!function_exists('iconv')) $error[] = 'Can not use iconv';
+        if(!function_exists('mb_convert_encoding')) $error[] = 'Can not use mb_string';
+        if(!version_compare(PHP_VERSION,'5.4','>=')) $error[] = 'PHP version must more than 5.4';
+        if(!function_exists('file_get_contents')) $error.= 'Can not use file_get_contents';
+        if(!path_writable(BASIC_PATH)) $error[] = 'base path is not writable';
+        if(!path_writable(BASIC_PATH.'data')) $error[] = 'data can not write';
+        if(!path_writable(BASIC_PATH.'data/system')) $error[] = 'data/system can not write';
+        if(!path_writable(BASIC_PATH.'data/User')) $error[] = 'data/User can not write';
+        if(!path_writable(BASIC_PATH.'data/thumb')) $error[] = 'data/thumb can not write';
+        if( !function_exists('imagecreatefromjpeg')||
+            !function_exists('imagecreatefromgif')||
+            !function_exists('imagecreatefrompng')||
+            !function_exists('imagecolorallocate')){
+            $error[] = 'Can not use php GD';
+        }
+        return $error;
+    }
+    /**
+     * ç™»é™†çŠ¶æ€æ£€æµ‹;å¹¶åˆå§‹åŒ–æ•°æ®çŠ¶æ€
      * @return void
      */
     public function loginCheck(){
         defined('ST') or die('ST not defined!');
         defined('ACT') or die('ACT not defined!');
-        if (ST == 'share') return ;//¹²ÏíÒ³Ãæ
+        if (ST == 'share') return ;//å…±äº«é¡µé¢
         if(in_array(ACT,$this->notCheck)){
-            //²»ÐèÒªÅÐ¶ÏµÄaction
+            //ä¸éœ€è¦åˆ¤æ–­çš„action
         }else if($_SESSION['kod_login']===true && $_SESSION['kod_user']['name']!=''){
             define('USER',USER_PATH.$this->user['name'].'/');
             define('USER_TEMP',USER.'data/temp/');
@@ -66,17 +114,17 @@ class UserController extends KoeController{
             if ($this->user['role'] == 'root') {
                 define('MYHOME',USER.'home/');
                 define('HOME','');
-                $GLOBALS['web_root'] = WEB_ROOT;//·þÎñÆ÷Ä¿Â¼
+                $GLOBALS['web_root'] = WEB_ROOT;//æœåŠ¡å™¨ç›®å½•
                 $GLOBALS['is_root'] = 1;
             }else{
                 define('MYHOME','/');
                 define('HOME',USER.'home/');
-                $GLOBALS['web_root'] = str_replace(WEB_ROOT,'',HOME);//´Ó·þÎñÆ÷¿ªÊ¼µ½ÓÃ»§Ä¿Â¼
+                $GLOBALS['web_root'] = str_replace(WEB_ROOT,'',HOME);//ä»ŽæœåŠ¡å™¨å¼€å§‹åˆ°ç”¨æˆ·ç›®å½•
                 $GLOBALS['is_root'] = 0;
             }
-            $this->config['user_share_file']   = USER.'data/share.php';    // ÊÕ²Ø¼ÐÎÄ¼þ´æ·ÅµØÖ·.
-            $this->config['user_fav_file']     = USER.'data/fav.php';    // ÊÕ²Ø¼ÐÎÄ¼þ´æ·ÅµØÖ·.
-            $this->config['user_seting_file']  = USER.'data/config.php'; //ÓÃ»§ÅäÖÃÎÄ¼þ
+            $this->config['user_share_file']   = USER.'data/share.php';    // æ”¶è—å¤¹æ–‡ä»¶å­˜æ”¾åœ°å€.
+            $this->config['user_fav_file']     = USER.'data/fav.php';    // æ”¶è—å¤¹æ–‡ä»¶å­˜æ”¾åœ°å€.
+            $this->config['user_seting_file']  = USER.'data/config.php'; //ç”¨æˆ·é…ç½®æ–‡ä»¶
             $this->config['user']  = FileCache::load($this->config['user_seting_file']);
             if($this->config['user']['theme']==''){
                 $this->config['user'] = $this->config['setting_default'];
@@ -92,14 +140,14 @@ class UserController extends KoeController{
                 $_SESSION['kod_login'] = true;
                 $_SESSION['kod_user']= $user;
                 setcookie('kod_name', $_COOKIE['kod_name'], time()+3600*24*365);
-                setcookie('kod_token',$_COOKIE['kod_token'],time()+3600*24*365); //ÃÜÂëµÄMD5ÖµÔÙ´Îmd5
+                setcookie('kod_token',$_COOKIE['kod_token'],time()+3600*24*365); //å¯†ç çš„MD5å€¼å†æ¬¡md5
                 header('location:'.KoeTool::get_url());
                 exit;
             }
-            $this->logout();//session userÊý¾Ý²»´æÔÚ
+            $this->logout();//session useræ•°æ®ä¸å­˜åœ¨
         }else{
             if ($this->config['setting_system']['auto_login'] != '1') {
-                $this->logout();//²»×Ô¶¯µÇÂ¼
+                $this->logout();//ä¸è‡ªåŠ¨ç™»å½•
             }else{
                 if (!file_exists(USER_SYSTEM.'install.lock')) {
                     $this->display('install.html');exit;
@@ -110,7 +158,7 @@ class UserController extends KoeController{
         }
     }
     /**
-     * È¨ÏÞÑéÖ¤£»Í³Ò»Èë¿Ú¼ìÑé
+     * æƒé™éªŒè¯ï¼›ç»Ÿä¸€å…¥å£æ£€éªŒ
      */
     public function authCheck(){
         defined('ST') or die('ST not defined!');
@@ -119,24 +167,24 @@ class UserController extends KoeController{
         if (in_array(ACT,$this->notCheck)) return;
         if (!array_key_exists(ST,$this->config['role_setting']) ) return;
         if (!in_array(ACT,$this->config['role_setting'][ST]) &&
-            ST.':'.ACT != 'user:common_js') return;//Êä³ö´¦Àí¹ýµÄÈ¨ÏÞ
+            ST.':'.ACT != 'user:common_js') return;//è¾“å‡ºå¤„ç†è¿‡çš„æƒé™
 
-        //ÓÐÈ¨ÏÞÏÞÖÆµÄº¯Êý
+        //æœ‰æƒé™é™åˆ¶çš„å‡½æ•°
         $key = ST.':'.ACT;
         $group  = new fileCache(USER_SYSTEM.'group.php');
         $auth= $group->get($this->user['role']);
 
 
-        //ÏòÏÂ°æ±¾¼æÈÝ´¦Àí
-        //Î´¶¨Òå£»ÐÂ°æ±¾Ê×´ÎÊ¹ÓÃÄ¬ÈÏ¿ª·ÅµÄ¹¦ÄÜ
+        //å‘ä¸‹ç‰ˆæœ¬å…¼å®¹å¤„ç†
+        //æœªå®šä¹‰ï¼›æ–°ç‰ˆæœ¬é¦–æ¬¡ä½¿ç”¨é»˜è®¤å¼€æ”¾çš„åŠŸèƒ½
         if(!isset($auth['userShare:set'])){
             $auth['userShare:set'] = 1;
         }
         if(!isset($auth['explorer:fileDownload'])){
             $auth['explorer:fileDownload'] = 1;
         }
-        //Ä¬ÈÏÀ©Õ¹¹¦ÄÜ µÈ¼ÛÈ¨ÏÞ
-        $auth['user:common_js'] = 1;//È¨ÏÞÊý¾ÝÅäÖÃºóÊä³öµ½Ç°¶Ë
+        //é»˜è®¤æ‰©å±•åŠŸèƒ½ ç­‰ä»·æƒé™
+        $auth['user:common_js'] = 1;//æƒé™æ•°æ®é…ç½®åŽè¾“å‡ºåˆ°å‰ç«¯
         $auth['explorer:pathChmod']         = $auth['explorer:pathRname'];
         $auth['explorer:pathDeleteRecycle'] = $auth['explorer:pathDelete'];
         $auth['explorer:pathCopyDrag']      = $auth['explorer:pathCuteDrag'];
@@ -149,8 +197,8 @@ class UserController extends KoeController{
         $auth['userShare:del']              = $auth['userShare:set'];
         if ($auth[$key] != 1) KoeTool::show_json($this->L['no_permission'],false);
 
-        $GLOBALS['auth'] = $auth;//È«¾Ö
-        //À©Õ¹ÃûÏÞÖÆ£ºÐÂ½¨ÎÄ¼þ&ÉÏ´«ÎÄ¼þ&ÖØÃüÃûÎÄ¼þ&±£´æÎÄ¼þ&zip½âÑ¹ÎÄ¼þ
+        $GLOBALS['auth'] = $auth;//å…¨å±€
+        //æ‰©å±•åé™åˆ¶ï¼šæ–°å»ºæ–‡ä»¶&ä¸Šä¼ æ–‡ä»¶&é‡å‘½åæ–‡ä»¶&ä¿å­˜æ–‡ä»¶&zipè§£åŽ‹æ–‡ä»¶
         $check_arr = array(
             'mkfile'    =>  $this->check_key('path'),
             'pathRname' =>  $this->check_key('rname_to'),
@@ -161,7 +209,7 @@ class UserController extends KoeController{
             KoeTool::show_json($this->L['no_permission_ext'],false);
         }
     }
-    //ÁÙÊ±ÎÄ¼þ·ÃÎÊ
+    //ä¸´æ—¶æ–‡ä»¶è®¿é—®
     public function public_link(){
         KoeTool::load_class('mcrypt');
         $pass = $this->config['setting_system']['system_password'];
@@ -174,7 +222,7 @@ class UserController extends KoeController{
     public function common_js(){
         $basic_path = BASIC_PATH;
         if (!$GLOBALS['is_root']) {
-            $basic_path = '/';//¶Ô·ÇrootÓÃ»§Òþ²ØËùÓÐµØÖ·
+            $basic_path = '/';//å¯¹éžrootç”¨æˆ·éšè—æ‰€æœ‰åœ°å€
         }
         $the_config = array(
             'lang'          => LANGUAGE_TYPE,
@@ -191,10 +239,10 @@ class UserController extends KoeController{
             'upload_max'    => FileTool::get_post_max(),
             'json_data'     => "",
 
-            'theme'         => $this->config['user']['theme'], //ÁÐ±íÅÅÐòÒÀÕÕµÄ×Ö¶Î
-            'list_type'     => $this->config['user']['list_type'], //ÁÐ±íÅÅÐòÒÀÕÕµÄ×Ö¶Î
-            'sort_field'    => $this->config['user']['list_sort_field'], //ÁÐ±íÅÅÐòÒÀÕÕµÄ×Ö¶Î
-            'sort_order'    => $this->config['user']['list_sort_order'], //ÁÐ±íÅÅÐòÉýÐòor½µÐò
+            'theme'         => $this->config['user']['theme'], //åˆ—è¡¨æŽ’åºä¾ç…§çš„å­—æ®µ
+            'list_type'     => $this->config['user']['list_type'], //åˆ—è¡¨æŽ’åºä¾ç…§çš„å­—æ®µ
+            'sort_field'    => $this->config['user']['list_sort_field'], //åˆ—è¡¨æŽ’åºä¾ç…§çš„å­—æ®µ
+            'sort_order'    => $this->config['user']['list_sort_order'], //åˆ—è¡¨æŽ’åºå‡åºoré™åº
             'musictheme'    => $this->config['user']['musictheme'],
             'movietheme'    => $this->config['user']['movietheme']
         );
@@ -206,21 +254,9 @@ class UserController extends KoeController{
         echo $js;
     }
 
-    /**
-     * µÇÂ½view
-     * @param string $msg
-     */
-    public function login($msg = ''){
-        if (!file_exists(USER_SYSTEM.'install.lock')) {
-            $this->display('install.html');exit;
-        }
-        $this->assign('msg',$msg);
-        $this->display('login.html');
-        exit;
-    }
 
     /**
-     * Ê×´ÎµÇÂ½
+     * é¦–æ¬¡ç™»é™†
      */
     public function loginFirst(){
         touch(USER_SYSTEM.'install.lock');
@@ -228,7 +264,7 @@ class UserController extends KoeController{
         exit;
     }
     /**
-     * ÍË³ö´¦Àí
+     * é€€å‡ºå¤„ç†
      */
     public function logout(){
         session_start();
@@ -241,17 +277,17 @@ class UserController extends KoeController{
     }
 
     /**
-     * µÇÂ½Êý¾ÝÌá½»´¦Àí
+     * ç™»é™†æ•°æ®æäº¤å¤„ç†
      */
     public function loginSubmit(){
         if(!isset($this->in['name']) || !isset($this->in['password'])) {
             $msg = $this->L['login_not_null'];
         }else{
-            //´íÎóÈý´ÎÊäÈëÑéÖ¤Âë
+            //é”™è¯¯ä¸‰æ¬¡è¾“å…¥éªŒè¯ç 
             $name = rawurldecode($this->in['name']);
             $password = rawurldecode($this->in['password']);
 
-            session_start();//re start ÓÐÐÂµÄÐÞ¸Äºóµ÷ÓÃ
+            session_start();//re start æœ‰æ–°çš„ä¿®æ”¹åŽè°ƒç”¨
             if(isset($_SESSION['code_error_time'])  &&
                 intval($_SESSION['code_error_time']) >=3 &&
                 $_SESSION['check_code'] !== strtolower($this->in['check_code'])){
@@ -263,7 +299,7 @@ class UserController extends KoeController{
             if ($user ===false){
                 $msg = $this->L['user_not_exists'];
             }else if(md5($password)==$user['password']){
-                if($user['status'] == 0){//³õÊ¼»¯app
+                if($user['status'] == 0){//åˆå§‹åŒ–app
                     $app = new AppController();
                     $app->init_app($user);
                 }
@@ -284,7 +320,7 @@ class UserController extends KoeController{
     }
 
     /**
-     * ÐÞ¸ÄÃÜÂë
+     * ä¿®æ”¹å¯†ç 
      */
     public function changePassword(){
         $password_now=$this->in['password_now'];

@@ -12,20 +12,20 @@ use System\Mist;
 class LiteBuilder {
 
     /**
-     * ³ÌĞò½áÊøÊ±µ÷ÓÃ
-     * @param string $litefile Éú³ÉµÄliteÎÄ¼şÃû³Æ
-     * @param array $filelist ÎÄ¼şÁĞ±í
+     * ç¨‹åºç»“æŸæ—¶è°ƒç”¨
+     * @param string $litefile ç”Ÿæˆçš„liteæ–‡ä»¶åç§°
+     * @param array $filelist æ–‡ä»¶åˆ—è¡¨
      */
     public static function build($litefile = null,$filelist=null) {
         static $_cache = array();
         isset($litefile) or $litefile = RUNTIME_PATH.APP_NAME.'.lite.php';
-        //»ñÈ¡ËùÓĞµÄ¶¨ÒåµÄ³£Á¿
+        //è·å–æ‰€æœ‰çš„å®šä¹‰çš„å¸¸é‡
 //        $constants = get_defined_constants(TRUE);
 //        $content = self::buildArrayDefine($constants);
-        // ¶ÁÈ¡±àÒëÁĞ±íÎÄ¼ş
+        // è¯»å–ç¼–è¯‘åˆ—è¡¨æ–‡ä»¶
         isset($filelist) or $filelist = Mist::getClasses();
         $content = '';
-        // ±àÒëÎÄ¼ş
+        // ç¼–è¯‘æ–‡ä»¶
         foreach ($filelist as $file){
             if(Storage::hasFile($file)){
                 if(!isset($_cache[$file])){
@@ -34,39 +34,39 @@ class LiteBuilder {
                 }
             }
         }
-        // Éú³ÉÔËĞĞLiteÎÄ¼ş
+        // ç”Ÿæˆè¿è¡ŒLiteæ–‡ä»¶
         Storage::writeFile($litefile,'<?php '.$content);
 //        Storage::writeFile($litefile,self::stripWhitespace('<?php '.$content));
     }
 
     /**
-     * »ñÈ¡ÎÄ¼ş±àÒëºóµÄÄÚÈİ
-     * @param string $filename ÎÄ¼şÃû
+     * è·å–æ–‡ä»¶ç¼–è¯‘åçš„å†…å®¹
+     * @param string $filename æ–‡ä»¶å
      * @return string
      */
     public static function compile($filename) {
-        $content    =   php_strip_whitespace($filename);//É¾³ıPHP´úÂëÖĞµÄ×¢ÊÍºÍ¿Õ¸ñ
-        $content    =   trim(substr($content, 5));//È¥³ı '<?php'
-        // Ìæ»»ÃüÃû¿Õ¼ä
+        $content    =   php_strip_whitespace($filename);//åˆ é™¤PHPä»£ç ä¸­çš„æ³¨é‡Šå’Œç©ºæ ¼
+        $content    =   trim(substr($content, 5));//å»é™¤ '<?php'
+        // æ›¿æ¢å‘½åç©ºé—´
         if(0===strpos($content,'namespace')){
             $content    =   preg_replace('/namespace\s(.*?);/','namespace \\1{',$content,1);
         }else{
             $content    =   'namespace {'.$content;
         }
-        //È¥³ı  '? >'   Ò²ÓĞ¿ÉÄÜ²»»á´øÕâ¸ö
+        //å»é™¤  '? >'   ä¹Ÿæœ‰å¯èƒ½ä¸ä¼šå¸¦è¿™ä¸ª
         if ('?>' == substr($content, -2))
             $content    = substr($content, 0, -2);
         return $content.'}';
     }
 
     /**
-     * È¥³ı´úÂëÖĞµÄ¿Õ°×ºÍ×¢ÊÍ
-     * @param string $content ´úÂëÄÚÈİ
+     * å»é™¤ä»£ç ä¸­çš„ç©ºç™½å’Œæ³¨é‡Š
+     * @param string $content ä»£ç å†…å®¹
      * @return string
      */
     public static function stripWhitespace($content) {
         $stripStr   = '';
-        //·ÖÎöphpÔ´Âë
+        //åˆ†æphpæºç 
         $tokens     = token_get_all($content);
         $last_space = false;
         for ($i = 0, $j = count($tokens); $i < $j; $i++) {
@@ -75,11 +75,11 @@ class LiteBuilder {
                 $stripStr  .= $tokens[$i];
             } else {
                 switch ($tokens[$i][0]) {
-                    //¹ıÂË¸÷ÖÖPHP×¢ÊÍ
+                    //è¿‡æ»¤å„ç§PHPæ³¨é‡Š
                     case T_COMMENT:
                     case T_DOC_COMMENT:
                         break;
-                    //¹ıÂË¿Õ¸ñ
+                    //è¿‡æ»¤ç©ºæ ¼
                     case T_WHITESPACE:
                         if (!$last_space) {
                             $stripStr  .= ' ';
@@ -110,8 +110,8 @@ class LiteBuilder {
     }
 
     /**
-     * ¸ù¾İÊı×éÉú³É³£Á¿¶¨Òå
-     * @param array $array ³£Á¿Êı×é
+     * æ ¹æ®æ•°ç»„ç”Ÿæˆå¸¸é‡å®šä¹‰
+     * @param array $array å¸¸é‡æ•°ç»„
      * @return string
      */
     public static function buildArrayDefine(array $array) {

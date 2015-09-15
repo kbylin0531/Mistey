@@ -90,10 +90,10 @@ final class Mist{
         date_default_timezone_set(self::$_config['TIME_ZONE']);
         spl_autoload_register('System\Mist::loadClass') or die('Function spl_autoload_register called failed!');//自动加载类定义
 
-        self::status('init_begin');
         //-- 普通常量定义 --//
         define('SYSTEM_PATH',BASE_PATH.'System/');
         define('RUNTIME_PATH',BASE_PATH.'Runtime/');
+        define('PUBLIC_PATH',BASE_PATH.'public/');
         define('APP_PATH',BASE_PATH.'Application/');
         define('APP_NAME',self::$_config['APP_NAME']);   //定义应用名称
         define('IS_WIN',false !== stripos(PHP_OS, 'WIN')); //运行环境
@@ -133,6 +133,12 @@ final class Mist{
             }
         }
 
+
+        define('URL_BASE_PATH', (Util::isHTTPS() ? 'https://' :'http://').$_SERVER['HTTP_HOST'].dirname($_SERVER['SCRIPT_NAME']).'/');
+        define('URL_PUBLIC_PATH',URL_BASE_PATH.'Public/');
+
+
+        self::status('init_begin');
         register_shutdown_function('System\Mist::end');
         set_error_handler('System\Mist::handleError',E_ALL|E_STRICT );//报告所有的错误，PHP5.4以后E_STRICT成为E_ALL的一部分
         set_exception_handler('System\Mist::handleException');
