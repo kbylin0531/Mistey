@@ -38,3 +38,5 @@
       优点:URL地址可以很简短，只需要直接输入操作名称就可以访问(在单个模块下优点突出)
       缺点:操作与参数之间的分割符需要着重设置，否则会出现解析歧义
 
+   12.二维码PHP开源项目：http://sourceforge.net/projects/phpqrcode/?source=top3_dlp_t5
+
