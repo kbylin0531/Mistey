@@ -12,7 +12,6 @@ use System\Core\Dispatcher;
 use System\Core\Log;
 use System\Core\URLHelper;
 use System\Exception\ClassNotFoundException;
-use System\Utils\LiteBuilder;
 use System\Utils\Util;
 
 defined('BASE_PATH') or die('No Permission!');
@@ -382,6 +381,50 @@ final class Mist{
 
 
     /**
+     * @param array $trace
+     * @return string
+     */
+    public static function formatErrorTrace(array $trace){
+        $traceString = '';
+        if(is_array($trace)){
+            foreach($trace as $key => $val){
+                //第一行
+                $traceString .= "#{$key}";
+                if(isset($val['file'])){
+                    $traceString .= "  FILE[{$val['file']}] ";
+                }
+                if(isset($val['line'])){
+                    $traceString .= "  LINE[{$val['line']}] ";
+                }
+                $traceString .= '<br />';
+
+                //次行
+                if(isset($val['function'])){
+                    $traceString .= "CALL [";
+                    if(isset($val['class'])){
+                        if(isset($val['type'])){
+                            $traceString .= "{$val['class']}{$val['type']}{$val['function']}";
+                        }
+                    }else{
+                        $traceString .= $val['function'];
+                    }
+                    if(isset($val['args'])){
+                        foreach($val['args'] as $v){
+                            $traceString .= gettype($v).',';
+                        }
+                        $traceString = trim($traceString,',');
+                    }
+                }
+
+
+            }
+        }else{
+            $traceString = var_export($trace,true);
+        }
+        return $traceString;
+    }
+
+    /**
      * 处理异常的发生
      * 开放模式下允许将Exception打印打浏览器中
      * 部署模式下不建议这么做，因为回退栈中可能保存敏感信息
@@ -389,11 +432,13 @@ final class Mist{
      */
     public static function handleException($e){
         ob_end_clean();
+//        $trace = $e->getTrace();
+        $traceString = $e->getTraceAsString();
         //错误信息
         $vars = array(
             'message'   => get_class($e).' : '.iconv('gbk','utf-8',$e->getMessage()),
             'position'  => 'File:'.$e->getFile().'   Line:'.$e->getLine(),
-            'trace'     => $e->getTraceAsString(),//回溯信息，可能会暴露数据库等敏感信息
+            'trace'     => $traceString,//回溯信息，可能会暴露数据库等敏感信息
         );
         try{
             self::$_errors[] = Log::write($vars);

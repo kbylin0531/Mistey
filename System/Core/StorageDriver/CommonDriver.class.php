@@ -73,6 +73,17 @@ class CommonDriver{
     }
 
     /**
+     * 设定文件的访问和修改时间
+     * @param string $filename 文件路径
+     * @param int $time
+     * @param int $atime
+     * @return bool
+     */
+    public function touch($filename, $time = null, $atime = null){
+        return touch($filename, $time,$atime);
+    }
+
+    /**
      * 删除文件
      * @param string $filepath
      * @return bool
