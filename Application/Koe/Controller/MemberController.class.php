@@ -19,13 +19,13 @@ class MemberController extends KoeController{
     }
 
     /**
-     * »ñÈ¡ÓÃ»§ÁĞ±íÊı¾İ
+     * è·å–ç”¨æˆ·åˆ—è¡¨æ•°æ®
      */
     public function get() {
         KoeTool::show_json($this->sql->get());
     }
     /**
-     * ÓÃ»§Ìí¼Ó
+     * ç”¨æˆ·æ·»åŠ 
      */
     public function add(){
         if (!$this->in['name'] ||
@@ -48,7 +48,7 @@ class MemberController extends KoeController{
     }
 
     /**
-     * ±à¼­
+     * ç¼–è¾‘
      */
     public function edit() {
         if (!$this->in['name'] ||
@@ -60,7 +60,7 @@ class MemberController extends KoeController{
         $this->in['password_to'] = rawurldecode($this->in['password_to']);
         if ($this->in['name'] == 'admin') KoeTool::show_json($this->L['default_user_can_not_do'],false);
 
-        //²éÕÒµ½Ò»Ìõ¼ÇÂ¼£¬ĞŞ¸ÄÎª¸ÃÊı×é
+        //æŸ¥æ‰¾åˆ°ä¸€æ¡è®°å½•ï¼Œä¿®æ”¹ä¸ºè¯¥æ•°ç»„
         $user = $this->sql->get($this->in['name']);
         $user['name'] = $this->in['name_to'];
         $user['role'] = $this->in['role_to'];
@@ -76,7 +76,7 @@ class MemberController extends KoeController{
     }
 
     /**
-     * É¾³ı
+     * åˆ é™¤
      */
     public function del() {
         $name = $this->in['name'];
@@ -89,9 +89,9 @@ class MemberController extends KoeController{
         KoeTool::show_json($this->L['error'],false);
     }
 
-    //============ÄÚ²¿´¦Àíº¯Êı=============
+    //============å†…éƒ¨å¤„ç†å‡½æ•°=============
     /**
-     * ³õÊ¼»¯ÓÃ»§Êı¾İºÍÅäÖÃ¡£
+     * åˆå§‹åŒ–ç”¨æˆ·æ•°æ®å’Œé…ç½®ã€‚
      * @param $name
      */
     public function _initUser($name){

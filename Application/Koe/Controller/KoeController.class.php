@@ -7,6 +7,7 @@
  */
 namespace Application\Koe\Controller;
 use System\Core\Controller;
+use System\Core\LangHelper;
 use System\Utils\Util;
 use Utils\Koe\KoeTool;
 use Utils\Koe\WebTool;
@@ -16,110 +17,66 @@ abstract class KoeController extends Controller{
     public $in;
     public $db;
     /**
-     * Ä£°åÄ¿Â¼
+     * æ¨¡æ¿ç›®å½•
      * @var string
      */
     public $tpl = '';
 
     /**
-     * Ä£°å±äÁ¿
+     * æ¨¡æ¿å˜é‡
      * @var array
      */
     public $values = array();
-
-    public $L;
+    /**
+     * @var array|null
+     */
+    public $L = null;
 
     /**
-     * È«¾ÖÅäÖÃ
+     * å…¨å±€é…ç½®
      * @var array
      */
     protected $config = array();
 
     /**
-     * ¹¹Ôìº¯Êý
+     * æž„é€ å‡½æ•°
      */
     public function __construct(){
         parent::__construct();
-        //³õÊ¼»¯
+        //åˆå§‹åŒ–
         $this->koeInit();
         global $in,$config,$db,$L;
         $this -> db  = $db;
-        $this -> L 	 = $L;
+        $this -> L 	 = $L ;
         $this -> values['in'] = $this -> in = &$in;
         $this -> values['config'] = $this -> config = &$config;
-        $this->tpl = BASE_PATH.'Application/'.$this->context['m'].'/View/'.$this->context['c'].'/';//¿ØÖÆÆ÷Ãû³Æ
+        $this->tpl = BASE_PATH.'Application/'.$this->context['m'].'/View/'.$this->context['c'].'/';//æŽ§åˆ¶å™¨åç§°
 //        Util::dump($this->tpl);exit;
-    }
 
 
-    /**
-     * ¼ÓÔØÄ£ÐÍ
-     * @param string $class
-     */
-    public function loadModel($class){
-        $args = func_get_args();
-        $this -> $class = call_user_func_array('init_model', $args);
-        return $this -> $class;
+        defined('URL_KOE_STATIC_PATH') or define('URL_KOE_STATIC_PATH',URL_PUBLIC_PATH.'Koe/static/');
+        defined('URL_KOE_IMG_PATH') or define('URL_KOE_IMG_PATH',URL_KOE_STATIC_PATH.'images/');
+        defined('URL_KOE_JS_PATH') or define('URL_KOE_JS_PATH',URL_KOE_STATIC_PATH.'js/');
+        defined('URL_KOE_STYLE_PATH') or define('URL_KOE_STYLE_PATH',URL_KOE_STATIC_PATH.'style/');
+
+//        Util::dump(URL_PUBLIC_PATH,KOE_STATIC_PATH);exit;
+
+        //åŠ è½½æ¨¡å—è¯­è¨€åŒ…
+        LangHelper::setOuterLangPath(BASE_PATH.'Lang/Koe/');
+        $this->L = LangHelper::loadLang(LangHelper::LANG_ZH_CN);
+        $this->assign('L',$this->L);
+
     }
 
-    /**
-     * ¼ÓÔØÀà¿âÎÄ¼þ
-     * @param string $class
-     */
-    public function loadClass($class){
-        if (1 === func_num_args()) {
-            $this -> $class = new $class;
-        } else {
-            $reflectionObj = new \ReflectionClass($class);
-            $args = func_get_args();
-            array_shift($args);
-            $this -> $class = $reflectionObj -> newInstanceArgs($args);
-        }
-        return $this -> $class;
-    }
-
-    /**
-     * @param array|string $tpl_var
-     * @param null $value
-     * @param bool|false $nocache
-     * @return null
-     */
-    public function assign($tpl_var, $value = NULL, $nocache = false){
-        if (is_array($tpl_var)) {
-            foreach ($tpl_var as $_key => $_val) {
-                if ($_key != '') {
-                    $this->values[$_key] = $_val;
-                }
-            }
-        } else {
-            if ($tpl_var != '') {
-                $this->values[$tpl_var] = $value;
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * ÏÔÊ¾Ä£°å
-     * @param string $template
-     * @param null $cache_id
-     * @param null $compile_id
-     * @param null $parent
-     */
-    public function display($template = null, $cache_id = null, $compile_id = null, $parent = null){
-//        global $L,$LNG;
-        extract($this->values);
-        require($this->tpl.$template);
-    }
 
     public function koeInit(){
         //10min pathInfoMuti,search,upload,download...
         @set_time_limit(600);
         @ini_set('session.cache_expire',600);
 
-        //»ñÈ¡¸ùÄ¿Â¼
+        //èŽ·å–æ ¹ç›®å½•
         $web_root = str_replace(Util::path($_SERVER['SCRIPT_NAME']),'',KoeTool::P(dirname(dirname(__FILE__))).'/index.php').'/';
-        if (substr($web_root,-10) == 'index.php/') {//½â¾ö²¿·ÖÖ÷»ú²»¼æÈÝÎÊÌâ
+        if (substr($web_root,-10) == 'index.php/') {//è§£å†³éƒ¨åˆ†ä¸»æœºä¸å…¼å®¹é—®é¢˜
             $web_root = KoeTool::P($_SERVER['DOCUMENT_ROOT']).'/';
         }
 
@@ -127,39 +84,39 @@ abstract class KoeController extends Controller{
         define('HOST', (KoeTool::isHTTPS() ? 'https://' :'http://').$_SERVER['HTTP_HOST'].'/');
 
         define('BASIC_PATH',    SYSTEM_PATH.'Projects/KodExplorer/');
-        define('APPHOST',       HOST.str_replace(WEB_ROOT,'',BASIC_PATH));//³ÌÐò¸ùÄ¿Â¼
-        define('TEMPLATE',		BASIC_PATH .'template/');	//Ä£°æÎÄ¼þÂ·¾¶
-        define('CONTROLLER_DIR',BASIC_PATH .'controller/'); //¿ØÖÆÆ÷Ä¿Â¼
-        define('MODEL_DIR',		BASIC_PATH .'model/');		//Ä£ÐÍÄ¿Â¼
-        define('LIB_DIR',		BASIC_PATH .'lib/');		//¿âÄ¿Â¼
-        define('FUNCTION_DIR',	LIB_DIR .'function/');		//º¯Êý¿âÄ¿Â¼
-        define('CLASS_DIR',		LIB_DIR .'class/');			//ÄÚÄ¿Â¼
-        define('CORER_DIR',		LIB_DIR .'core/');			//ºËÐÄÄ¿Â¼
-        define('DATA_PATH',     BASIC_PATH .'data/');       //ÓÃ»§Êý¾ÝÄ¿Â¼
-        define('LOG_PATH',      DATA_PATH .'log/');         //ÈÕÖ¾Ä¿Â¼
-        define('USER_SYSTEM',   DATA_PATH .'system/');      //ÓÃ»§Êý¾Ý´æ´¢Ä¿Â¼
-        define('DATA_THUMB',    DATA_PATH .'thumb/');       //ËõÂÔÍ¼Éú³É´æ·Å
-        define('LANGUAGE_PATH', DATA_PATH .'i18n/');        //¶àÓïÑÔÄ¿Â¼
-        define('STATIC_PATH',   BASIC_PATH.'static/');//¾²Ì¬ÎÄ¼þÄ¿Â¼
+        define('APPHOST',       HOST.str_replace(WEB_ROOT,'',BASIC_PATH));//ç¨‹åºæ ¹ç›®å½•
+        define('TEMPLATE',		BASIC_PATH .'template/');	//æ¨¡ç‰ˆæ–‡ä»¶è·¯å¾„
+        define('CONTROLLER_DIR',BASIC_PATH .'controller/'); //æŽ§åˆ¶å™¨ç›®å½•
+        define('MODEL_DIR',		BASIC_PATH .'model/');		//æ¨¡åž‹ç›®å½•
+        define('LIB_DIR',		BASIC_PATH .'lib/');		//åº“ç›®å½•
+        define('FUNCTION_DIR',	LIB_DIR .'function/');		//å‡½æ•°åº“ç›®å½•
+        define('CLASS_DIR',		LIB_DIR .'class/');			//å†…ç›®å½•
+        define('CORER_DIR',		LIB_DIR .'core/');			//æ ¸å¿ƒç›®å½•
+        define('DATA_PATH',     BASIC_PATH .'data/');       //ç”¨æˆ·æ•°æ®ç›®å½•
+        define('LOG_PATH',      DATA_PATH .'log/');         //æ—¥å¿—ç›®å½•
+        define('USER_SYSTEM',   DATA_PATH .'system/');      //ç”¨æˆ·æ•°æ®å­˜å‚¨ç›®å½•
+        define('DATA_THUMB',    DATA_PATH .'thumb/');       //ç¼©ç•¥å›¾ç”Ÿæˆå­˜æ”¾
+        define('LANGUAGE_PATH', DATA_PATH .'i18n/');        //å¤šè¯­è¨€ç›®å½•
+        define('STATIC_PATH',   BASIC_PATH.'static/');//é™æ€æ–‡ä»¶ç›®å½•
 
-        define('STATIC_JS','_dev');  //_dev(¿ª·¢×´Ì¬)||app(´ò°üÑ¹Ëõ)
-        define('STATIC_LESS','less');//less(¿ª·¢×´Ì¬)||css(´ò°üÑ¹Ëõ)
+        define('STATIC_JS','_dev');  //_dev(å¼€å‘çŠ¶æ€)||app(æ‰“åŒ…åŽ‹ç¼©)
+        define('STATIC_LESS','less');//less(å¼€å‘çŠ¶æ€)||css(æ‰“åŒ…åŽ‹ç¼©)
 
-//define('STATIC_PATH','http://static.kalcaddle.com/static/');//¾²Ì¬ÎÄ¼þÍ³·ÖÀë,¿Éµ¥¶À½«static²¿Êðµ½CDN
+//define('STATIC_PATH','http://static.kalcaddle.com/static/');//é™æ€æ–‡ä»¶ç»Ÿåˆ†ç¦»,å¯å•ç‹¬å°†staticéƒ¨ç½²åˆ°CDN
 
         /*
-         ¿ÉÒÔ×Ô¶¨Òå¡¾ÓÃ»§Ä¿Â¼¡¿ºÍ¡¾¹«¹²Ä¿Â¼¡¿;ÒÆµ½webÄ¿Â¼Ö®Íâ£¬
-         ¿ÉÒÔÊ¹³ÌÐò¸ü°²È«, ¾Í²»ÓÃÏÞÖÆÓÃ»§µÄÀ©Õ¹ÃûÈ¨ÏÞÁË;
+         å¯ä»¥è‡ªå®šä¹‰ã€ç”¨æˆ·ç›®å½•ã€‘å’Œã€å…¬å…±ç›®å½•ã€‘;ç§»åˆ°webç›®å½•ä¹‹å¤–ï¼Œ
+         å¯ä»¥ä½¿ç¨‹åºæ›´å®‰å…¨, å°±ä¸ç”¨é™åˆ¶ç”¨æˆ·çš„æ‰©å±•åæƒé™äº†;
          */
-        define('USER_PATH',     DATA_PATH .'User/');        //ÓÃ»§Ä¿Â¼
-//×Ô¶¨ÒåÓÃ»§Ä¿Â¼£»ÐèÒªÏÈ½«data/UserÒÆµ½±ðµÄµØ·½ ÔÙÐÞ¸ÄÅäÖÃ£¬ÀýÈç£º
+        define('USER_PATH',     DATA_PATH .'User/');        //ç”¨æˆ·ç›®å½•
+//è‡ªå®šä¹‰ç”¨æˆ·ç›®å½•ï¼›éœ€è¦å…ˆå°†data/Userç§»åˆ°åˆ«çš„åœ°æ–¹ å†ä¿®æ”¹é…ç½®ï¼Œä¾‹å¦‚ï¼š
 //define('USER_PATH',   DATA_PATH .'/Library/WebServer/Documents/User');
-        define('PUBLIC_PATH',   DATA_PATH .'public/');     //¹«¹²Ä¿Â¼
-//¹«¹²¹²ÏíÄ¿Â¼,¶ÁÐ´È¨ÏÞ¸úËæÓÃ»§Ä¿Â¼µÄ¶ÁÐ´È¨ÏÞ ÔÙÐÞ¸ÄÅäÖÃ£¬ÀýÈç£º
+//        define('PUBLIC_PATH',   DATA_PATH .'public/');     //å…¬å…±ç›®å½•
+//å…¬å…±å…±äº«ç›®å½•,è¯»å†™æƒé™è·Ÿéšç”¨æˆ·ç›®å½•çš„è¯»å†™æƒé™ å†ä¿®æ”¹é…ç½®ï¼Œä¾‹å¦‚ï¼š
 //define('PUBLIC_PATH','/Library/WebServer/Documents/Public/');
         /*
-         * office·þÎñÆ÷ÅäÖÃ£»Ä¬ÈÏµ÷ÓÃµÄÎ¢ÈíµÄ½Ó¿Ú£¬³ÌÐòÐèÒª²¿Êðµ½ÍâÍø¡£
-         * ±¾µØ²¿Êðweboffice ÒýºÅÄÚÌîÐ´office½âÎö·þÎñÆ÷µØÖ· ÐÎÈç:  http://---/view.aspx?src=
+         * officeæœåŠ¡å™¨é…ç½®ï¼›é»˜è®¤è°ƒç”¨çš„å¾®è½¯çš„æŽ¥å£ï¼Œç¨‹åºéœ€è¦éƒ¨ç½²åˆ°å¤–ç½‘ã€‚
+         * æœ¬åœ°éƒ¨ç½²weboffice å¼•å·å†…å¡«å†™officeè§£æžæœåŠ¡å™¨åœ°å€ å½¢å¦‚:  http://---/view.aspx?src=
          */
         define('OFFICE_SERVER','');
 
@@ -175,33 +132,33 @@ abstract class KoeController extends Controller{
 //        include(BASIC_PATH.'config/setting.php');
 //        include(BASIC_PATH.'config/version.php');
 
-        //Êý¾ÝµØÖ·¶¨Òå¡£
-        $GLOBALS['config']['pic_thumb']	= BASIC_PATH.'data/thumb/';		// ËõÂÔÍ¼Éú³É´æ·ÅµØÖ·
-        $GLOBALS['config']['cache_dir']	= BASIC_PATH.'data/cache/';		// »º´æÎÄ¼þµØÖ·
-        $GLOBALS['config']['app_startTime'] = KoeTool::mtime();         			//ÆðÊ¼Ê±¼ä
+        //æ•°æ®åœ°å€å®šä¹‰ã€‚
+        $GLOBALS['config']['pic_thumb']	= BASIC_PATH.'data/thumb/';		// ç¼©ç•¥å›¾ç”Ÿæˆå­˜æ”¾åœ°å€
+        $GLOBALS['config']['cache_dir']	= BASIC_PATH.'data/cache/';		// ç¼“å­˜æ–‡ä»¶åœ°å€
+        $GLOBALS['config']['app_startTime'] = KoeTool::mtime();         			//èµ·å§‹æ—¶é—´
 
-        //ÏµÍ³±àÂëÅäÖÃ
-        $GLOBALS['config']['app_charset']	 ='utf-8';			//¸Ã³ÌÐòÕûÌåÍ³Ò»±àÂë
-        $GLOBALS['config']['check_charset'] = 'ASCII,UTF-8,GBK';//ÎÄ¼þ´ò¿ª×Ô¶¯¼ì²â±àÂë
+        //ç³»ç»Ÿç¼–ç é…ç½®
+        $GLOBALS['config']['app_charset']	 ='utf-8';			//è¯¥ç¨‹åºæ•´ä½“ç»Ÿä¸€ç¼–ç 
+        $GLOBALS['config']['check_charset'] = 'ASCII,UTF-8,GBK';//æ–‡ä»¶æ‰“å¼€è‡ªåŠ¨æ£€æµ‹ç¼–ç 
         //when edit a file ;check charset and auto converto utf-8;
         if (strtoupper(substr(PHP_OS, 0,3)) === 'WIN') {
             $GLOBALS['config']['system_os']='windows';
             $GLOBALS['config']['system_charset']='gbk';//user set your server system charset
-        } else {
+        }else{
             $GLOBALS['config']['system_os']='linux';
             $GLOBALS['config']['system_charset']='utf-8';
         }
 
         $GLOBALS['in'] = WebTool::parseIncoming();
         @session_start();
-        session_write_close();//±ÜÃâsessionËø¶¨ÎÊÌâ;Ö®ºóÒªÐÞ¸Ä$_SESSION ÐèÒªÏÈµ÷ÓÃsession_start()
+        session_write_close();//é¿å…sessioné”å®šé—®é¢˜;ä¹‹åŽè¦ä¿®æ”¹$_SESSION éœ€è¦å…ˆè°ƒç”¨session_start()
 //        $GLOBALS['config']['autorun'] = array(
 //            array('controller'=>'User','function'=>'loginCheck'),
 //            array('controller'=>'user','function'=>'authCheck')
 //        );
 
         $GLOBALS['config']['setting_all'] = array(
-            'language' 		=> 'en:English,zh_CN:¼òÌåÖÐÎÄ,zh_TW:·±ówÖÐÎÄ',
+            'language' 		=> 'en:English,zh_CN:ç®€ä½“ä¸­æ–‡,zh_TW:ç¹é«”ä¸­æ–‡',
             'themeall'		=> 'default/:<b>areo blue</b>:default,simple/:<b>simple</b>:simple,metro/:<b>metro</b>:metro,metro/blue_:metro-blue:color,metro/leaf_:metro-green:color,metro/green_:metro-green+:color,metro/grey_:metro-grey:color,metro/purple_:metro-purple:color,metro/pink_:metro-pink:color,metro/orange_:metro-orange:color',
             'codethemeall'	=> 'chrome,clouds,crimson_editor,eclipse,github,solarized_light,tomorrow,xcode,ambiance,idle_fingers,monokai,pastel_on_dark,solarized_dark,tomorrow_night_blue,tomorrow_night_eighties',
             'wallall'		=> '1,2,3,4,5,6,7,8,9,10,11,12,13',
@@ -209,7 +166,7 @@ abstract class KoeController extends Controller{
             'moviethemeall'	=> 'webplayer,qqplayer,vplayer,tvlive,youtube'
         );
 
-        //ÐÂÓÃ»§³õÊ¼»¯ÅäÖÃ
+        //æ–°ç”¨æˆ·åˆå§‹åŒ–é…ç½®
         $GLOBALS['config']['setting_default'] = array(
             'list_type'			=> 'icon',		// list||icon
             'list_sort_field'	=> 'name',		// name||size||ext||mtime
@@ -221,20 +178,20 @@ abstract class KoeController extends Controller{
             'movietheme'		=> 'webplayer'	// movie player theme
         );
 
-        //³õÊ¼»¯ÏµÍ³ÅäÖÃ
+        //åˆå§‹åŒ–ç³»ç»Ÿé…ç½®
         $GLOBALS['config']['setting_system_default'] = array(
             'system_password'	=> KoeTool::randString(10),
             'system_name'		=> 'KodExplorer',
-            'system_desc'		=> '¡ª¡ªÃ¢¹ûÔÆ.×ÊÔ´¹ÜÀíÆ÷',
-            'path_hidden'		=> '.htaccess,.git,.DS_Store,.gitignore',//Ä¿Â¼ÁÐ±íÒþ²ØµÄÏî
-            'auto_login'		=> '1',			// ÊÇ·ñ×Ô¶¯µÇÂ¼£»µÇÂ¼ÓÃ»§Îªguest
+            'system_desc'		=> 'â€”â€”èŠ’æžœäº‘.èµ„æºç®¡ç†å™¨',
+            'path_hidden'		=> '.htaccess,.git,.DS_Store,.gitignore',//ç›®å½•åˆ—è¡¨éšè—çš„é¡¹
+            'auto_login'		=> '1',			// æ˜¯å¦è‡ªåŠ¨ç™»å½•ï¼›ç™»å½•ç”¨æˆ·ä¸ºguest
 
-            'first_in'			=> 'explorer',	// µÇÂ¼ºóÄ¬ÈÏ½øÈë[explorer desktop,editor]
-            'new_user_app'		=> '365ÈÕÀú,pptvÖ±²¥,ps,qqÒôÀÖ,ËÑºüÓ°ÊÓ,Ê±ÖÓ,ÌìÆø,Ë®¹ûÈÌÕß,¼ÆËãÆ÷,¶¹°êµçÌ¨,ÒôÔÃÌ¨,icloud',
+            'first_in'			=> 'explorer',	// ç™»å½•åŽé»˜è®¤è¿›å…¥[explorer desktop,editor]
+            'new_user_app'		=> '365æ—¥åŽ†,pptvç›´æ’­,ps,qqéŸ³ä¹,æœç‹å½±è§†,æ—¶é’Ÿ,å¤©æ°”,æ°´æžœå¿è€…,è®¡ç®—å™¨,è±†ç“£ç”µå°,éŸ³æ‚¦å°,icloud',
             'new_user_folder'	=> 'download,music,image,desktop'
         );
 
-        //³õÊ¼»¯Ä¬ÈÏ²Ëµ¥ÅäÖÃ
+        //åˆå§‹åŒ–é»˜è®¤èœå•é…ç½®
         $GLOBALS['config']['setting_menu_default'] = array(
             array('name'=>'desktop','type'=>'system','url'=>'index.php?desktop','target'=>'_self','use'=>'1'),
             array('name'=>'explorer','type'=>'system','url'=>'index.php?explorer','target'=>'_self','use'=>'1'),
@@ -242,8 +199,8 @@ abstract class KoeController extends Controller{
             array('name'=>'adminer','type'=>'','url'=>'./lib/plugins/adminer/','target'=>'_blank','use'=>'1')
         );
 
-        //È¨ÏÞÅäÖÃ£»¾«È·µ½ÐèÒª×öÈ¨ÏÞ¿ØÖÆµÄ¿ØÖÆÆ÷ºÍ·½·¨
-        //ÐèÒªÈ¨ÏÞÈÏÖ¤µÄAction;root×éÎÞÊÓÈ¨ÏÞ
+        //æƒé™é…ç½®ï¼›ç²¾ç¡®åˆ°éœ€è¦åšæƒé™æŽ§åˆ¶çš„æŽ§åˆ¶å™¨å’Œæ–¹æ³•
+        //éœ€è¦æƒé™è®¤è¯çš„Action;rootç»„æ— è§†æƒé™
         $GLOBALS['config']['role_setting'] = array(
             'explorer'	=> array(
                 'mkdir','mkfile','pathRname','pathDelete','zip','unzip','pathCopy','pathChmod',
@@ -251,7 +208,7 @@ abstract class KoeController extends Controller{
                 'serverDownload','fileUpload','search','pathDeleteRecycle',
                 'fileDownload','zipDownload','fileDownloadRemove','fileProxy','makeFileProxy'),
             'app'		=> array('user_app','init_app','add','edit','del'),//
-            'user'		=> array('changePassword'),//¿ÉÒÔÉèÁ¢¹«ÓÃÕË»§
+            'user'		=> array('changePassword'),//å¯ä»¥è®¾ç«‹å…¬ç”¨è´¦æˆ·
             'editor'	=> array('fileGet','fileSave'),
             'userShare' => array('set','del'),
             'setting'	=> array('set','system_setting','php_info'),

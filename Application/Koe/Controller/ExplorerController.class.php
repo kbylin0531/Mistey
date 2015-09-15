@@ -6,7 +6,6 @@
  * Time: 18:42
  */
 namespace Application\Koe\Controller;
-
 use Utils\Koe\CreatMiniature;
 use Utils\Koe\FileCache;
 use Utils\Koe\FileTool;
@@ -34,8 +33,8 @@ class ExplorerController extends KoeController{
         }else if(isset($_SESSION['this_path'])){
             $dir = KoeTool::_DIR_CLEAR($_SESSION['this_path']);
         }else{
-            $dir = '/';//Ê×´Î½øÈëÏµÍ³,²»´ø²ÎÊı
-            if ($GLOBALS['is_root']) $dir = WEB_ROOT;
+            $dir = '/';//é¦–æ¬¡è¿›å…¥ç³»ç»Ÿ,ä¸å¸¦å‚æ•°
+            if (isset($GLOBALS['is_root'])) $dir = WEB_ROOT;
         }
         $dir = rtrim($dir,'/').'/';
         $this->assign('dir',$dir);
@@ -113,7 +112,7 @@ class ExplorerController extends KoeController{
             $_SESSION['history']=$hi->getHistory();
         }
 
-        //»ØÊÕÕ¾²»¼ÇÂ¼Ç°½øºóÍË
+        //å›æ”¶ç«™ä¸è®°å½•å‰è¿›åé€€
         if (isset($this->in['type'])){
             if($this->in['path'] != '*recycle*/' && $this->in['type'] !=='desktop'){
                 $_SESSION['this_path']=$user_path;
@@ -139,8 +138,8 @@ class ExplorerController extends KoeController{
         KoeTool::_DIR_OUT($list);
         KoeTool::show_json($list);
     }
-    public function treeList(){//Ê÷½á¹¹
-        $app = $this->in['app'];//ÊÇ·ñ»ñÈ¡ÎÄ¼ş ´«folder|file
+    public function treeList(){//æ ‘ç»“æ„
+        $app = $this->in['app'];//æ˜¯å¦è·å–æ–‡ä»¶ ä¼ folder|file
         if (isset($this->in['type']) && $this->in['type']=='init'){
             $this->_tree_init($app);
         }
@@ -150,7 +149,7 @@ class ExplorerController extends KoeController{
             $path=KoeTool::_DIR($this->in['path'].$this->in['name']);
         }
         if (!is_readable($path)) KoeTool::show_json($path,false);
-        $list_file = ($app == 'editor'?true:false);//±à¼­Æ÷ÄÚÁĞ³öÎÄ¼ş
+        $list_file = ($app == 'editor'?true:false);//ç¼–è¾‘å™¨å†…åˆ—å‡ºæ–‡ä»¶
         $list=$this->path($path,$list_file,true);
         function sort_by_key($a, $b){
             if ($a['name'] == $b['name']) return 0;
@@ -200,10 +199,10 @@ class ExplorerController extends KoeController{
         defined('MYHOME') or die('MYHOME not defined!');
         $list_root  = $this->path(KoeTool::_DIR(MYHOME),$check_file,true);
         $list_public = $this->path(PUBLIC_PATH,$check_file,true);
-        if ($check_file) {//±à¼­Æ÷
+        if ($check_file) {//ç¼–è¾‘å™¨
             $root = array_merge($list_root['folderlist'],$list_root['filelist']);
             $public = array_merge($list_public['folderlist'],$list_public['filelist']);
-        }else{//ÎÄ¼ş¹ÜÀíÆ÷
+        }else{//æ–‡ä»¶ç®¡ç†å™¨
             $root  = $list_root['folderlist'];
             $public = $list_public['folderlist'];
         }
@@ -263,7 +262,7 @@ class ExplorerController extends KoeController{
         foreach ($list as $val) {
             $path_this = KoeTool::_DIR($val['path']);
             $filename  = FileTool::get_path_this($path_this);
-            $filename = FileTool::get_filename_auto(USER_RECYCLE.$filename,date(' h.i.s'));//ÒÑ´æÔÚ´¦Àí ´´½¨¸±±¾
+            $filename = FileTool::get_filename_auto(USER_RECYCLE.$filename,date(' h.i.s'));//å·²å­˜åœ¨å¤„ç† åˆ›å»ºå‰¯æœ¬
             if (@rename($path_this,$filename)) {
                 $success++;
             }else{
@@ -360,7 +359,7 @@ class ExplorerController extends KoeController{
         foreach ($clipboard as $val) {
             $path_copy = KoeTool::_DIR($val['path']);
             $filename  = FileTool::get_path_this($path_copy);
-            $filename = FileTool::get_filename_auto($path_past.$filename);//ÒÑ´æÔÚ´¦Àí ´´½¨¸±±¾
+            $filename = FileTool::get_filename_auto($path_past.$filename);//å·²å­˜åœ¨å¤„ç† åˆ›å»ºå‰¯æœ¬
             if (@rename($path_copy,$filename)) {
                 $success++;
             }else{
@@ -466,7 +465,7 @@ class ExplorerController extends KoeController{
     public function fileDownload(){
         FileTool::file_put_out($this->path,true);
     }
-    //ÎÄ¼şÏÂÔØºóÉ¾³ı,ÓÃÓÚÎÄ¼ş¼ĞÏÂÔØ
+    //æ–‡ä»¶ä¸‹è½½ååˆ é™¤,ç”¨äºæ–‡ä»¶å¤¹ä¸‹è½½
     public function fileDownloadRemove(){
         defined('USER_TEMP') or die('USER_TEMP not defined!');
         $path = rawurldecode(KoeTool::_DIR_CLEAR($this->in['path']));
@@ -478,12 +477,12 @@ class ExplorerController extends KoeController{
         defined('USER_TEMP') or die('USER_TEMP not defined!');
         if(!file_exists(USER_TEMP)){
             mkdir(USER_TEMP);
-        }else{//Çå³ıÎ´É¾³ıµÄÁÙÊ±ÎÄ¼ş£¬Ò»ÌìÇ°
+        }else{//æ¸…é™¤æœªåˆ é™¤çš„ä¸´æ—¶æ–‡ä»¶ï¼Œä¸€å¤©å‰
             $list = FileTool::path_list(USER_TEMP,true,false);
             $max_time = 3600*24;
             if ($list['filelist']>=1) {
                 for ($i=0; $i < count($list['filelist']); $i++) {
-                    $create_time = $list['filelist'][$i]['mtime'];//×îºóĞŞ¸ÄÊ±¼ä
+                    $create_time = $list['filelist'][$i]['mtime'];//æœ€åä¿®æ”¹æ—¶é—´
                     if(time() - $create_time >$max_time){
                         FileTool::del_file($list['filelist'][$i]['path'].$list['filelist'][$i]['name']);
                     }
@@ -501,7 +500,7 @@ class ExplorerController extends KoeController{
         for ($i=0; $i < $list_num; $i++) {
             $zip_list[$i]['path'] = rtrim(KoeTool::_DIR($zip_list[$i]['path']),'/');
         }
-        //Ö¸¶¨Ä¿Â¼
+        //æŒ‡å®šç›®å½•
         $basic_path = $zip_path;
         if (!isset($zip_path)){
             $basic_path = FileTool::get_path_father($zip_list[0]['path']);
@@ -542,10 +541,10 @@ class ExplorerController extends KoeController{
         $name = FileTool::get_path_this($path);
         $name = substr($name,0,strrpos($name,'.'));
         $unzip_to=FileTool::get_path_father($path).$name;
-        if (isset($this->in['path_to'])) {//½âÑ¹µ½Ö¸¶¨Î»ÖÃ
+        if (isset($this->in['path_to'])) {//è§£å‹åˆ°æŒ‡å®šä½ç½®
             $unzip_to =KoeTool:: _DIR($this->in['path_to']);
         }
-        //ËùÔÚÄ¿Â¼²»¿ÉĞ´
+        //æ‰€åœ¨ç›®å½•ä¸å¯å†™
         if (!is_writeable(FileTool::get_path_father($path))){
             KoeTool::show_json($this->L['no_permission_write'],false);
         }
@@ -553,12 +552,12 @@ class ExplorerController extends KoeController{
         if ($GLOBALS['is_root'] == 1){
             $result = $zip->extract(PCLZIP_OPT_PATH,$unzip_to,
                 PCLZIP_OPT_SET_CHMOD,0777,
-                PCLZIP_OPT_REPLACE_NEWER);//½âÑ¹µ½Ä³¸öµØ·½,¸²¸Ç·½Ê½
+                PCLZIP_OPT_REPLACE_NEWER);//è§£å‹åˆ°æŸä¸ªåœ°æ–¹,è¦†ç›–æ–¹å¼
         }else{
             $result = $zip->extract(PCLZIP_OPT_PATH,$unzip_to,
                 PCLZIP_OPT_SET_CHMOD,0777,
                 PCLZIP_CB_PRE_EXTRACT,"checkExtUnzip",
-                PCLZIP_OPT_REPLACE_NEWER);//½âÑ¹µ½Ä³¸öµØ·½,¸²¸Ç·½Ê½
+                PCLZIP_OPT_REPLACE_NEWER);//è§£å‹åˆ°æŸä¸ªåœ°æ–¹,è¦†ç›–æ–¹å¼
         }
         if ($result == 0) {
             KoeTool::show_json("Error : ".$zip->errorInfo(true));
@@ -567,12 +566,12 @@ class ExplorerController extends KoeController{
         }
     }
     public function image(){
-        if (filesize($this->path) <= 1024*10) {//Ğ¡ÓÚ10k ²»ÔÙÉú³ÉËõÂÔÍ¼
+        if (filesize($this->path) <= 1024*10) {//å°äº10k ä¸å†ç”Ÿæˆç¼©ç•¥å›¾
             FileTool::file_put_out($this->path);
         }
         KoeTool::load_class('imageThumb');
         $image= $this->path;
-        $image_md5  = md5_file($image);//ÎÄ¼şmd5
+        $image_md5  = md5_file($image);//æ–‡ä»¶md5
         if (strlen($image_md5)<5) {
             $image_md5 = md5($image);
         }
@@ -581,27 +580,27 @@ class ExplorerController extends KoeController{
         if (!is_dir(DATA_THUMB)){
             mkdir(DATA_THUMB,"0777");
         }
-        if (!file_exists($image_thum)){//Èç¹ûÆ´×°³ÉµÄurl²»´æÔÚÔòÃ»ÓĞÉú³É¹ı
-            if ($_SESSION['this_path']==DATA_THUMB){//µ±Ç°Ä¿Â¼Ôò²»Éú³ÉËõÂÔÍ¼
+        if (!file_exists($image_thum)){//å¦‚æœæ‹¼è£…æˆçš„urlä¸å­˜åœ¨åˆ™æ²¡æœ‰ç”Ÿæˆè¿‡
+            if ($_SESSION['this_path']==DATA_THUMB){//å½“å‰ç›®å½•åˆ™ä¸ç”Ÿæˆç¼©ç•¥å›¾
                 $image_thum=$this->path;
             }else {
                 $cm=new CreatMiniature();
                 $cm->SetVar($image,'file');
-                //$cm->Prorate($image_thum,72,64);//Éú³ÉµÈ±ÈÀıËõÂÔÍ¼
-                $cm->BackFill($image_thum,72,64,true);//µÈ±ÈÀıËõÂÔÍ¼£¬¿Õ°×´¦ÌîÌî³äÍ¸Ã÷É«
+                //$cm->Prorate($image_thum,72,64);//ç”Ÿæˆç­‰æ¯”ä¾‹ç¼©ç•¥å›¾
+                $cm->BackFill($image_thum,72,64,true);//ç­‰æ¯”ä¾‹ç¼©ç•¥å›¾ï¼Œç©ºç™½å¤„å¡«å¡«å……é€æ˜è‰²
             }
         }
-        if (!file_exists($image_thum) || filesize($image_thum)<100){//ËõÂÔÍ¼Éú³ÉÊ§°ÜÔòÓÃÄ¬ÈÏÍ¼±ê
+        if (!file_exists($image_thum) || filesize($image_thum)<100){//ç¼©ç•¥å›¾ç”Ÿæˆå¤±è´¥åˆ™ç”¨é»˜è®¤å›¾æ ‡
             $image_thum=STATIC_PATH.'images/image.png';
         }
-        //Êä³ö
+        //è¾“å‡º
         FileTool::file_put_out($image_thum);
     }
 
-    // Ô¶³ÌÏÂÔØ
+    // è¿œç¨‹ä¸‹è½½
     public function serverDownload() {
         $uuid = 'download_'.$this->in['uuid'];
-        if ($this->in['type'] == 'percent') {//»ñÈ¡ÏÂÔØ½ø¶È
+        if ($this->in['type'] == 'percent') {//è·å–ä¸‹è½½è¿›åº¦
             //KoeTool::show_json($_SESSION[$uuid]);
             if (isset($_SESSION[$uuid])){
                 $info = $_SESSION[$uuid];
@@ -615,12 +614,12 @@ class ExplorerController extends KoeController{
             }else{
                 KoeTool::show_json('',false);
             }
-        }else if($this->in['type'] == 'remove'){//È¡ÏûÏÂÔØ;ÎÄ¼ş±»É¾µôÔò×Ô¶¯Í£Ö¹
+        }else if($this->in['type'] == 'remove'){//å–æ¶ˆä¸‹è½½;æ–‡ä»¶è¢«åˆ æ‰åˆ™è‡ªåŠ¨åœæ­¢
             FileTool::del_file($_SESSION[$uuid]['path']);
             unset($_SESSION[$uuid]);
             KoeTool::show_json('',false);
         }
-        //ÏÂÔØ
+        //ä¸‹è½½
         $save_path = KoeTool::_DIR($this->in['save_path']);
         if (!is_writeable($save_path)) KoeTool::show_json($this->L['no_permission_write'],false);
 
@@ -646,20 +645,20 @@ class ExplorerController extends KoeController{
         }
     }
 
-    //Éú³ÉÁÙÊ±ÎÄ¼şkey
+    //ç”Ÿæˆä¸´æ—¶æ–‡ä»¶key
     public function makeFileProxy(){
         KoeTool::load_class('mcrypt');
         $pass = $this->config['setting_system']['system_password'];
         $fid = Mcrypt::encode($this->path,$pass,60*50*24);
         KoeTool::show_json($fid);
     }
-    //´úÀíÊä³ö
+    //ä»£ç†è¾“å‡º
     public function fileProxy(){
         FileTool::file_put_out($this->path);
     }
 
     /**
-     * ÉÏ´«,html5ÍÏ×§  flash ¶àÎÄ¼ş
+     * ä¸Šä¼ ,html5æ‹–æ‹½  flash å¤šæ–‡ä»¶
      */
     public function fileUpload(){
         $save_path = $this->path;
@@ -675,7 +674,7 @@ class ExplorerController extends KoeController{
             }
         }
         //upload('file',$save_path);
-        //·ÖÆ¬ÉÏ´«
+        //åˆ†ç‰‡ä¸Šä¼ 
         defined('USER_TEMP') or die('USER_TEMP not defined!');
         $temp_dir = USER_TEMP;
         FileTool::mk_dir($temp_dir);
@@ -713,7 +712,7 @@ class ExplorerController extends KoeController{
         return $list;
     }
 
-    //»ñÈ¡ÎÄ¼şÁĞ±í&Å¶exeÎÄ¼şjson½âÎö
+    //è·å–æ–‡ä»¶åˆ—è¡¨&å“¦exeæ–‡ä»¶jsonè§£æ
     private function path($dir,$list_file=true,$check_children=false){
         $path_hidden = $this->config['setting_system']['path_hidden'];
         $ex_name = explode(',',$path_hidden);
@@ -739,7 +738,7 @@ class ExplorerController extends KoeController{
         }
         $list['filelist'] = $filelist_new;
         $list['folderlist'] = $folderlist_new;
-        //¶ÁĞ´È¨ÏŞÅĞ¶Ï
+        //è¯»å†™æƒé™åˆ¤æ–­
         $list['path_type'] = 'readable';
         if (is_writable($dir)) {
             $list['path_type'] = 'writeable';

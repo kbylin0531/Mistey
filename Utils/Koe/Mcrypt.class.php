@@ -13,20 +13,20 @@ class Mcrypt
     public static $default_key = 'a!takA:dlmcldEv,e';
 
     /**
-     * ×Ö·û¼Ó½âÃÜ£¬Ò»´ÎÒ»ÃÜ,¿É¶¨Ê±½âÃÜÓĞĞ§
+     * å­—ç¬¦åŠ è§£å¯†ï¼Œä¸€æ¬¡ä¸€å¯†,å¯å®šæ—¶è§£å¯†æœ‰æ•ˆ
      *
-     * @param string $string Ô­ÎÄ»òÕßÃÜÎÄ
-     *          param string $operation ²Ù×÷(encode | decode)
-     * @param string $key ÃÜÔ¿
-     * @param int $expiry ÃÜÎÄÓĞĞ§ÆÚ,µ¥Î»s,0 ÎªÓÀ¾ÃÓĞĞ§
-     * @return string ´¦ÀíºóµÄ Ô­ÎÄ»òÕß ¾­¹ı base64_encode ´¦ÀíºóµÄÃÜÎÄ
+     * @param string $string åŸæ–‡æˆ–è€…å¯†æ–‡
+     *          param string $operation æ“ä½œ(encode | decode)
+     * @param string $key å¯†é’¥
+     * @param int $expiry å¯†æ–‡æœ‰æ•ˆæœŸ,å•ä½s,0 ä¸ºæ°¸ä¹…æœ‰æ•ˆ
+     * @return string å¤„ç†åçš„ åŸæ–‡æˆ–è€… ç»è¿‡ base64_encode å¤„ç†åçš„å¯†æ–‡
      */
     public static function encode($string, $key = '', $expiry = 3600)
     {
         $ckey_length = 4;
-        $key = md5($key ? $key : self::$default_key); //½âÃÜÃÜ³×
-        $keya = md5(substr($key, 0, 16));         //×öÊı¾İÍêÕûĞÔÑéÖ¤
-        $keyb = md5(substr($key, 16, 16));         //ÓÃÓÚ±ä»¯Éú³ÉµÄÃÜÎÄ (³õÊ¼»¯ÏòÁ¿IV)
+        $key = md5($key ? $key : self::$default_key); //è§£å¯†å¯†åŒ™
+        $keya = md5(substr($key, 0, 16));         //åšæ•°æ®å®Œæ•´æ€§éªŒè¯
+        $keyb = md5(substr($key, 16, 16));         //ç”¨äºå˜åŒ–ç”Ÿæˆçš„å¯†æ–‡ (åˆå§‹åŒ–å‘é‡IV)
         $keyc = substr(md5(microtime()), -$ckey_length);
         $cryptkey = $keya . md5($keya . $keyc);
         $key_length = strlen($cryptkey);
@@ -39,14 +39,14 @@ class Mcrypt
         }
 
         $box = range(0, 255);
-        // ´òÂÒÃÜ³×²¾£¬Ôö¼ÓËæ»úĞÔ
+        // æ‰“ä¹±å¯†åŒ™ç°¿ï¼Œå¢åŠ éšæœºæ€§
         for ($j = $i = 0; $i < 256; $i++) {
             $j = ($j + $box[$i] + $rndkey[$i]) % 256;
             $tmp = $box[$i];
             $box[$i] = $box[$j];
             $box[$j] = $tmp;
         }
-        // ¼Ó½âÃÜ£¬´ÓÃÜ³×²¾µÃ³öÃÜ³×½øĞĞÒì»ò£¬ÔÙ×ª³É×Ö·û
+        // åŠ è§£å¯†ï¼Œä»å¯†åŒ™ç°¿å¾—å‡ºå¯†åŒ™è¿›è¡Œå¼‚æˆ–ï¼Œå†è½¬æˆå­—ç¬¦
         $result = '';
         for ($a = $j = $i = 0; $i < $string_length; $i++) {
             $a = ($a + 1) % 256;
@@ -62,21 +62,21 @@ class Mcrypt
     }
 
     /**
-     * ×Ö·û¼Ó½âÃÜ£¬Ò»´ÎÒ»ÃÜ,¿É¶¨Ê±½âÃÜÓĞĞ§
+     * å­—ç¬¦åŠ è§£å¯†ï¼Œä¸€æ¬¡ä¸€å¯†,å¯å®šæ—¶è§£å¯†æœ‰æ•ˆ
      *
-     * @param string $string Ô­ÎÄ»òÕßÃÜÎÄ
-     *  param string $operation ²Ù×÷(encode | decode)
-     * @param string $key ÃÜÔ¿
-     *  param int $expiry ÃÜÎÄÓĞĞ§ÆÚ,µ¥Î»s,0 ÎªÓÀ¾ÃÓĞĞ§
-     * @return string ´¦ÀíºóµÄ Ô­ÎÄ»òÕß ¾­¹ı base64_encode ´¦ÀíºóµÄÃÜÎÄ
+     * @param string $string åŸæ–‡æˆ–è€…å¯†æ–‡
+     *  param string $operation æ“ä½œ(encode | decode)
+     * @param string $key å¯†é’¥
+     *  param int $expiry å¯†æ–‡æœ‰æ•ˆæœŸ,å•ä½s,0 ä¸ºæ°¸ä¹…æœ‰æ•ˆ
+     * @return string å¤„ç†åçš„ åŸæ–‡æˆ–è€… ç»è¿‡ base64_encode å¤„ç†åçš„å¯†æ–‡
      */
     public static function decode($string, $key = '')
     {
         $string = str_replace(array('-', '_', '.'), array('+', '/', '='), $string);
         $ckey_length = 4;
-        $key = md5($key ? $key : self::$default_key); //½âÃÜÃÜ³×
-        $keya = md5(substr($key, 0, 16));         //×öÊı¾İÍêÕûĞÔÑéÖ¤
-        $keyb = md5(substr($key, 16, 16));         //ÓÃÓÚ±ä»¯Éú³ÉµÄÃÜÎÄ (³õÊ¼»¯ÏòÁ¿IV)
+        $key = md5($key ? $key : self::$default_key); //è§£å¯†å¯†åŒ™
+        $keya = md5(substr($key, 0, 16));         //åšæ•°æ®å®Œæ•´æ€§éªŒè¯
+        $keyb = md5(substr($key, 16, 16));         //ç”¨äºå˜åŒ–ç”Ÿæˆçš„å¯†æ–‡ (åˆå§‹åŒ–å‘é‡IV)
         $keyc = substr($string, 0, $ckey_length);
 
         $cryptkey = $keya . md5($keya . $keyc);
@@ -90,14 +90,14 @@ class Mcrypt
         for ($i = 0; $i <= 255; $i++) {
             $rndkey[$i] = ord($cryptkey[$i % $key_length]);
         }
-        // ´òÂÒÃÜ³×²¾£¬Ôö¼ÓËæ»úĞÔ
+        // æ‰“ä¹±å¯†åŒ™ç°¿ï¼Œå¢åŠ éšæœºæ€§
         for ($j = $i = 0; $i < 256; $i++) {
             $j = ($j + $box[$i] + $rndkey[$i]) % 256;
             $tmp = $box[$i];
             $box[$i] = $box[$j];
             $box[$j] = $tmp;
         }
-        // ¼Ó½âÃÜ£¬´ÓÃÜ³×²¾µÃ³öÃÜ³×½øĞĞÒì»ò£¬ÔÙ×ª³É×Ö·û
+        // åŠ è§£å¯†ï¼Œä»å¯†åŒ™ç°¿å¾—å‡ºå¯†åŒ™è¿›è¡Œå¼‚æˆ–ï¼Œå†è½¬æˆå­—ç¬¦
         for ($a = $j = $i = 0; $i < $string_length; $i++) {
             $a = ($a + 1) % 256;
             $j = ($j + $box[$a]) % 256;

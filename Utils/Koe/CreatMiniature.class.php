@@ -7,36 +7,36 @@
  */
 namespace Utils\Koe;
 /**
- * ÀàÃû£ºCreatMiniature
- * ¹¦ÄÜ£ºÉú³É¶àÖÖÀàĞÍµÄËõÂÔÍ¼
- * »ù±¾²ÎÊı£º$srcFile,$echoType
- * ·½·¨ÓÃµ½µÄ²ÎÊı£º
- * $toFile,Éú³ÉµÄÎÄ¼ş * $toW,Éú³ÉµÄ¿í  $toH,Éú³ÉµÄ¸ß*
- * $bk1,±³¾°ÑÕÉ«²ÎÊı ÒÔ255Îª×î¸ß * $bk2,±³¾°ÑÕÉ«²ÎÊı * $bk3,±³¾°ÑÕÉ«²ÎÊı
+ * ç±»åï¼šCreatMiniature
+ * åŠŸèƒ½ï¼šç”Ÿæˆå¤šç§ç±»å‹çš„ç¼©ç•¥å›¾
+ * åŸºæœ¬å‚æ•°ï¼š$srcFile,$echoType
+ * æ–¹æ³•ç”¨åˆ°çš„å‚æ•°ï¼š
+ * $toFile,ç”Ÿæˆçš„æ–‡ä»¶ * $toW,ç”Ÿæˆçš„å®½  $toH,ç”Ÿæˆçš„é«˜*
+ * $bk1,èƒŒæ™¯é¢œè‰²å‚æ•° ä»¥255ä¸ºæœ€é«˜ * $bk2,èƒŒæ™¯é¢œè‰²å‚æ•° * $bk3,èƒŒæ™¯é¢œè‰²å‚æ•°
  *
- * Àı×Ó£º
+ * ä¾‹å­ï¼š
  * include('thumb.php');
  * $cm=new CreatMiniature();
  * $cm->SetVar('1.jpg','file');
  * $cm->Distortion('dis_bei.jpg',150,200);
 
- * $cm->Prorate('pro_bei.jpg',150,200);//¸½´øÇĞ¸î
+ * $cm->Prorate('pro_bei.jpg',150,200);//é™„å¸¦åˆ‡å‰²
  * $cm->Cut('cut_bei.jpg',150,200);
  * $cm->BackFill('fill_bei.jpg',150,200);
  */
 class CreatMiniature {
-    // ¹«¹²±äÁ¿
-    var $srcFile = '';	//Ô­Í¼
-    var $echoType;		//Êä³öÍ¼Æ¬ÀàĞÍ£¬link--²»±£´æÎªÎÄ¼ş£»file--±£´æÎªÎÄ¼ş
+    // å…¬å…±å˜é‡
+    var $srcFile = '';	//åŸå›¾
+    var $echoType;		//è¾“å‡ºå›¾ç‰‡ç±»å‹ï¼Œlink--ä¸ä¿å­˜ä¸ºæ–‡ä»¶ï¼›file--ä¿å­˜ä¸ºæ–‡ä»¶
     /**
      * @var resource
      */
-    var $im = '';		//ÁÙÊ±±äÁ¿
-    var $srcW = '';		//Ô­Í¼¿í
-    var $srcH = '';		//Ô­Í¼¸ß
+    var $im = '';		//ä¸´æ—¶å˜é‡
+    var $srcW = '';		//åŸå›¾å®½
+    var $srcH = '';		//åŸå›¾é«˜
 
     /**
-     * ÉèÖÃ±äÁ¿¼°³õÊ¼»¯
+     * è®¾ç½®å˜é‡åŠåˆå§‹åŒ–
      * @param $srcFile
      * @param $echoType
      */
@@ -68,7 +68,7 @@ class CreatMiniature {
     }
 
     /**
-     * Éú³ÉÅ¤ÇúĞÍËõÍ¼
+     * ç”Ÿæˆæ‰­æ›²å‹ç¼©å›¾
      * @param $toFile
      * @param $toW
      * @param $toH
@@ -82,7 +82,7 @@ class CreatMiniature {
     }
 
     /**
-     * Éú³É°´±ÈÀıËõ·ÅµÄËõÍ¼
+     * ç”ŸæˆæŒ‰æ¯”ä¾‹ç¼©æ”¾çš„ç¼©å›¾
      * @param $toFile
      * @param $toW
      * @param $toH
@@ -112,7 +112,7 @@ class CreatMiniature {
     }
 
     /**
-     * Éú³É×îĞ¡²Ã¼ôºóµÄËõÍ¼
+     * ç”Ÿæˆæœ€å°è£å‰ªåçš„ç¼©å›¾
      * @param $toFile
      * @param $toW
      * @param $toH
@@ -137,7 +137,7 @@ class CreatMiniature {
     }
 
     /**
-     * Éú³É±³¾°Ìî³äµÄËõÍ¼,Ä¬ÈÏÓÃ°×É«Ìî³äÊ£Óà¿Õ¼ä£¬´«Èë$isAlphaÎªÕæÊ±ÓÃÍ¸Ã÷É«Ìî³ä
+     * ç”ŸæˆèƒŒæ™¯å¡«å……çš„ç¼©å›¾,é»˜è®¤ç”¨ç™½è‰²å¡«å……å‰©ä½™ç©ºé—´ï¼Œä¼ å…¥$isAlphaä¸ºçœŸæ—¶ç”¨é€æ˜è‰²å¡«å……
      * @param $toFile
      * @param $toW
      * @param $toH
@@ -167,11 +167,11 @@ class CreatMiniature {
         }
 
 
-        $fromTop = ($toH - $ftoH)/2;//´ÓÕıÖĞ¼äÌî³ä
-        $backcolor = imagecolorallocate($cImg,$red,$green, $blue); //Ìî³äµÄ±³¾°ÑÕÉ«
-        if ($isAlpha){//Ìî³äÍ¸Ã÷É«
+        $fromTop = ($toH - $ftoH)/2;//ä»æ­£ä¸­é—´å¡«å……
+        $backcolor = imagecolorallocate($cImg,$red,$green, $blue); //å¡«å……çš„èƒŒæ™¯é¢œè‰²
+        if ($isAlpha){//å¡«å……é€æ˜è‰²
             $backcolor=ImageColorTransparent($cImg,$backcolor);
-            $fromTop = $toH - $ftoH;//´Óµ×²¿Ìî³ä
+            $fromTop = $toH - $ftoH;//ä»åº•éƒ¨å¡«å……
         }
 
         ImageFilledRectangle($cImg, 0, 0, $toW, $toH, $backcolor);
@@ -221,7 +221,7 @@ class CreatMiniature {
     }
 
     /**
-     * Êä³öÍ¼Æ¬£¬link---Ö»Êä³ö£¬²»±£´æÎÄ¼ş¡£file--±£´æÎªÎÄ¼ş
+     * è¾“å‡ºå›¾ç‰‡ï¼Œlink---åªè¾“å‡ºï¼Œä¸ä¿å­˜æ–‡ä»¶ã€‚file--ä¿å­˜ä¸ºæ–‡ä»¶
      * @param $img
      * @param $to_File
      * @return bool

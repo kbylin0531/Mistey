@@ -24,7 +24,7 @@ class ShareController extends KoeController{
         parent::__construct();
         $this->tpl = TEMPLATE.'share/';
 
-        //²»ĞèÒª¼ì²éµÄaction
+        //ä¸éœ€è¦æ£€æŸ¥çš„action
         $arr_not_check = array('common_js');
         defined('ACT') or die('ACT not defined!');
         if (!in_array(ACT,$arr_not_check)){
@@ -32,14 +32,14 @@ class ShareController extends KoeController{
             $this->_init_info();
             $this->assign('can_download',$this->share_info['not_download']=='1'?0:1);
         }
-        //ĞèÒª¼ì²éÏÂÔØÈ¨ÏŞµÄAction
+        //éœ€è¦æ£€æŸ¥ä¸‹è½½æƒé™çš„Action
         $arr_check_download = array('fileDownload','zipDownload','fileProxy','fileGet');//'fileProxy','fileGet'
         if (in_array(ACT,$arr_check_download)){
             if ($this->share_info['not_download']=='1') {
                 KoeTool::show_json($this->L['share_not_download_tips'],false);
             }
         }
-        //½ûÖ¹ÏÂÔØºó£»Ò²»áÎŞ·¨Ô¤ÀÀ 'fileProxy','fileGet'
+        //ç¦æ­¢ä¸‹è½½åï¼›ä¹Ÿä¼šæ— æ³•é¢„è§ˆ 'fileProxy','fileGet'
         if (ACT == 'file' && $this->share_info['not_download']=='1') {
             $this->error($this->L['share_not_download_tips']);
         }
@@ -49,7 +49,7 @@ class ShareController extends KoeController{
         if (!isset($this->in['user']) || !isset($this->in['sid'])) {
             $this->error($this->L['share_error_param']);
         }
-        //´¢´æ¸Ã¹²Ïí»ù´¡ĞÅÏ¢
+        //å‚¨å­˜è¯¥å…±äº«åŸºç¡€ä¿¡æ¯
         $share_data = USER_PATH.$this->in['user'].'/data/share.php';
         if (!file_exists($share_data)) {
             $this->error($this->L['share_error_user']);
@@ -62,7 +62,7 @@ class ShareController extends KoeController{
 
         $this->share_info = $list[$this->in['sid']];
         $share_info = $this->share_info;
-        //¼ì²éÊÇ·ñ¹ıÆÚ
+        //æ£€æŸ¥æ˜¯å¦è¿‡æœŸ
         if (count($share_info['time'])) {
             $date = date_create_from_format('y/m/d',$share_info['time_to']);
             if (time() > $date) {
@@ -70,13 +70,13 @@ class ShareController extends KoeController{
             }
         }
 
-        //ÃÜÂë¼ì²â
+        //å¯†ç æ£€æµ‹
         if ($share_info['share_password']=='') return;
         //if ($_SESSION['kod_user']['name']==$this->in['user']) return;
 
-        //Ìá½»ÃÜÂë
+        //æäº¤å¯†ç 
         if (!isset($this->in['password'])){
-            //ÊäÈëÃÜÂë
+            //è¾“å…¥å¯†ç 
             if ($_SESSION['password_'.$this->in['sid']]==$share_info['share_password']) return;
             $this->error('password');
         }else{
@@ -90,7 +90,7 @@ class ShareController extends KoeController{
         }
     }
     private function _init_info(){
-        //»ñÈ¡ÓÃ»§×é£¬¸ù¾İÊÇ·ñÎªroot ¶¨ÒåÇ°×º
+        //è·å–ç”¨æˆ·ç»„ï¼Œæ ¹æ®æ˜¯å¦ä¸ºroot å®šä¹‰å‰ç¼€
         $member = new FileCache(USER_SYSTEM.'member.php');
         $user = $member->get($this->in['user']);
         if (!is_array($user) || !isset($user['password'])) {
@@ -112,7 +112,7 @@ class ShareController extends KoeController{
 
         if ($this->share_info['type'] != 'file'){
             $share_path=rtrim($share_path,'/').'/';
-            define('HOME',$share_path);//dir_outÊ±µ±×÷Ç°×ºÌŞ³ı;ÏµÍ³
+            define('HOME',$share_path);//dir_outæ—¶å½“ä½œå‰ç¼€å‰”é™¤;ç³»ç»Ÿ
         }
 
         $share_path = FileTool::iconv_system($share_path);
@@ -133,7 +133,7 @@ class ShareController extends KoeController{
 
     //==========================
     /*
-     * ÎÄ¼şä¯ÀÀ
+     * æ–‡ä»¶æµè§ˆ
      */
     public function file() {
         $this->share_view_add();
@@ -146,14 +146,14 @@ class ShareController extends KoeController{
         $this->display('file.php');
     }
     /*
-     * ÎÄ¼ş¼Ğä¯ÀÀ
+     * æ–‡ä»¶å¤¹æµè§ˆ
      */
     public function folder() {
         $this->share_view_add();
         if(isset($this->in['path']) && $this->in['path'] !=''){
             $dir = '/'.KoeTool::_DIR_CLEAR($this->in['path']);
         }else{
-            $dir = '/';//Ê×´Î½øÈëÏµÍ³,²»´ø²ÎÊı
+            $dir = '/';//é¦–æ¬¡è¿›å…¥ç³»ç»Ÿ,ä¸å¸¦å‚æ•°
         }
         $dir = '/'.trim($dir,'/').'/';
         $this->_assign_info();
@@ -161,7 +161,7 @@ class ShareController extends KoeController{
         $this->display('explorer.php');
     }
     /*
-     * ´úÂëÔÄ¶Á
+     * ä»£ç é˜…è¯»
      */
     public function code_read() {
         $this->share_view_add();
@@ -170,7 +170,7 @@ class ShareController extends KoeController{
     }
 
     //==========================
-    //Ò³ÃæÍ³Ò»×¢Èë±äÁ¿
+    //é¡µé¢ç»Ÿä¸€æ³¨å…¥å˜é‡
     private function _assign_info(){
         $user_config = new FileCache(USER.'data/config.php');
         $config = $user_config->get();
@@ -184,13 +184,13 @@ class ShareController extends KoeController{
         $this->share_info['path'] = FileTool::get_path_this(FileTool::iconv_app($this->path));
         $this->assign('share_info',$this->share_info);
     }
-    //ÏÂÔØ´ÎÊıÍ³¼Æ
+    //ä¸‹è½½æ¬¡æ•°ç»Ÿè®¡
     private function share_download_add(){
         $num = abs(intval($this->share_info['num_download'])) +1;
         $this->share_info['num_download'] = $num;
         $this->sql->update($this->in['sid'],$this->share_info);
     }
-    //ä¯ÀÀ´ÎÊıÍ³¼Æ
+    //æµè§ˆæ¬¡æ•°ç»Ÿè®¡
     private function share_view_add(){
         $num = abs(intval($this->share_info['num_view'])) +1;
         $this->share_info['num_view'] = $num;
@@ -211,10 +211,10 @@ class ShareController extends KoeController{
             'json_data'     => "",
             'share_page'    => 'share',
 
-            'theme'         => $config['theme'],           //ÁĞ±íÅÅĞòÒÀÕÕµÄ×Ö¶Î
-            'list_type'     => $config['list_type'],       //ÁĞ±íÅÅĞòÒÀÕÕµÄ×Ö¶Î
-            'sort_field'    => $config['list_sort_field'], //ÁĞ±íÅÅĞòÒÀÕÕµÄ×Ö¶Î
-            'sort_order'    => $config['list_sort_order'], //ÁĞ±íÅÅĞòÉıĞòor½µĞò
+            'theme'         => $config['theme'],           //åˆ—è¡¨æ’åºä¾ç…§çš„å­—æ®µ
+            'list_type'     => $config['list_type'],       //åˆ—è¡¨æ’åºä¾ç…§çš„å­—æ®µ
+            'sort_field'    => $config['list_sort_field'], //åˆ—è¡¨æ’åºä¾ç…§çš„å­—æ®µ
+            'sort_order'    => $config['list_sort_order'], //åˆ—è¡¨æ’åºå‡åºoré™åº
             'musictheme'    => $config['musictheme'],
             'movietheme'    => $config['movietheme']
         );
@@ -242,7 +242,7 @@ class ShareController extends KoeController{
         KoeTool::show_json($this->L['no_permission'],false);
     }
 
-    // µ¥ÎÄ¼ş±à¼­
+    // å•æ–‡ä»¶ç¼–è¾‘
     public function edit(){
         $default = array(
             'font_size'     => '14px',
@@ -253,7 +253,7 @@ class ShareController extends KoeController{
             'function_list' => 1
         );
         $this->_assign_info();
-        $this->assign('editor_config',$default);//»ñÈ¡±à¼­Æ÷ÅäÖÃĞÅÏ¢
+        $this->assign('editor_config',$default);//è·å–ç¼–è¾‘å™¨é…ç½®ä¿¡æ¯
         $this->display('edit.php');
     }
     public function pathList(){
@@ -268,7 +268,7 @@ class ShareController extends KoeController{
         if (isset($this->in['name'])){
             $path=$path.'/'.$this->_clear($this->in['name']);
         }
-        $list_file = ($this->in['app'] == 'editor'?true:false);//±à¼­Æ÷ÄÚÁĞ³öÎÄ¼ş
+        $list_file = ($this->in['app'] == 'editor'?true:false);//ç¼–è¾‘å™¨å†…åˆ—å‡ºæ–‡ä»¶
         $list=$this->path($path,$list_file,true);
         function sort_by_key($a, $b){
             if ($a['name'] == $b['name']) return 0;
@@ -313,7 +313,7 @@ class ShareController extends KoeController{
     }
 
 
-    //´úÀíÊä³ö
+    //ä»£ç†è¾“å‡º
     public function fileProxy(){
         FileTool::file_put_out($this->path);
     }
@@ -321,7 +321,7 @@ class ShareController extends KoeController{
         $this->share_download_add();
         FileTool::file_put_out($this->path,true);
     }
-    //ÎÄ¼şÏÂÔØºóÉ¾³ı,ÓÃÓÚÎÄ¼ş¼ĞÏÂÔØ
+    //æ–‡ä»¶ä¸‹è½½ååˆ é™¤,ç”¨äºæ–‡ä»¶å¤¹ä¸‹è½½
     public function fileDownloadRemove(){
         if ($this->share_info['not_download']=='1') {
             KoeTool::show_json($this->L['share_not_download_tips'],false);
@@ -335,12 +335,12 @@ class ShareController extends KoeController{
         $this->share_download_add();
         if(!file_exists(USER_TEMP)){
             mkdir(USER_TEMP);
-        }else{//Çå³ıÎ´É¾³ıµÄÁÙÊ±ÎÄ¼ş£¬Ò»ÌìÇ°
+        }else{//æ¸…é™¤æœªåˆ é™¤çš„ä¸´æ—¶æ–‡ä»¶ï¼Œä¸€å¤©å‰
             $list = FileTool::path_list(USER_TEMP,true,false);
             $max_time = 3600*24;
             if ($list['filelist']>=1) {
                 for ($i=0; $i < count($list['filelist']); $i++) {
-                    $create_time = $list['filelist'][$i]['mtime'];//×îºóĞŞ¸ÄÊ±¼ä
+                    $create_time = $list['filelist'][$i]['mtime'];//æœ€åä¿®æ”¹æ—¶é—´
                     if(time() - $create_time >$max_time){
                         FileTool::del_file($list['filelist'][$i]['path'].$list['filelist'][$i]['name']);
                     }
@@ -362,7 +362,7 @@ class ShareController extends KoeController{
             $zip_list[$i]['path'] = KoeTool::_DIR_CLEAR($this->path.$this->_clear($zip_list[$i]['path']));
         }
 
-        //Ö¸¶¨Ä¿Â¼
+        //æŒ‡å®šç›®å½•
         if ($list_num == 1) {
             $path_this_name=FileTool::get_path_this($zip_list[0]['path']);
         }else{
@@ -380,13 +380,13 @@ class ShareController extends KoeController{
         return FileTool::iconv_app($zipname);
     }
 
-    // »ñÈ¡ÎÄ¼şÊı¾İ
+    // è·å–æ–‡ä»¶æ•°æ®
     public function fileGet(){
         $name = $this->_clear($this->in['filename']);
         $filename= $this->share_path.$name;
         if (filesize($filename) >= 1024*1024*20) KoeTool::show_json($this->L['edit_too_big'],false);
 
-        $filecontents=file_get_contents($filename);//ÎÄ¼şÄÚÈİ
+        $filecontents=file_get_contents($filename);//æ–‡ä»¶å†…å®¹
         $charset=$this->_get_charset($filecontents);
         if ($charset!='' || $charset!='utf-8') {
             $filecontents=mb_convert_encoding($filecontents,'utf-8',$charset);
@@ -402,7 +402,7 @@ class ShareController extends KoeController{
     }
     private function _get_charset(&$str) {
         if ($str == '') return 'utf-8';
-        //Ç°Ãæ¼ì²â³É¹¦Ôò£¬×Ô¶¯ºöÂÔºóÃæ
+        //å‰é¢æ£€æµ‹æˆåŠŸåˆ™ï¼Œè‡ªåŠ¨å¿½ç•¥åé¢
         $charset=strtolower(mb_detect_encoding($str,$this->config['check_charset']));
         if (substr($str,0,3)==chr(0xEF).chr(0xBB).chr(0xBF)){
             $charset='utf-8';
@@ -415,7 +415,7 @@ class ShareController extends KoeController{
 
 
     public function image(){
-        if (filesize($this->path) <= 1024*10) {//Ğ¡ÓÚ10k ²»ÔÙÉú³ÉËõÂÔÍ¼
+        if (filesize($this->path) <= 1024*10) {//å°äº10k ä¸å†ç”Ÿæˆç¼©ç•¥å›¾
             FileTool::file_put_out($this->path);
         }
         KoeTool::load_class('imageThumb');
@@ -424,23 +424,23 @@ class ShareController extends KoeController{
         if (!is_dir(DATA_THUMB)){
             mkdir(DATA_THUMB,"0777");
         }
-        if (!file_exists($image_thum)){//Èç¹ûÆ´×°³ÉµÄurl²»´æÔÚÔòÃ»ÓĞÉú³É¹ı
-            if ($_SESSION['this_path']==DATA_THUMB){//µ±Ç°Ä¿Â¼Ôò²»Éú³ÉËõÂÔÍ¼
+        if (!file_exists($image_thum)){//å¦‚æœæ‹¼è£…æˆçš„urlä¸å­˜åœ¨åˆ™æ²¡æœ‰ç”Ÿæˆè¿‡
+            if ($_SESSION['this_path']==DATA_THUMB){//å½“å‰ç›®å½•åˆ™ä¸ç”Ÿæˆç¼©ç•¥å›¾
                 $image_thum=$this->path;
             }else {
                 $cm=new CreatMiniature();
                 $cm->SetVar($image,'file');
-                //$cm->Prorate($image_thum,72,64);//Éú³ÉµÈ±ÈÀıËõÂÔÍ¼
-                $cm->BackFill($image_thum,72,64,true);//µÈ±ÈÀıËõÂÔÍ¼£¬¿Õ°×´¦ÌîÌî³äÍ¸Ã÷É«
+                //$cm->Prorate($image_thum,72,64);//ç”Ÿæˆç­‰æ¯”ä¾‹ç¼©ç•¥å›¾
+                $cm->BackFill($image_thum,72,64,true);//ç­‰æ¯”ä¾‹ç¼©ç•¥å›¾ï¼Œç©ºç™½å¤„å¡«å¡«å……é€æ˜è‰²
             }
         }
-        if (!file_exists($image_thum) || filesize($image_thum)<100){//ËõÂÔÍ¼Éú³ÉÊ§°ÜÔòÓÃÄ¬ÈÏÍ¼±ê
+        if (!file_exists($image_thum) || filesize($image_thum)<100){//ç¼©ç•¥å›¾ç”Ÿæˆå¤±è´¥åˆ™ç”¨é»˜è®¤å›¾æ ‡
             $image_thum=STATIC_PATH.'images/image.png';
         }
         FileTool::file_put_out($image_thum);
     }
 
-    //»ñÈ¡ÎÄ¼şÁĞ±í&Å¶exeÎÄ¼şjson½âÎö
+    //è·å–æ–‡ä»¶åˆ—è¡¨&å“¦exeæ–‡ä»¶jsonè§£æ
     private function path($dir,$list_file=true,$check_children=false){
         $list = FileTool::path_list($dir,$list_file,$check_children);
 

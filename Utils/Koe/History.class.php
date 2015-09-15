@@ -8,19 +8,19 @@
 namespace Utils\Koe;
 
 /**
- * ÀúÊ·¼ÇÂ¼²Ù×÷Àà
- * ´«Èë»òÕß¹¹ÔìÒ»¸öÊı×é¡£ĞÎÈç:
+ * å†å²è®°å½•æ“ä½œç±»
+ * ä¼ å…¥æˆ–è€…æ„é€ ä¸€ä¸ªæ•°ç»„ã€‚å½¢å¦‚:
  * array(
- * 	'history_num'=>20,	//¶ÓÁĞ½Úµã×Ü¹²¸öÊı
- * 	'first'=>0,			//ÆğÊ¼Î»ÖÃ,´Ó0¿ªÊ¼¡£Êı×éË÷ÒıÖµ
- * 	'last'=>0,			//ÖÕµãÎ»ÖÃ£¬´Ó0¿ªÊ¼¡£
- * 	'back'=>0,			//´ÓfirstÎ»ÖÃµ¹ÍËÁË¶àÉÙ²½£¬²îÖµ¡£
- * 	'history'=>array(	//Êı×é£¬´æ·Å²Ù×÷¶ÓÁĞ¡£
+ * 	'history_num'=>20,	//é˜Ÿåˆ—èŠ‚ç‚¹æ€»å…±ä¸ªæ•°
+ * 	'first'=>0,			//èµ·å§‹ä½ç½®,ä»0å¼€å§‹ã€‚æ•°ç»„ç´¢å¼•å€¼
+ * 	'last'=>0,			//ç»ˆç‚¹ä½ç½®ï¼Œä»0å¼€å§‹ã€‚
+ * 	'back'=>0,			//ä»firstä½ç½®å€’é€€äº†å¤šå°‘æ­¥ï¼Œå·®å€¼ã€‚
+ * 	'history'=>array(	//æ•°ç»„ï¼Œå­˜æ”¾æ“ä½œé˜Ÿåˆ—ã€‚
  * 		array('path'=>'D:/'),
  * 		array('path'=>'D:/www/'),
  * 		array('path'=>'E:/'),
  * 		array('path'=>'/home/')
- * 		¡­¡­
+ * 		â€¦â€¦
  * 	)
  * )
  */
@@ -32,15 +32,15 @@ class History{
     var $history=array();
 
     function __construct($array=array(),$num=20){
-        if (!$array) {//Êı×éÎª¿Õ.¹¹ÔìÒ»¸öÑ­»·¶ÓÁĞ¡£
+        if (!$array) {//æ•°ç»„ä¸ºç©º.æ„é€ ä¸€ä¸ªå¾ªç¯é˜Ÿåˆ—ã€‚
             $history=array();
             for ($i=0; $i < $num; $i++) {
                 array_push($history,array('path'=>''));
             }
             $array=array(
                 'history_num'=>$num,
-                'first'=>0,//ÆğÊ¼Î»ÖÃ
-                'last'=>0,//ÖÕµãÎ»ÖÃ
+                'first'=>0,//èµ·å§‹ä½ç½®
+                'last'=>0,//ç»ˆç‚¹ä½ç½®
                 'back'=>0,
                 'history'=>$history
             );
@@ -57,7 +57,7 @@ class History{
      * @param int $n
      * @return mixed
      */
-    function nextNum($i,$n=1){//»·Â·ÏÂnÒ»¸öÖµ¡£ºÍÊ±ÖÓ»·Â·ÀàËÆ¡£
+    function nextNum($i,$n=1){//ç¯è·¯ä¸‹nä¸€ä¸ªå€¼ã€‚å’Œæ—¶é’Ÿç¯è·¯ç±»ä¼¼ã€‚
         return ($i+$n)<$this->history_num ? ($i+$n):($i+$n-$this->history_num);
     }
 
@@ -66,7 +66,7 @@ class History{
      * @param int $n
      * @return mixed
      */
-    function prevNum($i,$n=1){//»·Â·ÉÏÒ»¸öÖµi¡£»ØÍËN¸öÎ»ÖÃ¡£
+    function prevNum($i,$n=1){//ç¯è·¯ä¸Šä¸€ä¸ªå€¼iã€‚å›é€€Nä¸ªä½ç½®ã€‚
         return ($i-$n)>=0 ? ($i-$n) : ($i-$n+$this->history_num);
     }
 
@@ -75,14 +75,14 @@ class History{
      * @param $j
      * @return mixed
      */
-    function minus($i,$j){//Ë³Ê±ÕëÁ½µãÖ»²î,i-j
+    function minus($i,$j){//é¡ºæ—¶é’ˆä¸¤ç‚¹åªå·®,i-j
         return ($i > $j) ? ($i - $j):($i-$j+$this->history_num);
     }
 
     /**
      * @return array
      */
-    function getHistory(){//·µ»ØÊı×é,ÓÃÓÚ±£´æ»òÕßĞòÁĞ»¯²Ù×÷¡£
+    function getHistory(){//è¿”å›æ•°ç»„,ç”¨äºä¿å­˜æˆ–è€…åºåˆ—åŒ–æ“ä½œã€‚
         return array(
             'history_num'=> $this->history_num,
             'first'		 => $this->first,
@@ -97,33 +97,33 @@ class History{
      * @return void
      */
     function add($path){
-        if ($path==$this->history[$this->first]['path']) {//ºÍ×îºóÏàÍ¬£¬Ôò²»¼ÇÂ¼
+        if ($path==$this->history[$this->first]['path']) {//å’Œæœ€åç›¸åŒï¼Œåˆ™ä¸è®°å½•
             return;
         }
-        if ($this->back!=0) {//ÓĞºóÍË²Ù×÷¼ÇÂ¼µÄÇé¿öÏÂ£¬½øĞĞ²åÈë¡£
+        if ($this->back!=0) {//æœ‰åé€€æ“ä½œè®°å½•çš„æƒ…å†µä¸‹ï¼Œè¿›è¡Œæ’å…¥ã€‚
             $this->goedit($path);
             return;
         }
-        if ($this->history[0]['path']=='') {//¸Õ¹¹Ôì£¬²»ÓÃ¼ÓÒ».Ê×Î»²»Ç°ÒÆ
+        if ($this->history[0]['path']=='') {//åˆšæ„é€ ï¼Œä¸ç”¨åŠ ä¸€.é¦–ä½ä¸å‰ç§»
             $this->history[$this->first]['path']=$path;
             return;
         }else{
-            $this->first=$this->nextNum($this->first);//Ê×Î»Ç°ÒÆ
+            $this->first=$this->nextNum($this->first);//é¦–ä½å‰ç§»
             $this->history[$this->first]['path']=$path;
         }
-        if ($this->first==$this->last) {//ÆğÊ¼Î»ÖÃÓëÖÕÖ¹Î»ÖÃÏàÓö
-            $this->last=$this->nextNum($this->last);//Ä©Î²Î»ÖÃÇ°ÒÆ¡£
+        if ($this->first==$this->last) {//èµ·å§‹ä½ç½®ä¸ç»ˆæ­¢ä½ç½®ç›¸é‡
+            $this->last=$this->nextNum($this->last);//æœ«å°¾ä½ç½®å‰ç§»ã€‚
         }
     }
 
     /**
      * @return mixed
      */
-    function goback(){//·µ»Ø´ÓfirstºóÍËN²½µÄµØÖ·¡£
+    function goback(){//è¿”å›ä»firståé€€Næ­¥çš„åœ°å€ã€‚
         $this->back+=1;
-        //×î´óºóÍË²½ÊıÎªÆğµãµ½ÖÕµãÖ®²î(Ë³Ê±ÕëÖ®²î)
+        //æœ€å¤§åé€€æ­¥æ•°ä¸ºèµ·ç‚¹åˆ°ç»ˆç‚¹ä¹‹å·®(é¡ºæ—¶é’ˆä¹‹å·®)
         $mins=$this->minus($this->first,$this->last);
-        if ($this->back >= $mins) {//ÍËµ½×îºóµã
+        if ($this->back >= $mins) {//é€€åˆ°æœ€åç‚¹
             $this->back=$mins;
         }
 
@@ -134,9 +134,9 @@ class History{
     /**
      * @return mixed
      */
-    function gonext(){//´ÓfirstºóÍËN²½µÄµØ·½Ç°½øÒ»²½¡£
+    function gonext(){//ä»firståé€€Næ­¥çš„åœ°æ–¹å‰è¿›ä¸€æ­¥ã€‚
         $this->back-=1;
-        if ($this->back<0) {//ÍËµ½×îºóµã
+        if ($this->back<0) {//é€€åˆ°æœ€åç‚¹
             $this->back=0;
         }
         return $this->history[$this->prevNum($this->first,$this->back)]['path'];
@@ -145,16 +145,16 @@ class History{
     /**
      * @param $path
      */
-    function goedit($path){//ºóÍËµ½Ä³¸öµã£¬Ã»ÓĞÇ°½ø¶øÊÇĞŞ¸Ä¡£ÔòfirsÖµÎª×îºóµÄÖµ¡£
+    function goedit($path){//åé€€åˆ°æŸä¸ªç‚¹ï¼Œæ²¡æœ‰å‰è¿›è€Œæ˜¯ä¿®æ”¹ã€‚åˆ™firså€¼ä¸ºæœ€åçš„å€¼ã€‚
         $pos=$this->minus($this->first,$this->back);
-        $pos=$this->nextNum($pos);//ÏÂÒ»¸ö
+        $pos=$this->nextNum($pos);//ä¸‹ä¸€ä¸ª
         $this->history[$pos]['path']=$path;
         $this->first=$pos;
         $this->back=0;
     }
 
     /**
-     * ÊÇ·ñ¿ÉÒÔºóÍË
+     * æ˜¯å¦å¯ä»¥åé€€
      * @return int
      */
     function isback(){
@@ -168,7 +168,7 @@ class History{
     }
 
     /**
-     * ÊÇ·ñ¿ÉÒÔÇ°½ø
+     * æ˜¯å¦å¯ä»¥å‰è¿›
      * @return int
      */
     function isnext(){
@@ -179,7 +179,7 @@ class History{
     }
 
     /**
-     * È¡³ö×îĞÂ¼ÍÂ¼
+     * å–å‡ºæœ€æ–°çºªå½•
      * @return mixed
      */
     function getFirst(){
@@ -188,7 +188,7 @@ class History{
 
 }
 //include 'common.function.php';
-//$hi=new history(array(),6);//´«Èë¿ÕÊı×é£¬Ôò³õÊ¼»¯Êı×é¹¹Ôì¡£
+//$hi=new history(array(),6);//ä¼ å…¥ç©ºæ•°ç»„ï¼Œåˆ™åˆå§‹åŒ–æ•°ç»„æ„é€ ã€‚
 //for ($i=0; $i <8; $i++) {
 //	$hi->add('s'.$i);
 //}
@@ -198,7 +198,7 @@ class History{
 //pr($hi->getHistory());
 
 
-//$ss=new history($hi->getHistory());//Ö±½ÓÓÃÊı×é¹¹Ôì¡£
+//$ss=new history($hi->getHistory());//ç›´æ¥ç”¨æ•°ç»„æ„é€ ã€‚
 //$ss->add('asdfasdf');
 //$ss->goback();
 //pr($ss->getHistory());

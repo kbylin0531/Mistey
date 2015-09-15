@@ -17,23 +17,23 @@ class EditorController extends KoeController{
         $this->tpl = TEMPLATE . 'editor/';
     }
 
-    // ¶àÎÄ¼þ±à¼­Æ÷
+    // å¤šæ–‡ä»¶ç¼–è¾‘å™¨
     public function index(){
         $this->display('editor.php');
     }
-    // µ¥ÎÄ¼þ±à¼­
+    // å•æ–‡ä»¶ç¼–è¾‘
     public function edit(){
-        $this->assign('editor_config',$this->getConfig());//»ñÈ¡±à¼­Æ÷ÅäÖÃÐÅÏ¢
+        $this->assign('editor_config',$this->getConfig());//èŽ·å–ç¼–è¾‘å™¨é…ç½®ä¿¡æ¯
         $this->display('edit.php');
     }
 
-    // »ñÈ¡ÎÄ¼þÊý¾Ý
+    // èŽ·å–æ–‡ä»¶æ•°æ®
     public function fileGet(){
         $filename = KoeTool::_DIR($this->in['filename']);
         if (!is_readable($filename)) KoeTool::show_json($this->L['no_permission_read'],false);
         if (filesize($filename) >= 1024*1024*20) KoeTool::show_json($this->L['edit_too_big'],false);
 
-        $filecontents=file_get_contents($filename);//ÎÄ¼þÄÚÈÝ
+        $filecontents=file_get_contents($filename);//æ–‡ä»¶å†…å®¹
         $charset=$this->_get_charset($filecontents);
         if ($charset!='' || $charset!='utf-8') {
             $filecontents=mb_convert_encoding($filecontents,'utf-8',$charset);
@@ -67,7 +67,7 @@ class EditorController extends KoeController{
     }
 
     /*
-    * »ñÈ¡±à¼­Æ÷ÅäÖÃÐÅÏ¢
+    * èŽ·å–ç¼–è¾‘å™¨é…ç½®ä¿¡æ¯
     */
     public function getConfig(){
         $default = array(
@@ -80,7 +80,7 @@ class EditorController extends KoeController{
         );
         defined('USER') or die('USER not defined!');
         $config_file = USER.'data/editor_config.php';
-        if (!file_exists($config_file)) {//²»´æÔÚÔò´´½¨
+        if (!file_exists($config_file)) {//ä¸å­˜åœ¨åˆ™åˆ›å»º
             $sql=new FileCache($config_file);
             $sql->reset($default);
         }else{
@@ -93,12 +93,12 @@ class EditorController extends KoeController{
         return json_encode($default);
     }
     /*
-    * »ñÈ¡±à¼­Æ÷ÅäÖÃÐÅÏ¢
+    * èŽ·å–ç¼–è¾‘å™¨é…ç½®ä¿¡æ¯
     */
     public function setConfig(){
         defined('USER') or die('USER not defined!');
         $file = USER.'data/editor_config.php';
-        if (!is_writeable($file)) {//ÅäÖÃ²»¿ÉÐ´
+        if (!is_writeable($file)) {//é…ç½®ä¸å¯å†™
             KoeTool::show_json($this->L['no_permission_write_file'],false);
         }
         $key= $this->in['k'];
@@ -106,7 +106,7 @@ class EditorController extends KoeController{
         if ($key !='' && $value != '') {
             $sql=new fileCache($file);
             if(!$sql->update($key,$value)){
-                $sql->add($key,$value);//Ã»ÓÐÔòÌí¼ÓÒ»Ìõ
+                $sql->add($key,$value);//æ²¡æœ‰åˆ™æ·»åŠ ä¸€æ¡
             }
             KoeTool::show_json($this->L["setting_success"]);
         }else{
@@ -116,12 +116,12 @@ class EditorController extends KoeController{
 
     //-----------------------------------------------
     /*
-    * »ñÈ¡×Ö·û´®±àÂë
-    * @param:$ext ´«Èë×Ö·û´®
+    * èŽ·å–å­—ç¬¦ä¸²ç¼–ç 
+    * @param:$ext ä¼ å…¥å­—ç¬¦ä¸²
     */
     private function _get_charset(&$str) {
         if ($str == '') return 'utf-8';
-        //Ç°Ãæ¼ì²â³É¹¦Ôò£¬×Ô¶¯ºöÂÔºóÃæ
+        //å‰é¢æ£€æµ‹æˆåŠŸåˆ™ï¼Œè‡ªåŠ¨å¿½ç•¥åŽé¢
         $charset=strtolower(mb_detect_encoding($str,$this->config['check_charset']));
         if (substr($str,0,3)==chr(0xEF).chr(0xBB).chr(0xBF)){
             $charset='utf-8';

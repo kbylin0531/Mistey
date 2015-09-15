@@ -18,7 +18,7 @@ class AppController extends KoeController{
     }
 
     /**
-     * ÓÃ»§Ê×Ò³Õ¹Ê¾
+     * ç”¨æˆ·é¦–é¡µå±•ç¤º
      */
     public function index() {
         $this->display(TEMPLATE.'app/index.php');
@@ -50,7 +50,7 @@ class AppController extends KoeController{
     }
 
     /**
-     * ÓÃ»§app Ìí¼Ó¡¢±à¼­
+     * ç”¨æˆ·app æ·»åŠ ã€ç¼–è¾‘
      */
     public function user_app() {
         $path = KoeTool::_DIR($this->in['path']);
@@ -70,7 +70,7 @@ class AppController extends KoeController{
     }
 
     /**
-     * »ñÈ¡ÁÐ±í
+     * èŽ·å–åˆ—è¡¨
      */
     public function get() {
         $list = (!isset($this->in['group']) || $this->in['group']=='all')?$this->sql->get():
@@ -80,7 +80,7 @@ class AppController extends KoeController{
     }
 
     /**
-     * Ìí¼Ó
+     * æ·»åŠ 
      */
     public function add() {
         $res=$this->sql->add(rawurldecode($this->in['name']),$this->_init());
@@ -89,10 +89,10 @@ class AppController extends KoeController{
     }
 
     /**
-     * ±à¼­
+     * ç¼–è¾‘
      */
     public function edit() {
-        //²éÕÒµ½Ò»Ìõ¼ÇÂ¼£¬ÐÞ¸ÄÎª¸ÃÊý×é
+        //æŸ¥æ‰¾åˆ°ä¸€æ¡è®°å½•ï¼Œä¿®æ”¹ä¸ºè¯¥æ•°ç»„
         if($this->sql->replace_update(
             rawurldecode($this->in['old_name']),
             rawurldecode($this->in['name']),$this->_init())){
@@ -101,7 +101,7 @@ class AppController extends KoeController{
         KoeTool::show_json($this->L['error_repeat'],false);
     }
     /**
-     * É¾³ý
+     * åˆ é™¤
      */
     public function del() {
         if($this->sql->delete(rawurldecode($this->in['name']))){
