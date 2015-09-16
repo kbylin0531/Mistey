@@ -88,22 +88,38 @@ class Dispatcher{
                     $beforeMethod->invoke($classInstance, $parameters);//在对象上执行这个方法并传递参数
                 }
             }
+
             //方法的参数检测
-            if ($targetMethod->getNumberOfParameters()) {
+            if ($targetMethod->getNumberOfParameters()) {//有参数
+                //获取输入参数
+                $vars = null;
+                switch(strtoupper($_SERVER['REQUEST_METHOD'])){
+                    case 'POST':
+                        $vars    =  array_merge($_GET,$_POST);
+                        break;
+                    case 'PUT':
+                        parse_str(file_get_contents('php://input'), $vars);
+                        break;
+                    default:
+                        $vars  =  $_GET;
+                }
+                //获取方法的参数列表 ，并且按照变量名绑定
                 $methodParams = $targetMethod->getParameters();
                 $args = array();
                 foreach ($methodParams as $param) {
                     $parameterName = $param->getName();
-                    if (isset($parameters[$parameterName])) {//请求的URL中存在该参数
-                        $args[] = $args[$parameterName];
-                    } elseif ($param->isDefaultValueAvailable()) {
-                        $args[] = $param->getDefaultValue();
-                    } else {
-                        $args[] = null;
+                    if(isset($vars[$parameterName])){
+                        $args[] =   $vars[$parameterName];
+                    }elseif($param->isDefaultValueAvailable()){
+                        $args[] =   $param->getDefaultValue();
+                    }else{
+                        throw new \Exception("Method do not get valid  parameter with name of $parameterName !");
                     }
                 }
+                //参数过滤 ...
+                //执行方法
                 $targetMethod->invokeArgs($classInstance, $args);
-            } else {
+            } else {//无参数的方法调用
                 $targetMethod->invoke($classInstance);
             }
             //方法的后置操作

@@ -113,6 +113,15 @@ class Controller{
     }
 
     /**
+     * 页面跳转
+     * @param string $compo 形式如'Cms/install/third' 的action定位
+     * @return void
+     */
+    public function redirect($compo){
+        Util::redirect(Util::url($compo));
+    }
+
+    /**
      * 默认跳转操作 支持错误导向和正确跳转
      * 调用模板显示 默认为public目录下面的success页面
      * 提示页面为可配置 支持模板标签
@@ -178,8 +187,17 @@ class Controller{
      * @return $this 可以链式调用
      */
     public function assign($tpl_var,$value=null,$nocache=false){
-        if(null === $this->_view) $this->initView();
-        return self::$template_engine->assign($tpl_var,$value,$nocache);
+        if (is_array($tpl_var)) {
+            foreach ($tpl_var as $_key => $_val) {
+                if ($_key != '') {
+                    $this->_tVars[$_key] = array($_val,$nocache);
+                }
+            }
+        } else {
+            if ($tpl_var != '') {
+                $this->_tVars[$tpl_var] = array($value,$nocache);
+            }
+        }
     }
 
     /**
@@ -193,12 +211,14 @@ class Controller{
         //未设置时使用调用display的函数名称
         if(!$template){//如果未设置参数一
             $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT,2);
-//            Util::dump($trace);exit;
+//            Util::dump($this->context['a']);exit;
             $this->context['a'] = $trace[1]['function'];
         }
         Mist::status('display_c_begin');
         if(null === $this->_view) $this->initView();
-        $this->_view->assign($this->_tVars);
+        foreach($this->_tVars as $key => $value){
+            $this->_view->assign($key,$value[0],$value[1]);
+        }
         Mist::status('display_cc_begin');
         $this->_view->display($template,$cache_id,$compile_id,$parent);
     }

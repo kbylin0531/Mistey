@@ -9,6 +9,7 @@ namespace System\Utils;
 use System\Core\ConfigHelper;
 use System\Core\URLHelper;
 use System\Exception\Template\XMLReadFailedException;
+use System\Ext\PasswordHash;
 
 defined('BASE_PATH') or die('No Permission!');
 
@@ -25,6 +26,24 @@ class Util{
 
 
     /**
+     * PasswordHash加密解密类
+     * @param string $password
+     * @param string $compare
+     * @return bool|string
+     */
+    public static function pwd($password,$compare=null){
+        static $hasher = null;
+        isset($hasher) or $hasher = new PasswordHash(8, false);
+        if(null === $compare){
+            //返回加密结果
+            return $hasher->HashPassword($password);
+        }else{
+            //返回比较结果
+            return $hasher->CheckPassword($password,$compare);
+        }
+    }
+
+    /**
      * 判断是否是https请求
      * @return bool
      */
@@ -38,6 +57,66 @@ class Util{
             return TRUE;
         }
         return FALSE;
+    }
+    /**
+     * 生成系统AUTH_KEY
+     * @return string
+     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
+     */
+    public static function buildAuthKey(){
+        $chars  = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_+-=[]{};:"|,.<>/?';
+        $chars  = str_shuffle($chars);
+        return substr($chars, 0, 40);
+    }
+
+    /**
+     * 判断是否有不合法的参数存在，不合法的参数参照参数一（使用严格的比较-判断类型）
+     * 第一个参数将会被认为是不合法的值，参数一可以是单个字符串或者数组
+     * 第二个参数开始是要比较的参数列表，如果任何一个参数"匹配"了参数一，将返回true表示存在不合法的参数
+     * @return bool
+     */
+    public static function checkInvalidExistInStrict(){
+        $params = func_get_args();
+        return self::checkInvalidExist($params,true);
+    }
+    /**
+     * 判断是否有不合法的参数存在，不合法的参数参照参数一（使用宽松的比较-不判断类型）
+     * 第一个参数将会被认为是不合法的值，参数一可以是单个字符串或者数组
+     * 第二个参数开始是要比较的参数列表，如果任何一个参数"匹配"了参数一，将返回true表示存在不合法的参数
+     * @return bool
+     */
+    public static function checkInvalidExistInEase(){
+        $params = func_get_args();
+        return self::checkInvalidExist($params);
+    }
+
+    /**
+     * 及时显示提示信息
+     * @param string $msg 提示信息
+     * @param string $class 提示信息类型
+     */
+    public static function flushMessageToClient($msg, $class = ''){
+        echo "<script type=\"text/javascript\">showmsg(\"{$msg}\", \"{$class}\")</script>";
+        flush();
+        ob_flush();
+    }
+
+    /**
+     * @param array $params 参数
+     * @param bool|false $district 比较时是否判断其类型，默认是
+     * @return bool
+     */
+    public static function checkInvalidExist($params,$district=false){
+        $invalidVal = array_shift($params);
+        foreach ($params as $key=>&$val){
+            if(is_array($invalidVal)){
+                //参数三决定是否使用严格的方式
+                return in_array(trim($val),$invalidVal,$district);
+            }else{
+                return $district? ($invalidVal === $val) : ($invalidVal == $val);
+            }
+        }
+        return false;
     }
 
     /**
@@ -330,31 +409,6 @@ class Util{
         ConfigHelper::loadConfig($confName,$modlist);
     }
 
-
-
-    /**
-     * 判断是否有不合法的参数存在，不合法的参数参照参数一
-     * 第一个参数将会被认为是不合法的值，参数一可以是单个字符串或者数组
-     * 第二个参数开始是要比较的参数列表，如果任何一个参数"匹配"了参数一，将返回true表示存在不合法的参数
-     * @return bool
-     */
-    public static function checkInvalidExist(){
-        $params = func_get_args();
-        $invalidVal = array_shift($params);
-        foreach ($params as $key=>&$val){
-            if(is_array($invalidVal)){
-                if(in_array(trim($val),$invalidVal,true)){
-                    //在严格模式下查找
-                    return true;
-                }
-            }else{
-                if($invalidVal === $val){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     /**
      * 获取日期

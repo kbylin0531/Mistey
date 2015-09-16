@@ -51,6 +51,8 @@ class Dao{
 
     /**
      * 实例共用的配置信息
+     *
+     * PDO连接信息必须包含： host  username  password [port]
      * @var array
      */
     protected static $_conf = array(
@@ -114,9 +116,14 @@ class Dao{
      * @param bool $cover
      */
     public function __construct($config=null,$cover=false){
-        $classname = 'System\\Core\\DaoDriver\\'.ucwords($config['type']).'Driver';
+        if(is_array($config)){
+            self::$_conf = Util::mergeConf(self::$_conf['DB_CONNECT'][0],$config,$cover);
+        }
+//        Util::dump(self::$_conf,$config);exit;
+        $classname = 'System\\Core\\DaoDriver\\'.ucwords(self::$_conf['type']).'Driver';
         try{
-            $this->driver = new $classname(self::buildDSN($config),$config['username'],$config['password'],$config['options']);
+            $this->driver = new $classname(self::buildDSN(self::$_conf),
+                self::$_conf['username'],self::$_conf['password'],self::$_conf['options']);
         }catch (\PDOException $e){//连接失败总会抛出异常
             //收集和处理异常信息
             Mist::handleException($e);
@@ -136,7 +143,10 @@ class Dao{
                 if(isset($config['dsn'])){
                     $dsn = $config['dsn'];
                 }else{
-                    $dsn  =   'mysql:dbname='.$config['dbname'].';host='.$config['host'];
+                    $dsn  =   'mysql:host='.$config['host'];
+                    if(isset($config['dbname'])){
+                        $dsn .= ";{$config['dbname']}";
+                    }
                     if(!empty($config['port'])) {
                         $dsn .= ';port=' . $config['port'];
                     }
@@ -163,6 +173,17 @@ class Dao{
      */
     public static function getAvailableDrivers(){
         return \PDO::getAvailableDrivers();
+    }
+
+    /**
+     * 创建数据库
+     * @param string $dbname 数据库名称
+     * @return bool|string 返true表示成功，string表示错误信息
+     */
+    public function createDatabase($dbname){
+        $sql = "CREATE DATABASE IF NOT EXISTS `{$dbname}` DEFAULT CHARACTER SET utf8";
+        $rst = $this->exec($sql);
+        return $rst?true:$this->getErrorInfo();
     }
 
 /*********************** 基本功能（CURD）:简单地执行SQL语句，对外不涉及PDOStatement结果集等特性 *****************************/

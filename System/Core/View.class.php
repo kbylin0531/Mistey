@@ -142,6 +142,8 @@ class View{
         self::$tpl_engine->setCacheDir($this->_tpl_cache_dir.'static/');
 //        Util::dump($this->_context,$template);exit;
         Mist::status('display_gonna_to_begin');
+
+
         //显示模板文件
         self::$tpl_engine->display(self::$_context['a'],$cache_id,$compile_id,$parent);
         Mist::status('display_end');

@@ -8,6 +8,8 @@
 namespace System\Core;
 use System\Exception\ClassNotFoundException;
 use System\Mist;
+use System\Utils\Util;
+
 defined('BASE_PATH') or die('No Permission!');
 
 class Log{
@@ -59,7 +61,8 @@ class Log{
      * @Exception FileWriteFailedException
      */
     public static function write($content,$level=self::LOG_LEVEL_DEBUG){
-        return self::$_driver->write($content.$level);
+//        Util::dump($content,$level);exit;
+        return self::$_driver->write($content,$level);
     }
 
     /**

@@ -95,8 +95,11 @@ final class Mist{
         define('PUBLIC_PATH',BASE_PATH.'public/');
         define('APP_PATH',BASE_PATH.'Application/');
         define('APP_NAME',self::$_config['APP_NAME']);   //定义应用名称
+
         define('IS_WIN',false !== stripos(PHP_OS, 'WIN')); //运行环境
         define('IS_AJAX', ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ));
+        define('IS_POST',       strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' ? true : false);
+
         //-- 配置常量定义 --//
         define('URL_MODE',self::$_config['URL_MODE']);
         define('LOG_RATE',self::$_config['LOG_RATE']);//日志写入频率
@@ -352,14 +355,16 @@ final class Mist{
     /**
      * 处理错误的发生
      * 测试代码：trigger_error('发生了错误,- -#，这个是错误信息！ ',E_USER_ERROR);
-     * @param $errno
-     * @param $errstr
-     * @param $errfile
-     * @param $errline
+     * @param int $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param int $errline
+     * @param array $errcontext
      */
-    public static function handleError($errno, $errstr, $errfile, $errline){
+    public static function handleError($errno, $errstr, $errfile, $errline,$errcontext ){
 //        ob_end_clean();
         //错误信息
+        if(!is_string($errstr)) $errstr = serialize($errstr);
         ob_start();
         debug_print_backtrace();
         $vars = array(
