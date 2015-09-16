@@ -14,14 +14,26 @@ defined('BASE_PATH') or die('No Permission!');
  */
 class Model{
     /**
+     * 数据库操作入口
      * @var Dao
      */
-    public $dao = null;
+    protected $dao = null;
 
-    public function __construct(){
+    /**
+     * 实际的对应的数据表的名称
+     * @var string
+     */
+    protected $_real_tablename = null;
+
+    /**
+     * @param string $tablename 对应的表明
+     * @param int $identifier
+     */
+    public function __construct($tablename=null,$identifier=0){
         if(!isset($this->dao)){
-            $this->dao = Dao::getInstance(0);
+            $this->dao = Dao::getInstance($identifier);
         }
+        $this->_real_tablename = $tablename;
     }
 
 
