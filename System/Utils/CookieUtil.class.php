@@ -30,6 +30,7 @@ class CookieUtil {
         }
         return false;
     }
+
     public static function clear($name=''){
         if('' === $name){
             //清除所有
@@ -83,7 +84,7 @@ class CookieUtil {
      */
     public static function getCookie($name=null,$defult_value = null){
         if(null === $name) return $_COOKIE;
-        $name = $config['prefix'] . str_replace('.', '_', $name);
+        $name = self::$_config['prefix'] . str_replace('.', '_', $name);
         $key = self::$_config['prefix'].$name;
         return isset($_COOKIE[$key])?$_COOKIE[$key]:$defult_value;
     }

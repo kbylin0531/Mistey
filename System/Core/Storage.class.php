@@ -87,6 +87,17 @@ class Storage {
     }
 
     /**
+     * 设定文件的访问和修改时间
+     * @param string $filename 文件路径
+     * @param int $time
+     * @param int $atime
+     * @return bool
+     */
+    public static function touch($filename,$time=null,$atime=null){
+        return self::$driver->touch($filename,$time,$atime);
+    }
+
+    /**
      * 文件删除
      * @access public
      * @param string $filename  文件名
