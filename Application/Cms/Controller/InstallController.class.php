@@ -5,7 +5,7 @@
  * Date: 2015/9/16
  * Time: 12:09
  */
-namespace Application\CMS\Controller;
+namespace Application\Cms\Controller;
 use System\Core\Controller;
 use System\Core\Dao;
 use System\Core\Storage;
