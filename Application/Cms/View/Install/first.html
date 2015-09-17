@@ -6,11 +6,7 @@
     <li><a href="javascript:void(0);">创建数据库</a></li>
     <li>
         <a href="javascript:void(0);">
-            {if $action == true}
-                升级
-            {else}
                 安装
-            {/if}
         </a>
     </li>
     <li><a href="javascript:void(0);">完成</a></li>
@@ -84,6 +80,6 @@
 {/block}
 
 {block name="footer"}
-    <a class="btn btn-success btn-large" href="{$prev_url}">上一步</a>
-    <a class="btn btn-primary btn-large" href="{$next_url}">下一步</a>
+    <a class="btn btn-success btn-large" href="{U url='Cms/install/index'}">上一步</a>
+    <a class="btn btn-primary btn-large" href="{U url='Cms/install/second'}">下一步</a>
 {/block}

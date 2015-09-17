@@ -107,10 +107,12 @@ abstract class DaoDriver extends \PDO{
     }
 
     /**
-     * 获取所有的数据表
-     * @return mixed
+     * 获取数据表
+     * @param string $namelike
+     * @param string $dbname 数据库名称
+     * @return array
      */
-    abstract public function getTables();
+    abstract public function getTables($namelike = '%',$dbname=null);
 
     /**
      * 转义保留字字段名称

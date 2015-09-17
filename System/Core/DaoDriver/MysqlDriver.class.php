@@ -26,11 +26,18 @@ class MysqlDriver extends DaoDriver{
 //            dl('pdo_mysql');
             throw new PHPExtensionNotOpenException('pdo_mysql');
         }
+//        Util::dump($dsn,$username,$password,$option);exit;
         parent::__construct($dsn,$username,$password,$option);
     }
 
-    public function getTables(){
-
+    public function getTables($namelike = '%',$dbname=null){
+        $sql    = isset($dbname)?"SHOW TABLES FROM  $dbname  LIKE '$namelike' ":"SHOW TABLES   LIKE '$namelike' ";
+        $result = $this->query($sql)->fetchAll();
+        $info   =   array();
+        foreach ($result as $key => $val) {
+            $info[$key] = current($val);
+        }
+        return $info;
     }
 
 

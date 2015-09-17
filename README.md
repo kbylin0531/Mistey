@@ -39,4 +39,5 @@
       缺点:操作与参数之间的分割符需要着重设置，否则会出现解析歧义
 
    12.二维码PHP开源项目：http://sourceforge.net/projects/phpqrcode/?source=top3_dlp_t5
-
+   13.文件密钥， 以一个文件(通常是图片)的md5值为密码，使用文件进行登陆（前提是开启文件登陆，并养成良好的文件管理习惯）
+   14.Configure目录下的Auto目录下存放了系统自动生成的配置

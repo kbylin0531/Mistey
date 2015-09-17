@@ -71,8 +71,44 @@ class ConfigHelper{
     }
 
     /**
+     * 将配置写入数组
+     * @param string$confnm
+     * @param array $config
+     * @param null $path
+     * @return bool
+     * @throws FileNotFoundException
+     */
+    public static function writeAutoConfig($confnm,array $config,$path = null){
+        isset($path) or $path = BASE_PATH.'Configure/Auto/';
+        $path = $path."{$confnm}.config.php";
+        if(Storage::hasFile($path)){
+            //文件存在，读取并合并配置
+            $origin_config = self::loadConfigFile($path);
+            $config = array_merge($origin_config,$config);//后者覆盖前者
+        }
+        return Storage::writeFile($path,'<?php return '.var_export($config,true).'; ?>'); //闭包函数无法写入
+    }
+
+    /**
+     * 读取配置
+     * @param string $confnm 配置名称
+     * @param string $path 配置存放的路径
+     * @return array
+     * @throws FileNotFoundException
+     */
+    public static function readAutoConfig($confnm,$path=null){
+        isset($path) or $path = BASE_PATH.'Configure/Auto/';
+        $path = $path."{$confnm}.config.php";
+        if(Storage::hasFile($path)){
+            return self::loadConfigFile($path);
+        }else{
+            throw new FileNotFoundException($path);
+        }
+    }
+
+    /**
      * 读取配置文件内容
-     * @param string $path 配置文件的完整路劲
+     * @param string $path 配置文件的完整路径
      * @param int $type 配置文件类型，默认使用PHP形式的配置类型
      * @return array
      * @throws FileNotFoundException
@@ -82,7 +118,7 @@ class ConfigHelper{
         if(isset($_conf[$path])){
             return $_conf[$path];
         }
-        if(is_file($path)){
+        if(Storage::hasFile($path)){
             switch($type){
                 //other config type ...
                 case self::CONFIGTYPE_PHP:
