@@ -9,10 +9,14 @@ namespace System\Utils;
 use System\Core\ConfigHelper;
 use System\Core\URLHelper;
 use System\Exception\Template\XMLReadFailedException;
-use System\Ext\PasswordHash;
+use System\Extension\PasswordHash;
 
 defined('BASE_PATH') or die('No Permission!');
 
+/**
+ * Class Util 通用工具类
+ * @package System\Utils
+ */
 class Util{
 
     /**
@@ -24,8 +28,8 @@ class Util{
         return str_replace('\\','/',$path);
     }
 
-
     /**
+     * <b>暂时有异常，不建议使用</b>
      * PasswordHash加密解密类
      * @param string $password
      * @param string $compare
@@ -33,7 +37,7 @@ class Util{
      */
     public static function pwd($password,$compare=null){
         static $hasher = null;
-        isset($hasher) or $hasher = new PasswordHash(8, false);
+        isset($hasher) or $hasher = new PasswordHash(8, true);
         if(null === $compare){
             //返回加密结果
             return $hasher->HashPassword($password);

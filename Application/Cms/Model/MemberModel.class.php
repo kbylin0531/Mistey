@@ -8,6 +8,7 @@
 namespace Application\Cms\Model;
 use System\Core\Dao;
 use System\Core\Model;
+use System\Extension\ThinkBase64;
 use System\Utils\Util;
 
 class MemberModel extends Model{
@@ -23,12 +24,14 @@ class MemberModel extends Model{
     public function registerMember($member,$prefix='',$dao =null){
         isset($dao) and $this->dao = $dao;
         $rst = $this->create(array(
-            '1', $member['username'], Util::pwd($member['password']), $member['email'], '', $_SERVER['REQUEST_TIME'],
+            '1', $member['username'], ThinkBase64::encrypt($member['password']), $member['email'], '', $_SERVER['REQUEST_TIME'],
             Util::getClientIP(1), 0, 0, $_SERVER['REQUEST_TIME'], '1'
         ),$prefix.'ucenter_member');
         if(is_string($rst) or !$rst){
             return $rst;
         }
+        Util::dump($rst);
+
 
         $rst = $this->create(array(
             '1', $member['username'], '0', '0000-00-00', '', '0', '1', '0', $_SERVER['REQUEST_TIME'], '0', $_SERVER['REQUEST_TIME'], '1'
@@ -36,6 +39,8 @@ class MemberModel extends Model{
         if(is_string($rst)){
             return $rst;
         }
+
+        Util::dump($rst);
         return $rst;
     }
 
