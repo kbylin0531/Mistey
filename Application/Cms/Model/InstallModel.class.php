@@ -1,13 +1,17 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Administrator
- * Date: 2015/9/17
- * Time: 10:43
+ * User: Lin
+ * Date: 2015/9/16
+ * Time: 17:46
  */
-namespace Application\Cms\Model;
+namespace Application\Cms;
 use System\Core\Model;
 
 class InstallModel extends Model{
+
+
+
+
 
 }

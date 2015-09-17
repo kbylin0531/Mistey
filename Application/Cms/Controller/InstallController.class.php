@@ -25,6 +25,7 @@ class InstallController extends Controller{
 
         //静态文件目录
         defined('URL_STATIC_PATH') or define('URL_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
+        defined('URL_CMS_STATIC_PATH') or define('URL_CMS_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
 
 
     }
@@ -34,7 +35,6 @@ class InstallController extends Controller{
      */
     public function index(){
         $this->assign('action',true);
-        $this->assign('nexturl',Util::url('Cms/install/first'));
         $this->display();
     }
 
@@ -137,8 +137,7 @@ class InstallController extends Controller{
 
         //创建数据表
         $this->createTables($dao);
-        $this->registerAdmin($dao,SessionUtil::get('admin_info'), Util::buildAuthKey());
-
+        $this->registerAdmin($dao,SessionUtil::get('admin_info'));
     }
 
     /**

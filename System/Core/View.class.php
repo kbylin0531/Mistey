@@ -78,7 +78,37 @@ class View{
             static::$tpl_engine = new \Smarty();
             null === self::$_smarty_lite_file and self::$_smarty_lite_file =  RUNTIME_PATH.'Smarty.lite.php';
         }
+        $this->registerTemplateFunctions();
     }
+
+    /**
+     * 批量注册模板函数
+     * @return void
+     */
+    private function registerTemplateFunctions(){
+        //注册U函数
+        $this->registerFunction('U',function($url){
+            return Util::url($url);
+        });
+    }
+
+    /**
+     * 注册模板函数
+     * @param $name
+     * @param $callable
+     * @param bool|true $cacheable
+     * @param null $cache_attr
+     * @return \Smarty_Internal_TemplateBase
+     * @throws \SmartyException
+     */
+    public function registerFunction($name,$callable, $cacheable = true, $cache_attr = null){
+        return static::$tpl_engine->registerPlugin('function', $name, $callable, $cacheable , $cache_attr);
+    }
+
+    public function registerPlugin($type, $tag, $callback, $cacheable = true, $cache_attr = null){
+        return static::$tpl_engine->registerPlugin($type, $tag, $callback, $cacheable , $cache_attr);
+    }
+
     public function setTemplateDir($path){
 //        Util::dump($path);
         return static::$tpl_engine->setTemplateDir($path);
