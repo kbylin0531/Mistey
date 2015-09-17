@@ -145,7 +145,7 @@ class Dao{
                 }else{
                     $dsn  =   'mysql:host='.$config['host'];
                     if(isset($config['dbname'])){
-                        $dsn .= ";{$config['dbname']}";
+                        $dsn .= ";dbname={$config['dbname']}";
                     }
                     if(!empty($config['port'])) {
                         $dsn .= ';port=' . $config['port'];
@@ -178,12 +178,11 @@ class Dao{
     /**
      * 创建数据库
      * @param string $dbname 数据库名称
-     * @return bool|string 返true表示成功，string表示错误信息
+     * @return int 受影响的行数
      */
     public function createDatabase($dbname){
         $sql = "CREATE DATABASE IF NOT EXISTS `{$dbname}` DEFAULT CHARACTER SET utf8";
-        $rst = $this->exec($sql);
-        return $rst?true:$this->getErrorInfo();
+        return $this->exec($sql);
     }
 
 /*********************** 基本功能（CURD）:简单地执行SQL语句，对外不涉及PDOStatement结果集等特性 *****************************/
@@ -208,28 +207,42 @@ class Dao{
      * @param string $tablename
      * @param array $fieldsMap
      * @return string|int
+     * @throws ParameterInvalidException
      */
     public function create($tablename,$fieldsMap){
         $fields    = '';
         $placeholder     = '';
         $bind  = array();
-        foreach($fieldsMap as $fieldName=>$fieldValue){
-            $fieldName = trim($fieldName,' :');
-            $colnm = $fieldName;
-            if(is_array($fieldValue)){
-                $colnm = $fieldValue[1]?$this->driver->escapeField($fieldName):$fieldName;
-                $fieldValue = $fieldValue[0];
-            }
-            //拼接插入SQL字符串
-            $fields .= " {$colnm} ,";
-            $placeholder  .= " :{$fieldName} ,";
+        if($fieldsMap){
+            $flag = true;
+            foreach($fieldsMap as $fieldName=>$fieldValue){
+                $fieldName = trim($fieldName,' :');
+                $colnm = $fieldName;
+                if(is_numeric($fieldName)){
+                    $colnm = '_Field_'.$fieldName;////对于array('1', '[NAME]', '[PASS]', '[EMAIL]', '', '[TIME]', '[IP]', 0, 0, '[TIME]', '1')的情况
+                }
+                if(is_array($fieldValue)){
+                    $colnm = $fieldValue[1]?$this->driver->escapeField($fieldName):$fieldName;
+                    $fieldValue = $fieldValue[0];
+                }
+                //拼接插入SQL字符串
+                $flag and ($fields .= " {$colnm} ,");
+                $placeholder  .= " :{$fieldName} ,";
 
-            $bind[":{$fieldName}"] = $fieldValue;
-        }
-        $fields = rtrim($fields,',');
-        $placeholder  = rtrim($placeholder,',');
-        return $this->prepare("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );")
+                $bind[":{$fieldName}"] = $fieldValue;
+            }
+            $flag and ($fields = rtrim($fields,','));
+            $placeholder  = rtrim($placeholder,',');
+            if($flag){
+                return $this->prepare("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );")
                     ->execute($bind)->doneExecute();
+            }else{
+                return $this->prepare("insert into {$tablename} VALUES ( {$placeholder} );")
+                    ->execute($bind)->doneExecute();
+            }
+        }else{
+            throw new ParameterInvalidException($fieldsMap);
+        }
     }
 
     /**
@@ -273,11 +286,20 @@ class Dao{
     /**
      * 简单地执行Insert、Delete、Update操作
      * @param string $sql
-     * @return int|void
+     * @return int 返回受到影响的行数，但是可能不会太可靠
      */
     public function exec($sql){
         self::$_query[] = $sql;
         return $this->driver->exec($sql);
+    }
+
+    /**
+     * @param string $namelike
+     * @param string $dbname
+     * @return array
+     */
+    public function getTables($namelike = '%',$dbname=null){
+        return $this->driver->getTables($namelike,$dbname);
     }
 
     /**

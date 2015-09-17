@@ -10,7 +10,7 @@
 
 {block name="body"}
     <h1>创建数据库</h1>
-    <form action="{$self_url}" method="post" target="_self">
+    <form action="{U url='cms/install/second'}" method="post" target="_self">
         <div class="create-database">
             <div>
                 <select name="db[]">
@@ -68,7 +68,7 @@
 {/block}
 
 {block name="footer"}
-    <a class="btn btn-success btn-large" href="{$prev_url}">上一步</a>
+    <a class="btn btn-success btn-large" href="{U url='cms/install/third'}">上一步</a>
     <button id="submit" type="button" class="btn btn-primary btn-large" onclick="$('form').submit();return false;">
         下一步
     </button>

@@ -123,22 +123,30 @@ class CommonDriver{
      *      //文件内容  => 文件内容
      *      'filename' => 'file full path',
      * );
-     * @param string $dirpath
+     * @param string $path
+     * @param bool $clear
      * @return array
+     * @throws \Exception
      */
-    public function readFolder($dirpath){
-        $fileMap = array();
-        if(!is_dir($dirpath)) {
-            $this->makeFolder($dirpath);
-        }else{
-            $dh = opendir($dirpath);
-            while($file = readdir($dh)){
-                if($file === '.' || $file === '..') continue;
-                $fileMap[$file] = "{$dirpath}/{$file}";
+    public function readFolder($path,$clear=true){
+        static $_file = array();
+        $clear and $_file = array();
+        if (is_dir($path)) {
+            $handler = opendir($path);
+            while (($filename = readdir( $handler )) !== false) {//未读到最后一个文件   继续读
+                if ($filename !== '.' && $filename !== '..' ) {//文件除去 .和..
+                    if(is_file($path . '/' . $filename)) {
+                        $_file[$filename] = $path . '/' . $filename;
+                    }elseif(is_dir($path . '/' . $filename)) {
+                        self::readFolder($path . '/' . $filename,false);//递归
+                    }
+                }
             }
-            closedir($dh);
+            closedir($handler);//关闭目录指针
+        }else{
+            throw new \Exception("Path '{$path}' is not a dirent!");
         }
-        return $fileMap;
+        return $_file;
     }
     /**
      * 删除文件夹

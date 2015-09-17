@@ -499,18 +499,16 @@ class Util{
         foreach ($params as $key=>$val){
             echo '<b>Param '.$key.' is:</b><br />';
 //            var_dump($val);
-            if (!extension_loaded('xdebug')) {
-                $output = preg_replace('/\]\=\>\n(\s+)/m', '] => ', var_export($val,true));
-                $output =  htmlspecialchars($output, ENT_QUOTES) ;
-            }else{
-                if (ini_get('html_errors')) {
-                    $output = print_r($val, true);
-                    $output = htmlspecialchars($output, ENT_QUOTES);
-                } else {
-                    $output = print_r($val, true);
-                }
-            }
-            echo $output.'<br />';
+//            if (!extension_loaded('xdebug')) {
+//                $output = preg_replace('/\]\=\>\n(\s+)/m', '] => ', var_export($val,true));
+//            }else{
+//                if (ini_get('html_errors')) {
+//                    $output = print_r($val, true);
+//                } else {
+//                    $output = print_r($val, true);
+//                }
+//            }
+            echo print_r($val, true).'<br />';
         }
         echo '</pre>';
     }

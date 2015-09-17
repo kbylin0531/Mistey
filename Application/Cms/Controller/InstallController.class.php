@@ -6,8 +6,10 @@
  * Time: 12:09
  */
 namespace Application\Cms\Controller;
+use Application\Cms\Model\InstallModel;
+use Application\Cms\Model\MemberModel;
+use System\Core\ConfigHelper;
 use System\Core\Controller;
-use System\Core\Dao;
 use System\Core\Storage;
 use System\Utils\SessionUtil;
 use System\Utils\Util;
@@ -24,7 +26,6 @@ class InstallController extends Controller{
         }
 
         //静态文件目录
-        defined('URL_STATIC_PATH') or define('URL_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
         defined('URL_CMS_STATIC_PATH') or define('URL_CMS_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
 
 
@@ -34,7 +35,6 @@ class InstallController extends Controller{
      * 协议页面
      */
     public function index(){
-        $this->assign('action',true);
         $this->display();
     }
 
@@ -48,14 +48,9 @@ class InstallController extends Controller{
 
         SessionUtil::set('step', 1);
 
-        $this->assign('action',true);
         $this->assign('env',$env);
         $this->assign('dirfile', $dirfile);
         $this->assign('funcs',$funcs);
-        $this->assign(array(
-            'prev_url'  => util::url('Cms/install/index'),
-            'next_url'  => util::url('Cms/install/second'),
-        ));
         $this->display();
     }
 
@@ -64,6 +59,7 @@ class InstallController extends Controller{
      * @param array $db 数据库连接配置
      * @param array $admin 数据库管理员配置
      * @return void
+     * @throws \Exception
      */
     public function second($db = null, $admin = null){
         if(IS_POST){
@@ -98,18 +94,21 @@ class InstallController extends Controller{
                 //缓存数据库配置
                 SessionUtil::set('database_info', $config);
                 //创建数据库
-                $dao  = new Dao($config);
-                $rst = $dao->createDatabase(htmlspecialchars($config['dbname']));
-                if(is_string($rst)){
-                    //数据库创建失败
-                    $this->error($rst);
+                $installModel = new InstallModel($config);
+                if(!$installModel->createDatabase($config['dbname'])){
+                    $this->error($installModel->getErrorInfo());
+                }else{
+                    //成功创建数据库，写入配置信息
+                    if(!ConfigHelper::writeAutoConfig('cms',$config)){
+                        throw new \Exception('Store Configure into file failed!');
+                    }
                 }
             }
             //跳转到数据库安装页面
             $this->redirect('Cms/install/third');
         }
 
-
+        //检查并设置session
         if(SessionUtil::get('error')){
             $this->error('环境检测没有通过，请调整环境后重试！');
         }
@@ -119,10 +118,7 @@ class InstallController extends Controller{
         }
         SessionUtil::set('step', 2);
 
-        $self_url = Util::url('cms/install/second');
-        $prev_url = Util::url('cms/install/first');
-        $this->assign('self_url',$self_url);
-        $this->assign('prev_url',$prev_url);
+
         $this->display();
     }
 
@@ -131,64 +127,82 @@ class InstallController extends Controller{
             $this->redirect('Cms/install/second');
         }
         $this->display();
-
-        $dbcondig = SessionUtil::get('database_info');
-        $dao = new Dao($dbcondig);
-
         //创建数据表
-        $this->createTables($dao);
-        $this->registerAdmin($dao,SessionUtil::get('admin_info'));
+        $this->createTables();
+
+        Util::flushMessageToClient('开始注册创始人帐号...');
+        $dbconfig = SessionUtil::get('database_info');
+        $memberModel = new MemberModel($dbconfig);
+
+        $admin = SessionUtil::get('admin_info');
+        $db_config = SessionUtil::get('database_info');
+        $rst = $memberModel->registerMember($admin,$db_config['prefix']);
+        if(is_string($rst) or !$rst){
+            Util::flushMessageToClient('创始人帐号注册失败！'.$rst);
+        }else{
+            Util::flushMessageToClient('创始人帐号注册完成！');
+        }
+//        $this->registerAdmin(SessionUtil::get('admin_info'));
+
+        if(SessionUtil::get('error')){
+            //show_msg();
+        } else {
+            SessionUtil::set('step', 3);
+            $this->redirect('cms/install/complete');
+        }
     }
+
+    public function complete(){
+        $step = SessionUtil::get('step');
+        if(!$step){
+            $this->redirect('cms/install/index');
+        }
+//        elseif($step != 3) {
+//            $this->redirect("Install/step{$step}");
+//        }
+
+        // 写入安装锁定文件
+        Storage::writeFile('./Data/install.lock', 'lock');
+
+        if(!SessionUtil::get('update')){
+            //创建配置文件
+            $this->assign('info',SessionUtil::get('config_file'));
+        }
+        SessionUtil::clear('step');
+        SessionUtil::clear('error');
+        SessionUtil::clear('update');
+        $this->display();
+    }
+
 
     /**
-     * @param Dao $dao
-     * @param $admin
+     * 创建数据表
      */
-    private function registerAdmin($dao,$admin){
-        Util::flushMessageToClient('开始注册创始人帐号...');
-        $sql = "INSERT INTO `ucenter_member` VALUES " .
-            "('1', '[NAME]', '[PASS]', '[EMAIL]', '', '[TIME]', '[IP]', 0, 0, '[TIME]', '1')";
-
-        $password = Util::pwd($admin['password']);
-        $sql = str_replace(
-            array( '[NAME]', '[PASS]', '[EMAIL]', '[TIME]', '[IP]'),
-            array( $admin['username'], $password, $admin['email'], $_SERVER['REQUEST_TIME'], get_client_ip(1)),
-            $sql);
-        //执行sql
-        $dao->exec($sql);
-
-        $sql = "INSERT INTO `member` VALUES ".
-            "('1', '[NAME]', '0', '0000-00-00', '', '0', '1', '0', '[TIME]', '0', '[TIME]', '1');";
-        $sql = str_replace(
-            array('[NAME]', '[TIME]'),
-            array( $admin['username'], $_SERVER['REQUEST_TIME']),
-            $sql);
-        $dao->exec($sql);
-        Util::flushMessageToClient('创始人帐号注册完成！');
-    }
-
-    private function createTables($dao){
+    private function createTables(){
+        $dbconfig = SessionUtil::get('database_info');
+        $installModel = new InstallModel($dbconfig);
         //读取SQL文件
-        $sqls = file_get_contents(BASE_PATH.'Data/CMS/install.sql');
+        $sqls = Storage::readFile(BASE_PATH.'Data/CMS/install.sql');
+        //设置前缀
+        $sqls = str_replace(" `{$dbconfig['prefix']}", ' `onethink_', $sqls);
+//        Util::dump($sqls);exit;
         $sqls = str_replace("\r", "\n", $sqls);//windows下转化换行符
         $sqls = explode(";\n", $sqls);
 
+
+//        Util::dump($dbconfig);exit;
         //开始安装
         Util::flushMessageToClient('开始安装数据库...');
         foreach ($sqls as $sql) {
             $sql = trim($sql);
-            if(empty($sql)) continue;
-            if(strtoupper(substr($sql, 0, 12)) == 'CREATE TABLE') {
-                $name = preg_replace("/^CREATE TABLE `(\w+)` .*/s", "\\1", $sql);
-                $msg  = "创建数据表{$name}";
-                if($dao->exec($sql)){
-                    Util::flushMessageToClient($msg . '...成功');
-                } else {
-                    Util::flushMessageToClient($msg . '...失败！', 'error');
-                    SessionUtil::set('error', true);
+            if(empty($sql) or substr($sql,0,2) === '--') continue;
+
+            $msg = $installModel->execSql($sql);
+            if(is_array($msg)){
+                if(!$msg[0]){
+                    SessionUtil::set('error',true);
                 }
-            } else {
-                $dao->exec($sql);
+                Util::flushMessageToClient($msg[1]);
             }
         }
     }

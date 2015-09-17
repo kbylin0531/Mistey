@@ -31,7 +31,6 @@ const LOGRATE_HOUR = 0;
 const LOGRATE_DAY = 1;
 
 include_once BASE_PATH.'System/Mist.class.php';
-
 Mist::init(array(
     'URL_MODE'          => URLMODE_PATHINFO,
 //    'TIME_ZONE'         => 'Asia/Shanghai',

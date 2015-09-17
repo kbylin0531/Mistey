@@ -172,7 +172,7 @@ class SessionUtil{
      * PHP_SESSION_ACTIVE if sessions are enabled, and one or more exists.
      * @return int 状态常量
      */
-    public static function getStatus(){
+    public static function status(){
         return session_status();
     }
     /**
@@ -219,14 +219,15 @@ class SessionUtil{
      * @return null
      */
     public static function get($name=null){
+        self::start();
         if(!isset($name)){//获取全部
             return $_SESSION;
         }else{
             if(strpos($name,'.')){
                 list($name1,$name2) =   explode('.',$name);
-                return $_SESSION[$name1][$name2];
+                return isset($_SESSION[$name1][$name2])?$_SESSION[$name1][$name2]:null;
             }else{
-                return $_SESSION[$name];
+                return isset($_SESSION[$name])?$_SESSION[$name]:null;
             }
         }
     }
@@ -241,7 +242,12 @@ class SessionUtil{
      * @return bool
      */
     public static function start(){
-        return session_start();
+//        Util::dump($_SESSION,PHP_SESSION_DISABLED ,PHP_SESSION_ACTIVE,PHP_SESSION_NONE,
+//            self::status());exit;
+        if(PHP_SESSION_ACTIVE !== self::status()){
+            return session_start();
+        }
+        return false;
     }
 
     /**
@@ -284,7 +290,7 @@ class SessionUtil{
      * @return bool
      */
     public static function setSaveHandler(\SessionHandlerInterface $session_handler, $register_shutdown= true){
-        return session_set_save_handler($session_handler, $register_shutdown);
+        return @session_set_save_handler($session_handler, $register_shutdown);
     }
 
     /**
@@ -327,6 +333,7 @@ class SessionUtil{
      * @return void
      */
     public static function set($name,$value){
+        self::start();
         if(strpos($name,'.')){
             list($name1,$name2) =   explode('.',$name);
             $_SESSION[$name1][$name2] = $value;
