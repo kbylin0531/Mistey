@@ -117,13 +117,12 @@ class Dao{
      */
     public function __construct($config=null,$cover=false){
         if(is_array($config)){
-            self::$_conf = Util::mergeConf(self::$_conf['DB_CONNECT'][0],$config,$cover);
+            $config = Util::mergeConf(self::$_conf['DB_CONNECT'][0],$config,$cover);
         }
-//        Util::dump(self::$_conf,$config);exit;
-        $classname = 'System\\Core\\DaoDriver\\'.ucwords(self::$_conf['type']).'Driver';
+        $classname = 'System\\Core\\DaoDriver\\'.ucwords($config['type']).'Driver';
         try{
-            $this->driver = new $classname(self::buildDSN(self::$_conf),
-                self::$_conf['username'],self::$_conf['password'],self::$_conf['options']);
+            $this->driver = new $classname(self::buildDSN($config),
+                $config['username'],$config['password'],$config['options']);
         }catch (\PDOException $e){//连接失败总会抛出异常
             //收集和处理异常信息
             Mist::handleException($e);
@@ -214,31 +213,42 @@ class Dao{
         $placeholder     = '';
         $bind  = array();
         if($fieldsMap){
+            $flag_n = true;
             $flag = true;
             foreach($fieldsMap as $fieldName=>$fieldValue){
                 $fieldName = trim($fieldName,' :');
                 $colnm = $fieldName;
-                if(is_numeric($fieldName)){
-                    $colnm = '_Field_'.$fieldName;////对于array('1', '[NAME]', '[PASS]', '[EMAIL]', '', '[TIME]', '[IP]', 0, 0, '[TIME]', '1')的情况
+                if($flag_n){
+                    if(is_numeric($fieldName)){
+                        $colnm = $fieldName = 'fields_'.$fieldName;////对于array('1', '[NAME]', '[PASS]', '[EMAIL]', '', '[TIME]', '[IP]', 0, 0, '[TIME]', '1')的情况
+                        $flag = false;
+                    }
+                    $flag_n = false;
                 }
                 if(is_array($fieldValue)){
                     $colnm = $fieldValue[1]?$this->driver->escapeField($fieldName):$fieldName;
                     $fieldValue = $fieldValue[0];
                 }
-                //拼接插入SQL字符串
-                $flag and ($fields .= " {$colnm} ,");
-                $placeholder  .= " :{$fieldName} ,";
-
-                $bind[":{$fieldName}"] = $fieldValue;
+                if($flag){//字符
+                    //拼接插入SQL字符串
+                    $fields .= " {$colnm} ,";
+                    $placeholder  .= " :{$fieldName} ,";
+                    $bind[":{$fieldName}"] = $fieldValue;
+                }else{
+                    $placeholder .= ' ?,';
+                    $bind[] = $fieldValue;
+                }
             }
             $flag and ($fields = rtrim($fields,','));
             $placeholder  = rtrim($placeholder,',');
+//            Util::dump("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );",
+//                "insert into {$tablename} VALUES ( {$placeholder} );",$bind);exit;
             if($flag){
-                return $this->prepare("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );")
-                    ->execute($bind)->doneExecute();
+                $this->prepare("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );")->execute($bind);
+                return $this->doneExecute();
             }else{
-                return $this->prepare("insert into {$tablename} VALUES ( {$placeholder} );")
-                    ->execute($bind)->doneExecute();
+                $this->prepare("insert into {$tablename} VALUES ( {$placeholder} );")->execute($bind);
+                return $this->doneExecute();
             }
         }else{
             throw new ParameterInvalidException($fieldsMap);
@@ -255,9 +265,9 @@ class Dao{
     public function update($tablename,$flds,$whr){
         $fields = $this->makeSegments($flds);
         $where  = $this->makeSegments($whr);
-        return $this->prepare("update {$tablename} set {$fields[0]} where {$where[0]};")
-                    ->execute(array_merge($fields[1],$where[1]))
-                    ->doneExecute();
+        $this->prepare("update {$tablename} set {$fields[0]} where {$where[0]};")
+                    ->execute(array_merge($fields[1],$where[1]));
+        return $this->doneExecute();
     }
 
     /**
@@ -268,9 +278,9 @@ class Dao{
      */
     public function delete($tablename,$whr){
         $where  = $this->makeSegments($whr);
-        return $this->prepare("delete from {$tablename} where {$where[0]};")
-            ->execute($where[1])
-            ->doneExecute();
+        $this->prepare("delete from {$tablename} where {$where[0]};")
+            ->execute($where[1]);
+        return $this->doneExecute();
     }
 
     /**
@@ -663,6 +673,7 @@ class Dao{
     public function execute(array $input_parameters = null, \PDOStatement $statement=null){
         isset($statement) and $this->curStatement = $statement;
         self::$_query[] = $this->curStatement->queryString;
+//        Util::dump($this->curStatement->queryString,$input_parameters);exit;
         return $this->curStatement->execute($input_parameters)?$this:$this->getErrorInfo();
     }
 

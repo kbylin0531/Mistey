@@ -15,7 +15,21 @@ use System\Utils\SessionUtil;
 use System\Utils\Util;
 
 class InstallController extends Controller{
-
+    /**
+     * 安装步骤
+     * @var array
+     */
+    private static $_steps = array(
+        'index',
+        'first',
+        'second',
+        'third'
+    );
+    /**
+     * 安装锁的路径
+     * 锁文件存在的情况下无法进行安装
+     * @var string
+     */
     private static $lock_path = null;
 
     public function __construct(){
@@ -122,6 +136,10 @@ class InstallController extends Controller{
         $this->display();
     }
 
+    /**
+     * 实际安装数据库表和管理员账号设置
+     * @return void
+     */
     public function third(){
         if(SessionUtil::get('step') != 2){
             $this->redirect('Cms/install/second');
@@ -132,8 +150,8 @@ class InstallController extends Controller{
 
         Util::flushMessageToClient('开始注册创始人帐号...');
         $dbconfig = SessionUtil::get('database_info');
-        $memberModel = new MemberModel($dbconfig);
-
+        $memberModel = new MemberModel();
+        $memberModel->init($dbconfig);
         $admin = SessionUtil::get('admin_info');
         $db_config = SessionUtil::get('database_info');
         $rst = $memberModel->registerMember($admin,$db_config['prefix']);
@@ -146,12 +164,18 @@ class InstallController extends Controller{
 
         if(SessionUtil::get('error')){
             //show_msg();
+            Util::flushMessageToClient('安装错误！');
         } else {
             SessionUtil::set('step', 3);
+            Storage::writeFile(self::$lock_path,'Install complete!');
             $this->redirect('cms/install/complete');
         }
     }
 
+    /**
+     * 完成显示页面
+     * @throws \System\Exception\ParameterInvalidException
+     */
     public function complete(){
         $step = SessionUtil::get('step');
         if(!$step){
@@ -182,7 +206,7 @@ class InstallController extends Controller{
         //读取SQL文件
         $sqls = Storage::readFile(BASE_PATH.'Data/CMS/install.sql');
         //设置前缀
-        $sqls = str_replace(" `{$dbconfig['prefix']}", ' `onethink_', $sqls);
+        $sqls = str_replace(' `onethink_'," `{$dbconfig['prefix']}",  $sqls);
 //        Util::dump($sqls);exit;
         $sqls = str_replace("\r", "\n", $sqls);//windows下转化换行符
         $sqls = explode(";\n", $sqls);
@@ -206,7 +230,7 @@ class InstallController extends Controller{
     }
 
     /**
-     * 函数检测
+     * 函数检测是否存在
      * @return array 检测数据
      */
     private function checkFunc(){
@@ -230,11 +254,11 @@ class InstallController extends Controller{
         return $items;
     }
 
-    private /**
+     /**
      * 目录，文件读写检测
      * @return array 检测数据
      */
-    function checkDirfile(){
+    private function checkDirfile(){
         $items = array(
             array('dir',  '可写', 'success', 'Data/CMS/'),
         );
@@ -273,41 +297,41 @@ class InstallController extends Controller{
     }
 
     private function checkEnv(){
-    $items = array(
-        'os'      => array('操作系统', '不限制', '类Unix', PHP_OS, 'success'),
-        'php'     => array('PHP版本', '5.3', '5.3+', PHP_VERSION, 'success'),
-        'upload'  => array('附件上传', '不限制', '2M+', '未知', 'success'),
-        'gd'      => array('GD库', '2.0', '2.0+', '未知', 'success'),
-        'disk'    => array('磁盘空间', '5M', '不限制', '未知', 'success'),
-    );
+        $items = array(
+            'os'      => array('操作系统', '不限制', '类Unix', PHP_OS, 'success'),
+            'php'     => array('PHP版本', '5.3', '5.3+', PHP_VERSION, 'success'),
+            'upload'  => array('附件上传', '不限制', '2M+', '未知', 'success'),
+            'gd'      => array('GD库', '2.0', '2.0+', '未知', 'success'),
+            'disk'    => array('磁盘空间', '5M', '不限制', '未知', 'success'),
+        );
 
-    //PHP环境检测
-    if($items['php'][3] < $items['php'][1]){
-        $items['php'][4] = 'error';
-        SessionUtil::set('error', true);
+        //PHP环境检测
+        if($items['php'][3] < $items['php'][1]){
+            $items['php'][4] = 'error';
+            SessionUtil::set('error', true);
+        }
+
+        //附件上传检测
+        if(@ini_get('file_uploads'))
+            $items['upload'][3] = ini_get('upload_max_filesize');
+
+        //GD库检测
+        $tmp = function_exists('gd_info') ? gd_info() : array();
+        if(empty($tmp['GD Version'])){
+            $items['gd'][3] = '未安装';
+            $items['gd'][4] = 'error';
+            SessionUtil::set('error', true);
+        } else {
+            $items['gd'][3] = $tmp['GD Version'];
+        }
+        unset($tmp);
+
+        //磁盘空间检测
+        if(function_exists('disk_free_space')) {
+            $items['disk'][3] = floor(disk_free_space(BASE_PATH) / (1024*1024)).'M';
+        }
+
+        return $items;
     }
-
-    //附件上传检测
-    if(@ini_get('file_uploads'))
-        $items['upload'][3] = ini_get('upload_max_filesize');
-
-    //GD库检测
-    $tmp = function_exists('gd_info') ? gd_info() : array();
-    if(empty($tmp['GD Version'])){
-        $items['gd'][3] = '未安装';
-        $items['gd'][4] = 'error';
-        SessionUtil::set('error', true);
-    } else {
-        $items['gd'][3] = $tmp['GD Version'];
-    }
-    unset($tmp);
-
-    //磁盘空间检测
-    if(function_exists('disk_free_space')) {
-        $items['disk'][3] = floor(disk_free_space(BASE_PATH) / (1024*1024)).'M';
-    }
-
-    return $items;
-}
 
 }
