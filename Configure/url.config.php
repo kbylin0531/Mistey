@@ -16,7 +16,7 @@ return array(
     'MM_BRIDGE'     => '+',//模块与模块之间的连接桥
     'MC_BRIDGE'     => '/',
     'CA_BRIDGE'     => '/',
-    'AP_BRIDGE'     => '-',//*** 必须保证操作与控制器之间的符号将是$_SERVER['PATH_INFO']字符串中第一个出现的
+    'AP_BRIDGE'     => '.',//*** 必须保证操作与控制器之间的符号将是$_SERVER['PATH_INFO']字符串中第一个出现的
     'PP_BRIDGE'     => '-',//参数与参数之间的连接桥
     'PKV_BRIDGE'    => '-',//参数的键值对之前的连接桥
 

@@ -36,7 +36,7 @@ class Dao{
      * 保存数据库的驱动，在类构造的过程中初始化
      * @var DaoDriver
      */
-    protected $driver;
+    public $driver;
 
     /**
      * PDOStatement池
@@ -166,6 +166,15 @@ class Dao{
         return $dsn;
     }
 
+    /**
+     * 取得数据表的字段信息
+     * @access public
+     * @param $tableName
+     * @return array
+     */
+    public function getFields($tableName){
+        return $this->driver->getFields($tableName);
+    }
     /**
      * 获取所有可用的数据库PDO驱动
      * @return array
@@ -419,7 +428,7 @@ class Dao{
      * @param bool $is_and 表示是否使用and作为连接符，false时为,
      * @return array
      */
-    protected function makeSegments($segments,$is_and=true){
+    public function makeSegments($segments,$is_and=true){
         //初始值与参数检测
         $bind = array();
         $sql = '';
@@ -460,6 +469,18 @@ class Dao{
     }
 
     /**
+     * 根据SQL的各个组成部分创建SQL查询语句
+     * @param string $tablename 数据表的名称
+     * @param array $components sql组成部分
+     * @param int $offset
+     * @param int $limit
+     * @return string
+     */
+    public function buildSql($tablename,array $components,$offset=NULL,$limit=NULL){
+        return $this->driver->buildSql($tablename,$components,$offset,$limit);
+    }
+
+    /**
      * 执行结果信息返回
      * @return int|string 返回受影响行数，发生错误时返回错误信息
      */
@@ -472,7 +493,7 @@ class Dao{
      * 查询结果集返回
      * @return string|Dao 返回查询结果集，发生错误时返回错误信息
      */
-    public function donwQuery(){
+    public function doneQuery(){
         $errorInfo = $this->getErrorInfo();
         return empty($errorInfo)?$this:$errorInfo;
     }

@@ -159,7 +159,7 @@ class View{
         self::$tpl_engine->setTemplateDir($this->_tpl_dir);
         self::$tpl_engine->setCompileDir($this->_tpl_cache_dir.'compile/');
         self::$tpl_engine->setCacheDir($this->_tpl_cache_dir.'static/');
-//        Util::dump($this->_context,$template);exit;
+//        Util::dump($this->_tpl_dir,$template);exit;
         Mist::status('display_gonna_to_begin');
 
 

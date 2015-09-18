@@ -115,10 +115,11 @@ class Controller{
     /**
      * 页面跳转
      * @param string $compo 形式如'Cms/install/third' 的action定位
+     * @param array $params
      * @return void
      */
-    public function redirect($compo){
-        Util::redirect(Util::url($compo));
+    public function redirect($compo,array $params=array()){
+        Util::redirect(Util::url($compo,$params));
     }
 
     /**

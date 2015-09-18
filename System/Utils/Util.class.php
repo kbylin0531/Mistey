@@ -47,6 +47,21 @@ class Util{
         }
     }
 
+
+    /**
+     * 字符串命名风格转换
+     * @param string $str 字符串
+     * @param bool $type 转换类型 true表示将C风格转换为Java的风格 false将Java风格转换为C的风格
+     * @return string
+     */
+    public static function translateStringStyle($str, $type=true) {
+        if ($type) {
+            return ucfirst(preg_replace_callback('/_([a-zA-Z])/', function($match){return strtoupper($match[1]);}, $str));
+        } else {
+            return strtolower(trim(preg_replace("/[A-Z]/", "_\\0", $str), "_"));
+        }
+    }
+
     /**
      * 判断是否是https请求
      * @return bool

@@ -26,8 +26,8 @@ abstract class DaoDriver extends \PDO{
      * oracle中是 ""
      * @var string
      */
-    protected $_l_quote;
-    protected $_r_quote;
+    protected static $_l_quote = null;
+    protected static $_r_quote = null;
 
     /**
      * PDO驱动器名称
@@ -113,15 +113,28 @@ abstract class DaoDriver extends \PDO{
      * @return array
      */
     abstract public function getTables($namelike = '%',$dbname=null);
-
+    /**
+     * 取得数据表的字段信息
+     * @access public
+     * @param $tableName
+     * @return array
+     */
+    abstract public function getFields($tableName);
     /**
      * 转义保留字字段名称
      * @param string $fieldname 字段名称
      * @return string
      */
-    public function escapeField($fieldname){
-        return " {$this->_l_quote}{$fieldname}{$this->_r_quote} ";
-    }
+    abstract public function escapeField($fieldname);
+    /**
+     * 根据SQL的各个组成部分创建SQL查询语句
+     * @param string $tablename 数据表的名称
+     * @param array $components sql组成部分
+     * @param int $offset
+     * @param int $limit
+     * @return string
+     */
+    abstract public function buildSql($tablename,array $components,$offset=NULL,$limit=NULL);
 
     /**
      * 调用不存在的方法时

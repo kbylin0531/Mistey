@@ -34,7 +34,7 @@ class InstallController extends Controller{
 
     public function __construct(){
         parent::__construct();
-        self::$lock_path = BASE_PATH.'Data/install.lock';
+        self::$lock_path = BASE_PATH.'Data/CMS/install.lock';
         if(Storage::hasFile(self::$lock_path)){
             $this->error('CMS已经安装完毕!');
         }
@@ -185,7 +185,7 @@ class InstallController extends Controller{
 //            $this->redirect("Install/step{$step}");
 //        }
         // 写入安装锁定文件
-        Storage::writeFile('./Data/install.lock', 'lock');
+        Storage::writeFile(self::$lock_path, 'lock');
         if(!SessionUtil::get('update')){
             //创建配置文件
             $this->assign('info',SessionUtil::get('config_file'));
