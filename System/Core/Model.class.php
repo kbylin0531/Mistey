@@ -411,12 +411,21 @@ class Model{
         return $this;
     }
 
-    public function fields($fields=null,$except=false){
+    /**
+     * 设置要查询的字段
+     * @param string|array $fields 字段集合
+     * @return $this
+     */
+    public function fields($fields=null){
         if(isset($fields)){
             if(is_string($fields)){
                 $this->options['fields'] = $fields;
             }else{
-                
+                $this->options['fields'] = '';
+                foreach($fields as $value){
+                    $this->options['fields'] .= $this->dao->driver->escapeField($value).',';
+                }
+                $this->options['fields'] = rtrim($this->options['fields'],',');
             }
         }else{
             if(empty($this->fields)){
@@ -432,6 +441,76 @@ class Model{
         }
         return $this;
     }
+
+    /**
+     * 设置排序字段
+     * @param string|array $order 排序字段
+     * @return $this
+     */
+    public function order($order){
+        if(is_string($order)){
+            $this->options['order'] = $order;
+        }else{
+            $this->options['order'] = implode(',',$order);
+        }
+        return $this;
+    }
+
+    /**
+     * 指定查询数量
+     * @access public
+     * @param mixed $offset 起始位置
+     * @param mixed $length 查询数量
+     * @return Model
+     */
+    public function limit($offset,$length=null){
+        if(false !== strpos($offset,',') and null === $length){
+//            list($offset,$length) = explode(',',$offset);
+            $this->options['limit'] = $offset;
+        }else{
+            if($length){
+                $this->options['limit'] = " $offset , $length ";
+            }else{
+                $this->options['limit'] = " $offset ";
+            }
+        }
+        return $this;
+    }
+    /**
+     * 指定分页
+     * @access public
+     * @param mixed $page 页数
+     * @param mixed $listRows 每页数量
+     * @return Model
+     */
+    public function page($page,$listRows=null){
+        if(is_null($listRows) && strpos($page,',')){
+            list($page,$listRows)   =   explode(',',$page);
+        }
+        $this->options['page']      =   array(intval($page),intval($listRows));
+        return $this;
+    }
+
+    /**
+     * @param string|array $group
+     * @return $this
+     */
+    public function group($group){
+        if(is_string($group)){
+            $this->options['group'] = $group;
+        }else{
+            $this->options['group'] = implode(',',$group);
+        }
+        return $this;
+    }
+
+
+    //链式查询列表
+    public function having(){}
+    public function join(){}
+    public function union(){}
+    public function distinct(){}
+    public function cache(){}//如果有cache，直接返回，否则查询并缓存
     /**
      * 查询数据
      * @access public
@@ -576,35 +655,6 @@ class Model{
                 $data[$key]   =  (bool)$data[$key];
             }
         }
-    }
-    /**
-     * 指定查询数量
-     * Mysql数据库以外要谨慎使用
-     * @access public
-     * @param mixed $offset 起始位置
-     * @param mixed $limit 查询数量
-     * @return Model
-     */
-    public function limit($offset,$limit=null){
-        if(!isset($limit) and strpos($offset,',')){
-            list($offset,$limit)   =   explode(',',$offset);
-        }
-        $this->options['limit']     =   intval($offset).( $limit? ','.intval($limit) : '' );
-        return $this;
-    }
-    /**
-     * 指定分页
-     * @access public
-     * @param mixed $page 页数
-     * @param mixed $listRows 每页数量
-     * @return Model
-     */
-    public function page($page,$listRows=null){
-        if(!isset($listRows) and strpos($page,',')){
-            list($page,$listRows)   =   explode(',',$page);
-        }
-        $this->options['page']      =   array(intval($page),intval($listRows));
-        return $this;
     }
     /**
      * 查询注释
