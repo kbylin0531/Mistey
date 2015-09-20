@@ -14,7 +14,7 @@ defined('BASE_PATH') or die('No Permission!');
  * Class ConfigHelper 配置加载帮助类
  * @package System\Core
  */
-class ConfigHelper{
+class Configer{
 
     /**
      * 配置文件类型
@@ -133,3 +133,5 @@ class ConfigHelper{
 
 
 }
+//别名
+class_alias('Configer','ConfigHelper');
