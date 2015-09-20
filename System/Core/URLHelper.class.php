@@ -83,7 +83,7 @@ final class URLHelper{
         Mist::status('urlhelper_init_begin');
         //初始化类
         Util::mergeConf(self::$_convention,
-            isset($config) ? $config : ConfigHelper::loadConfig('url'),
+            isset($config) ? $config : Configer::load('url'),
             true
         );
         //参数确实时返回默认配置

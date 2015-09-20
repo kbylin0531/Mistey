@@ -46,7 +46,7 @@ exit( '-------');
             return;
         }
 //        Util::dump(BASE_PATH,$filename,substr($filename,$basepathstrlen));exit;
-        $filename = str_replace('/','_',strtolower(substr($filename,$basepathstrlen+8)));//将'runtime/'也删除
+        $filename = str_replace('/','||',strtolower(substr($filename,$basepathstrlen+8)));//将'runtime/'也删除
         $filename = "saestor://runtime/{$filename}";
     }
 

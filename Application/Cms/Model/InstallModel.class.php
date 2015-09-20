@@ -7,26 +7,31 @@
  */
 namespace Application\Cms\Model;
 use System\Core\Model;
-use System\Utils\Util;
 
 class InstallModel extends Model{
 
     /**
      * 构造
      * @param string|array $config 数据库连接标识符 或者 连接信息数组
+     * @param bool $withdb false时删除配置中的数据库名称信息，因为此时数据库还不存在
+     * @throws \Exception
      */
-    public function __construct($config='0'){
+    public function __construct($config='0',$withdb=true){
+//        isset($config) and unset($config['dbname']);/不行，因为unset是操作符，同throw
+        if(!$withdb and isset($config['dbname'])){
+            unset($config['dbname']);
+        }
         isset($config) and $this->init($config);
         parent::__construct();
     }
 
     /**
      * 创建数据库
-     * @param array $dbname 数据库名称
+     * @param string $dbname 数据库名称
      * @return bool
      */
     public function createDatabase($dbname){
-        $rst = $this->dao->createDatabase(htmlspecialchars($dbname));
+        $rst = $this->dao->createDatabase($dbname);
         return $rst?true:false;
     }
 

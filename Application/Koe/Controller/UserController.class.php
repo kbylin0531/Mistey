@@ -72,7 +72,7 @@ class UserController extends KoeController{
      * @param string $msg
      */
     public function login($msg = ''){
-        if (!Storage::hasFile(USER_SYSTEM.'install.lock')) {
+        if (!Storage::has(USER_SYSTEM.'install.lock')) {
             $this->install();
         }
         //连续三次输入错误

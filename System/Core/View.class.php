@@ -67,7 +67,7 @@ class View{
         /*
         defined('SMARTY_PLUGIN_DIR') or define('SMARTY_PLUGIN_DIR',SMARTY_DIR.'sysplugins/');
         isset(self::$_smarty_lite_file) or self::$_smarty_lite_file = RUNTIME_PATH.'Smarty.lite.php';
-        if(DEBUG_MODE_ON or !Storage::hasFile(self::$_smarty_lite_file)){
+        if(DEBUG_MODE_ON or !Storage::has(self::$_smarty_lite_file)){
             self::buildSmartyLite();
         }
 //        Util::dump(self::$_smarty_lite_file);exit;

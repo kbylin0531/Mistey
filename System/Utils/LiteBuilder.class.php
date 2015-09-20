@@ -27,7 +27,7 @@ class LiteBuilder {
         $content = '';
         // 编译文件
         foreach ($filelist as $file){
-            if(Storage::hasFile($file)){
+            if(Storage::has($file)){
                 if(!isset($_cache[$file])){
                     $content .= self::compile($file);
                     $_cache[$file] = true;
@@ -35,8 +35,8 @@ class LiteBuilder {
             }
         }
         // 生成运行Lite文件
-        Storage::writeFile($litefile,'<?php '.$content);
-//        Storage::writeFile($litefile,self::stripWhitespace('<?php '.$content));
+        Storage::write($litefile,'<?php '.$content);
+//        Storage::write($litefile,self::stripWhitespace('<?php '.$content));
     }
 
     /**

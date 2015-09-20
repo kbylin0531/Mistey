@@ -94,7 +94,7 @@ class Model{
     public function __construct($tablename=null){
         //获取表前缀，比较高效的方式是手动添加表前缀
         if(!isset($config['prefix'])){
-            $config = ConfigHelper::readAutoConfig('cms');
+            $config = Configer::readAuto('cms');
             $this->prefix = $config['prefix'];
         }
         if(isset($tablename)){

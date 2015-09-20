@@ -8,7 +8,6 @@
 namespace System\Core;
 use System\Exception\ClassNotFoundException;
 use System\Mist;
-use System\Utils\Util;
 
 defined('BASE_PATH') or die('No Permission!');
 
@@ -18,7 +17,9 @@ class Log{
      * 日志驱动类型
      */
     const LOGTYPE_FILE = 'File';
-    const LOGTYPE_DATABASE = 'Sae';
+    const LOGTYPE_SAE = 'Sae';
+    const LOGTYPE_DATABASE = 'Database';
+    const LOGTYPE_MEMCACHE = 'Memcache';
     /**
      * 日志级别为记录错误
      */

@@ -52,7 +52,7 @@ class LangHelper{
      * @throws FileNotFoundException
      */
     public static function setOuterLangPath($path){
-        if(Storage::hasFile($path)){
+        if(Storage::has($path)){
             self::$_outer_path = $path;
             return;
         }
@@ -83,7 +83,7 @@ class LangHelper{
         $innerLang = array();
         isset($type) or $type = self::$_lang_type;
         $innerpath = SYSTEM_PATH."Lang/{$type}.lang.php";
-        if(Storage::hasFile($innerpath)){
+        if(Storage::has($innerpath)){
             $innerLang = include_once $innerpath;
         }else{
             throw new FileNotFoundException($innerpath);
@@ -93,7 +93,7 @@ class LangHelper{
         $outerLang = array();
         if(isset(self::$_outer_path)){
             $outerpath = self::$_outer_path."{$type}.lang.php";
-            if(Storage::hasFile($outerpath)){
+            if(Storage::has($outerpath)){
                 $outerLang = include_once $outerpath;
             }else{
                 throw new FileNotFoundException($outerpath);

@@ -6,7 +6,7 @@
  * Time: 9:16
  */
 namespace System;
-use System\Core\ConfigHelper;
+use System\Core\Configer;
 use System\Core\Dao;
 use System\Core\Dispatcher;
 use System\Core\Log;
@@ -148,7 +148,7 @@ final class Mist{
         //-- 常用类的路径定义 --//
         self::$_prev_loaded_classes = array(
             //核心类
-            'System\Core\ConfigHelper'  => SYSTEM_PATH.'Core/ConfigHelper.class.php',
+            'System\Core\Configer'  	=> SYSTEM_PATH.'Core/Configer.class.php',
             'System\Core\Dispatcher'    => SYSTEM_PATH.'Core/Dispatcher.class.php',
             'System\Core\URLHelper'     => SYSTEM_PATH.'Core/URLHelper.class.php',
             'System\Core\Controller'    => SYSTEM_PATH.'Core/Controller.class.php',
@@ -161,7 +161,6 @@ final class Mist{
 
             //核心类常用驱动
             'System\Core\LogDriver\FileDriver'          => SYSTEM_PATH.'Core/LogDriver/FileDriver.class.php',
-            'System\Core\LogDriver\LogDriver'           => SYSTEM_PATH.'Core/LogDriver/LogDriver.class.php',
             'System\Core\StorageDriver\CommonDriver'    => SYSTEM_PATH.'Core/StorageDriver/CommonDriver.class.php',
 
             //工具类
@@ -201,7 +200,7 @@ final class Mist{
 
         //初始化
         Log::init();
-        ConfigHelper::init();
+        Configer::init();
         URLHelper::init();
 
         //解析URL
@@ -273,7 +272,7 @@ final class Mist{
                 ),
                 'Files'         => array_merge(array('Total'=>count($info)),$info),
                 'Status'        => $cmprst,
-                'Sql'           => Dao::getSql(false),
+                'Sql'           => Dao::log(true),
                 'Log'           => Log::getLogCache(),
 //                'Error'         => self::$_errorCache,
                 'SERVER'        => $_SERVER,
@@ -359,9 +358,8 @@ final class Mist{
      * @param string $errstr
      * @param string $errfile
      * @param int $errline
-     * @param array $errcontext
      */
-    public static function handleError($errno, $errstr, $errfile, $errline,$errcontext ){
+    public static function handleError($errno, $errstr, $errfile, $errline ){
 //        ob_end_clean();
         //错误信息
         if(!is_string($errstr)) $errstr = serialize($errstr);

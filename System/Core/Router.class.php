@@ -22,7 +22,7 @@ class Router{
     public static function init(){
         //获取静态方法调用的类名称使用get_called_class,对象用get_class
 //        $clsnm = strtolower(strstr(get_called_class(),'Helper',true));//配置文件名称
-        Util::mergeConf(self::$convention,ConfigHelper::loadConfig('route'),true);
+        Util::mergeConf(self::$convention,Configer::load('route'),true);
         static::$inited = true;
     }
 
@@ -31,7 +31,7 @@ class Router{
     }
 
     public static function parseRouteRules(){
-        $conf = ConfigHelper::loadConfig('');
+        $conf = Configer::load('');
         self::$convention = array_merge(self::$convention,$conf);
     }
 

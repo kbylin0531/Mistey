@@ -6,7 +6,7 @@
  * Time: 16:06
  */
 namespace System\Utils;
-use System\Core\ConfigHelper;
+use System\Core\Configer;
 use System\Core\URLHelper;
 use System\Exception\Template\XMLReadFailedException;
 use System\Extension\PasswordHash;
@@ -425,7 +425,7 @@ class Util{
      * @return array
      */
     public static function loadConf($confName,$modlist=''){
-        ConfigHelper::loadConfig($confName,$modlist);
+        Configer::load($confName,$modlist);
     }
 
 

@@ -1,0 +1,275 @@
+10:08:29
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'mistcms'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(19): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:44:19
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'root'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(19): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:51:08
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'root'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:51:48
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'root'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(126): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:53:14
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'root'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:53:17
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'root'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:54:12
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'root'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:54:54
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'mistcms'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:57:19
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'mistcms'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+10:58:44
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'mistcms'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(18): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(111): Application\Cms\Model\InstallModel->__construct(Array)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+
+11:03:42
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'mistcms'
+||--position--||
+File:F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 F:\Web\Webroot\Mist\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 F:\Web\Webroot\Mist\System\Core\Dao.class.php(125): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 F:\Web\Webroot\Mist\System\Core\Model.class.php(154): System\Core\Dao->__construct(Array)
+#4 F:\Web\Webroot\Mist\Application\Cms\Model\InstallModel.class.php(24): System\Core\Model->init(Array)
+#5 F:\Web\Webroot\Mist\Application\Cms\Controller\InstallController.class.php(101): Application\Cms\Model\InstallModel->__construct(Array, false)
+#6 [internal function]: Application\Cms\Controller\InstallController->second(Array, Array)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Cms\Controller\InstallController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'second', Array)
+#9 F:\Web\Webroot\Mist\index.php(49): System\Mist::start()
+#10 {main}
+
+=====================================================================================
+
+
+
+
+

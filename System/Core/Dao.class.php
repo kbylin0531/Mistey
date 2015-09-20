@@ -8,21 +8,16 @@
 namespace System\Core;
 use System\Core\DaoDriver\DaoDriver;
 use System\Exception\ParameterInvalidException;
+use System\Exception\PDOExecuteException;
 use System\Mist;
-use System\Utils\Util;
+use System\Utils\SEK;
 defined('BASE_PATH') or die('No Permission!');
 /**
  * Class Dao 数据入口对象(DataAccessObject)
  * 具体方法的实现以来于各个驱动
  * @package System\Core
  */
-class Dao{
-
-    /**
-     * SQL查询记录
-     * @var array
-     */
-    private static $_query = array();
+final class Dao{
 
     /**
      * 数据库类型
@@ -55,7 +50,7 @@ class Dao{
      * PDO连接信息必须包含： host  username  password [port]
      * @var array
      */
-    protected static $_conf = array(
+    protected static $config = array(
         'MASTER_NO'    => 0,
         'DB_CONNECT'   =>   array(
             0   =>  array(
@@ -85,50 +80,62 @@ class Dao{
      * @var bool
      */
     private static $_hasInited = false;
+
     /**
-     * 选择数据库连接
-     * @param int|string $identifier
+     * Dao构造函数
+     * @param array $config 数据库连接参数
+     * @throws ParameterInvalidException
      */
-    public static function getInstance($identifier=0){
+    protected function __construct(array $config){
+        //检查必要参数
+        if(isset($config['type'],$config['username'],$config['password'])){
+            throw new ParameterInvalidException($config);
+        }
+        $classname = 'System\\Core\\DaoDriver\\'.ucwords($config['type']).'Driver';
+        $dsn = null;
+        if(isset($config['dsn'])){
+            $dsn = $config['dsn'];
+        }elseif(isset($config['host'])){
+            $dsn = self::buildDSN($config);
+        }
+        try{
+            $this->driver = new $classname($dsn,$config['username'],$config['password'],$config['options']);
+        }catch (\PDOException $e){//连接失败总会抛出异常
+            Mist::handleException($e);
+        }
+    }
+
+/***************************** TODO:静态方法 *******************************************************************************/
+    /**
+     * 创建数据库连接
+     * 当设置参数二时，将选用参数二作为连接配置创建连接并命名为参数一表示的标识符
+     * @param int|string $identifier 连接标识符，可以自己创建或者选自self::$_conf['DB_CONNECT']
+     * @param array|null $connect_config
+     * @return Dao
+     */
+    public static function getInstance($identifier=0,array $connect_config=null){
         self::$_hasInited or self::init();
-        if(!isset(self::$daoPool[$identifier])){//创建连接
-            self::$daoPool[$identifier] = new Dao(self::$_conf['DB_CONNECT'][$identifier]);
+        if(isset($connect_config)){
+            self::$daoPool[$identifier] = new Dao($connect_config);
+        }elseif(!isset(self::$daoPool[$identifier])){//创建连接
+            self::$daoPool[$identifier] = new Dao(self::$config['DB_CONNECT'][$identifier]);
         }
         return self::$daoPool[$identifier];
     }
 
     /**
      * 获取应用实例
-     * @return object
+     * @param string $confnm 配置名称，存放在根目录下的Configure/文件夹下
+     * @return void
+     * @throws \System\Exception\ConfigLoadFailedException
      */
-    public static function init(){
-        $config = ConfigHelper::loadConfig('database');
+    public static function init($confnm='database'){
+        $config = Configer::load($confnm);
         if(isset($config)){
-            Util::mergeConf(static::$_conf,$config,false);
+            SEK::merge(static::$config,$config);//动态配置载入
         }
         self::$_hasInited = true;
     }
-
-
-    /**
-     * Dao构造函数
-     * @param null|array $config 数据库连接参数
-     * @param bool $cover
-     */
-    public function __construct($config=null,$cover=false){
-        if(is_array($config)){
-            $config = Util::mergeConf(self::$_conf['DB_CONNECT'][0],$config,$cover);
-        }
-        $classname = 'System\\Core\\DaoDriver\\'.ucwords($config['type']).'Driver';
-        try{
-            $this->driver = new $classname(self::buildDSN($config),
-                $config['username'],$config['password'],$config['options']);
-        }catch (\PDOException $e){//连接失败总会抛出异常
-            //收集和处理异常信息
-            Mist::handleException($e);
-        }
-    }
-
 
     /**
      * 更具不同的数据库类型获取不同的DSN
@@ -138,42 +145,39 @@ class Dao{
     public static function buildDSN($config){
         $dsn = null;
         switch($config['type']){
-            case self::DB_TYPE_MYSQL://MySQL
-                if(isset($config['dsn'])){
-                    $dsn = $config['dsn'];
-                }else{
-                    $dsn  =   'mysql:host='.$config['host'];
-                    if(isset($config['dbname'])){
-                        $dsn .= ";dbname={$config['dbname']}";
-                    }
-                    if(!empty($config['port'])) {
-                        $dsn .= ';port=' . $config['port'];
-                    }
-                    if(!empty($config['socket'])){
-                        $dsn  .= ';unix_socket='.$config['socket'];
-                    }
-                    if(!empty($config['charset'])){
-                        $dsn  .= ';charset='.$config['charset'];
-                    }
+            case self::DB_TYPE_MYSQL:   //MySQL
+                $dsn  =  "mysql:host={$config['host']}";
+                if(isset($config['dbname'])){
+                    $dsn .= ";dbname={$config['dbname']}";
+                }
+                if(!empty($config['port'])) {
+                    $dsn .= ';port=' . $config['port'];
+                }
+                if(!empty($config['socket'])){
+                    $dsn  .= ';unix_socket='.$config['socket'];
+                }
+                if(!empty($config['charset'])){
+                    $dsn  .= ';charset='.$config['charset'];
                 }
                 break;
             case self::DB_TYPE_SQLSRV:
+                $dsn  =   'sqlsrv:Server='.$config['hostname'];
+                if(isset($config['dbname'])){
+                    $dsn = ";Database={$config['dbname']}";
+                }
+                if(!empty($config['hostport'])) {
+                    $dsn  .= ','.$config['hostport'];
+                }
                 break;
             case self::DB_TYPE_ORACLE:
+                $dsn  =   'oci:dbname=//'.$config['hostname'].($config['port']?':'.$config['port']:'').'/'.$config['dbname'];
+                if(!empty($config['charset'])) {
+                    $dsn  .= ';charset='.$config['charset'];
+                }
                 break;
             default:;
         }
         return $dsn;
-    }
-
-    /**
-     * 取得数据表的字段信息
-     * @access public
-     * @param $tableName
-     * @return array
-     */
-    public function getFields($tableName){
-        return $this->driver->getFields($tableName);
     }
     /**
      * 获取所有可用的数据库PDO驱动
@@ -184,351 +188,78 @@ class Dao{
     }
 
     /**
-     * 创建数据库
-     * @param string $dbname 数据库名称
-     * @return int 受影响的行数
-     */
-    public function createDatabase($dbname){
-        $sql = "CREATE DATABASE IF NOT EXISTS `{$dbname}` DEFAULT CHARACTER SET utf8";
-        return $this->exec($sql);
-    }
-
-/*********************** 基本功能（CURD）:简单地执行SQL语句，对外不涉及PDOStatement结果集等特性 *****************************/
-    /**
-     * 为指定的数据表插入一条数据
-     * <code>
-     *      $fldsMap ==> array(
-     *          //-- 第一种情况，不会进行转义 --//
-     *          'fieldName' => 'fieldValue',
-     *          //-- 第二种情况,[值，是否转义] --//
-     *          'fieldName' => array('fieldValue',boolean),
-     *      );
-     *
-     *     #牛人想到的一个办法(MySQL)
-     *     $data = ['a'=>'foo','b'=>'bar'];
-     *     $keys = array_keys($data);
-     *     $fields = '`'.implode('`, `',$keys).'`';
-     *     #here is my way
-     *     $placeholder = substr(str_repeat('?,',count($keys),0,-1));
-     *     $pdo->prepare("INSERT INTO `baz`($fields) VALUES($placeholder)")->execute(array_values($data));
-     * </code>
-     * @param string $tablename
-     * @param array $fieldsMap
-     * @return string|int
+     * 记录查询的SQL
+     * @param bool|false $sql
+     *      false表示获取最后一条SQL记录(不存在则返回false)，
+     *      true表示返回全部记录
+     *      string表示设置sql记录，输入参数见bind
+     *      array表示设置sql记录，无视参数二
+     * @param array|null $bind 输入参数
+     * @return array|mixed|null
      * @throws ParameterInvalidException
      */
-    public function create($tablename,$fieldsMap){
-        $fields    = '';
-        $placeholder     = '';
-        $bind  = array();
-        if($fieldsMap){
-            $flag_n = true;
-            $flag = true;
-            foreach($fieldsMap as $fieldName=>$fieldValue){
-                $fieldName = trim($fieldName,' :');
-                $colnm = $fieldName;
-                if($flag_n){
-                    if(is_numeric($fieldName)){
-                        $colnm = $fieldName = 'fields_'.$fieldName;////对于array('1', '[NAME]', '[PASS]', '[EMAIL]', '', '[TIME]', '[IP]', 0, 0, '[TIME]', '1')的情况
-                        $flag = false;
-                    }
-                    $flag_n = false;
-                }
-                if(is_array($fieldValue)){
-                    $colnm = $fieldValue[1]?$this->driver->escapeField($fieldName):$fieldName;
-                    $fieldValue = $fieldValue[0];
-                }
-                if($flag){//字符
-                    //拼接插入SQL字符串
-                    $fields .= " {$colnm} ,";
-                    $placeholder  .= " :{$fieldName} ,";
-                    $bind[":{$fieldName}"] = $fieldValue;
-                }else{
-                    $placeholder .= ' ?,';
-                    $bind[] = $fieldValue;
-                }
-            }
-            $flag and ($fields = rtrim($fields,','));
-            $placeholder  = rtrim($placeholder,',');
-//            Util::dump("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );",
-//                "insert into {$tablename} VALUES ( {$placeholder} );",$bind);exit;
-            if($flag){
-                $this->prepare("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );")->execute($bind);
-                return $this->doneExecute();
+    public static function log($sql=false,array $bind=null){
+        static $_cache = array();
+        if(is_bool($sql)){
+            if($sql){
+                return $_cache;
             }else{
-                $this->prepare("insert into {$tablename} VALUES ( {$placeholder} );")->execute($bind);
-                return $this->doneExecute();
+                return end($_cache);//默认返回最后一个
             }
+        }elseif(is_array($sql)){
+            $_cache[] = $sql;
+        }elseif(is_string($sql)){
+            $_cache[] = array($sql,$bind);
         }else{
-            throw new ParameterInvalidException($fieldsMap);
+            throw new ParameterInvalidException($sql,$bind);
+        }
+        return true;
+    }
+
+
+
+/******************* TODO:基本功能 ***************************************************************************************/
+    /**
+     * @param array $input_parameters
+     *                  一个元素个数和将被执行的 SQL 语句中绑定的参数一样多的数组。
+     *                  所有的值作为 PDO::PARAM_STR 对待。
+     *                  不能绑定多个值到一个单独的参数,如果在 input_parameters 中
+     *                  存在比 PDO::prepare() 预处理的SQL 指定的多的键名，
+     *                  则此语句将会失败并发出一个错误。
+     *                  (这个错误在PHP 5.2.0版本之前是默认忽略的，个人认为忽略是不负责任的行为，即使错误就不该被执行)
+     * @param \PDOStatement $statement
+     * @return Dao|string
+     * @throws PDOExecuteException
+     * @throws ParameterInvalidException
+     */
+    public function execute(array $input_parameters = null, \PDOStatement $statement=null){
+        isset($statement) and $this->curStatement = $statement;
+        if($this->curStatement){
+            self::log(array($this->curStatement->queryString,$input_parameters));
+//        Util::dump($this->curStatement->queryString,$input_parameters);exit;
+            return $this->curStatement->execute($input_parameters)?$this:$this->getErrorInfo();
+        }else{
+            throw new PDOExecuteException($this->curStatement,$input_parameters);
         }
     }
-
-    /**
-     * 为指定的数据表更新记录
-     * @param $tablename
-     * @param $flds
-     * @param $whr
-     * @return int|string 返回受影响的行数
-     */
-    public function update($tablename,$flds,$whr){
-        $fields = $this->makeSegments($flds);
-        $where  = $this->makeSegments($whr);
-        $this->prepare("update {$tablename} set {$fields[0]} where {$where[0]};")
-                    ->execute(array_merge($fields[1],$where[1]));
-        return $this->doneExecute();
-    }
-
-    /**
-     * 删除数据
-     * @param $tablename
-     * @param $whr
-     * @return int|string
-     */
-    public function delete($tablename,$whr){
-        $where  = $this->makeSegments($whr);
-        $this->prepare("delete from {$tablename} where {$where[0]};")
-            ->execute($where[1]);
-        return $this->doneExecute();
-    }
-
     /**
      * 查询一段SQL，并且将解析出所有的结果集合
      * @param string $sql
      * @return array|mixed
      */
     public function query($sql){
-        self::$_query[] = $sql;
+        self::log($sql);
         return $this->driver->query($sql)->fetchAll();
     }
-
     /**
      * 简单地执行Insert、Delete、Update操作
      * @param string $sql
      * @return int 返回受到影响的行数，但是可能不会太可靠
      */
     public function exec($sql){
-        self::$_query[] = $sql;
+        self::log($sql);
         return $this->driver->exec($sql);
     }
-
-    /**
-     * @param string $namelike
-     * @param string $dbname
-     * @return array
-     */
-    public function getTables($namelike = '%',$dbname=null){
-        return $this->driver->getTables($namelike,$dbname);
-    }
-
-    /**
-     * 获取执行过的SQL
-     * @param bool $get_last
-     * @return mixed|string
-     */
-    public static function getSql($get_last=true){
-        return $get_last?end(self::$_query):self::$_query;
-    }
-
-    /**
-     * 返回PDO驱动或者上一个PDO语句对象上发生的错误的信息（具体驱动的错误号和错误信息）
-     * @return string 返回错误信息字符串，没有错误发生时返回空字符串
-     */
-    public function getErrorInfo(){
-        $pdoError = $this->driver->errorInfo();
-        $stmtError = $this->curStatement->errorInfo();
-        $message = '';
-        isset($pdoError[1]) and $message .= "[{$pdoError[1]}]:[{$pdoError[2]}]";
-        isset($stmtError[1]) and $message .= "[{$stmtError[1]}]:[{$stmtError[2]}]";
-        return $message;
-    }
-
-    /**
-     * 综合字段绑定的方法
-     * <code>
-     *      $operator = '='
-     *          $fieldName = :$fieldName
-     *          :$fieldName => trim($fieldValue)
-     *
-     *      $operator = 'like'
-     *          $fieldName = :$fieldName
-     *          :$fieldName => dowithbinstr($fieldValue)
-     *
-     *      $operator = 'in|not_in'
-     *          $fieldName in|not_in array(...explode(...,$fieldValue)...)
-     * </code>
-     * @param string $fieldName 字段名称
-     * @param string|array $fieldValue 字段值
-     * @param string $operator 操作符
-     * @param bool $translate 是否对字段名称进行转义,MSSQL中使用[]
-     * @return array
-     * @throws ParameterInvalidException
-     */
-    protected function makeFieldBind($fieldName,$fieldValue,$operator='=',$translate=false){
-        static $suffix = 1;//使用场景是update时既有set绑定又有where绑定时，区分前后二者，将suffix设置可以防止前后冲突
-        //绑定设置
-        $fieldName = trim($fieldName, ' :');
-        $fieldBindName = null;
-        if (false !== strpos($fieldName, '.')) {//存在则选择最后一节 ot_students.id  ==> id
-            $arr = explode('.', $fieldName);
-            $fieldBindName = ':' . array_pop($arr);
-        } elseif (mb_strlen($fieldName, 'utf-8') < strlen($fieldName)) {//字段名称为其他的编码
-            $fieldBindName = ':' . md5($fieldName);
-        } else {
-            $fieldBindName = ":{$fieldName}";
-        }
-        $fieldBindName .= $suffix;//后缀衔接
-        //操作符设置
-        $operator = strtolower(trim($operator));
-        $sql = $translate ? $this->driver->escapeField($fieldName) : $fieldName ;
-        $bind = array();
-
-        switch ($operator) {
-            case '=':
-                $sql .= " = {$fieldBindName} ";
-                $bind[$fieldBindName] = $fieldValue;
-                break;
-            case 'like':
-                $sql .= " like {$fieldBindName} ";
-                $bind[$fieldBindName] = $fieldValue;
-                break;
-            case 'in':
-            case 'not in':
-                if (is_string($fieldValue)) {
-                    $sql .= " {$operator} ({$fieldValue}) ";
-                } elseif (is_array($fieldValue)) {
-                    $sql .= " {$operator} ('" . implode("','", $fieldValue) . "')";
-                } else {
-                    throw new ParameterInvalidException($fieldName);
-                }
-                break;
-            default:
-                throw new ParameterInvalidException($fieldValue);
-        }
-        ++$suffix;
-        return array(
-            $sql,
-            $bind,
-        );
-    }
-
-    /**
-     * <note>
-     *      片段准则
-     *      $map == array(
-     *          //-- 第一种情况,连接符号一定是'='，并且字段名称不是保留字 --//
-     *          'key' => $val,
-     *          //-- 第二种情况，[绑定值，是否转义，操作符] --//
-     *          'key' => array($val,true,$operator),//布尔值情况如下,遗留问题，参数二和三应该倒置
-     *          //-- 第三种情况，[完整的SQL片段，绑定名称，绑定值] --//
-     *          array('assignSql',':bindSQLSegment',value),//参数4的值为true时表示对key进行[]转义
-     *      );
-     * </note>
-     * @param array $segments 字段绑定片段
-     * @param bool $is_and 表示是否使用and作为连接符，false时为,
-     * @return array
-     */
-    public function makeSegments($segments,$is_and=true){
-        //初始值与参数检测
-        $bind = array();
-        $sql = '';
-        if(empty($segments)){
-            return array($sql,$bind);
-        }
-        //片段之间的连接
-        $bridge = $is_and?'and':',';
-
-        //元素连接
-        foreach($segments as $key=>$val){
-            if(is_numeric($key)){//第三种情况
-                $sql .= " {$val[0]} $bridge";
-                $bind[$val[1]] = $val[2];
-            }else{
-                $rst = null;
-                if(is_array($val)){//第二种情况
-                    $rst = $this->makeFieldBind(
-                        $val[0],
-                        $val[1],
-                        empty($val[2])?' = ':$val[2],
-                        $val[3]
-                    );
-                }else{//第一种情况
-                    $rst = $this->makeFieldBind($key,$val);
-                }
-                //合并绑定参数
-                if(is_array($rst)){
-                    $sql .= " {$rst[0]} $bridge";
-                    $bind = array_merge($bind, $rst[1]);
-                }
-            }
-        }
-        return array(
-            substr($sql,0,strlen($sql)-strlen($bridge)),//去除最后一个and
-            $bind,
-        );
-    }
-
-    /**
-     * 根据SQL的各个组成部分创建SQL查询语句
-     * @param string $tablename 数据表的名称
-     * @param array $components sql组成部分
-     * @param int $offset
-     * @param int $limit
-     * @return string
-     */
-    public function buildSql($tablename,array $components,$offset=NULL,$limit=NULL){
-        return $this->driver->buildSql($tablename,$components,$offset,$limit);
-    }
-
-    /**
-     * 执行结果信息返回
-     * @return int|string 返回受影响行数，发生错误时返回错误信息
-     */
-    public function doneExecute(){
-        $errorInfo = $this->getErrorInfo();
-        return empty($errorInfo)?$this->rowCount():$errorInfo;
-    }
-
-    /**
-     * 查询结果集返回
-     * @return string|Dao 返回查询结果集，发生错误时返回错误信息
-     */
-    public function doneQuery(){
-        $errorInfo = $this->getErrorInfo();
-        return empty($errorInfo)?$this:$errorInfo;
-    }
-
-/*********************** 高级功能（事务，PDOStatement等） ***************************************************************/
-    /**
-     * @return bool
-     */
-    public function beginTransaction(){
-        return $this->driver->beginTransaction();
-    }
-
-    /**
-     * @return bool
-     */
-    public function commit(){
-        return $this->driver->commit();
-    }
-
-    /**
-     * @return bool
-     */
-    public function rollBack(){
-        return $this->driver->rollBack();
-    }
-
-    /**
-     * @return bool
-     */
-    public function inTransaction(){
-        return $this->driver->inTransaction();
-    }
-
-
-
     /**
      * 准备一段SQL
      *  <note>
@@ -540,7 +271,7 @@ class Dao{
      * @param null|string $id   不设置ID或者ID的值为布尔类型的false时，将把ID设置为0，并默认指针指向0
      *                          设置了ID时将先检查对应的ID是否存在对应的PDOStatement，如果不存在则将当前查询的语句绑定到该ID下
      * @param array $option prepare方法参数二
-     * @return Dao
+     * @return $this
      */
     public function prepare($sql,$id=NULL,$option=array()){
         !$id and $id = 0;
@@ -552,11 +283,9 @@ class Dao{
                 Mist::handleException($e);
             }
         }
-        $this->curStatement = $this->statementPool[$id];
+        $this->curStatement = &$this->statementPool[$id];
         return $this;
     }
-
-
     /**
      * 绑定一个参数到指定的变量名
      * 绑定一个PHP变量到用作预处理的SQL语句中的对应命名占位符或问号占位符。
@@ -575,7 +304,6 @@ class Dao{
      *      ④一个值对应多个位置在PHP5.2.0及之前的版本中会导致错误，在5.2.1版本之后貌似能正常工作
      *          $sql = "SELECT * FROM u WHERE a = :myValue AND d = :myValue ";
      *          $params = array("myValue" => "0");
-     *
      * </note>
      * @param int|string $parameter 参数标识符。
      *                          对于使用命名占位符的预处理语句，应是类似 :name 形式的参数名。
@@ -606,7 +334,6 @@ class Dao{
     public function bindValue($parameter, $value, $data_type = \PDO::PARAM_STR){
         return $this->curStatement->bindValue($parameter, $value, $data_type);
     }
-
     /**
      * 安排一个特定的变量绑定到一个查询结果集中给定的列。每次调用 PDOStatement::fetch()
      *  或 PDOStatement::fetchAll() 都将更新所有绑定到列的变量
@@ -634,7 +361,49 @@ class Dao{
     public function bindColumn($column, &$param, $type = null, $maxlen = null, $driverdata = null){
         return $this->curStatement->bindColumn($column,$param,$type,$maxlen,$driverdata);
     }
+    /**
+     * 返回PDO驱动或者上一个PDO语句对象上发生的错误的信息（具体驱动的错误号和错误信息）
+     * @return string 返回错误信息字符串，没有错误发生时返回空字符串
+     */
+    public function getErrorInfo(){
+        $message = '';
+        $pdoError = $this->driver->errorInfo();
+        isset($pdoError[1]) and $message .= "Code:{$pdoError[0]} [{$pdoError[1]}]:[{$pdoError[2]}]";
+        if(isset($this->curStatement)){
+            $stmtError = $this->curStatement->errorInfo();
+            isset($stmtError[1]) and $message .= "[{$stmtError[1]}]:[{$stmtError[2]}]";
+        }
+        return $message;
+    }
+    /**
+     * 开启事务
+     * @return bool
+     */
+    public function beginTransaction(){
+        return $this->driver->beginTransaction();
+    }
 
+    /**
+     * 提交事务
+     * @return bool
+     */
+    public function commit(){
+        return $this->driver->commit();
+    }
+    /**
+     * 回滚事务
+     * @return bool
+     */
+    public function rollBack(){
+        return $this->driver->rollBack();
+    }
+    /**
+     * 确认是否在事务中
+     * @return bool
+     */
+    public function inTransaction(){
+        return $this->driver->inTransaction();
+    }
     /**
      * 释放到数据库服务的连接，以便发出其他 SQL 语句，但使语句处于一个可以被再次执行的状态
      * 当上一个执行的 PDOStatement 对象仍有未取行时，此方法对那些不支持再执行一个 PDOStatement 对象的数据库驱动非常有用。
@@ -665,7 +434,6 @@ class Dao{
     public function columnCount(){
         return $this->curStatement->columnCount();
     }
-
     /**
      * 获取预处理语句包含的信息
      * <note>
@@ -674,28 +442,10 @@ class Dao{
      * </note>
      * @return string
      */
-    public function getDebugDumpParams(){
+    public function getStatementParams(){
         ob_start();//开始本层次的ob缓冲区
         $this->curStatement->debugDumpParams();
         return ob_get_clean();// 相当于ob_get_contents() 和 ob_end_clean()
-    }
-
-    /**
-     * @param array $input_parameters
-     *                  一个元素个数和将被执行的 SQL 语句中绑定的参数一样多的数组。
-     *                  所有的值作为 PDO::PARAM_STR 对待。
-     *                  不能绑定多个值到一个单独的参数,如果在 input_parameters 中
-     *                  存在比 PDO::prepare() 预处理的SQL 指定的多的键名，
-     *                  则此语句将会失败并发出一个错误。
-     *                  (这个错误在PHP 5.2.0版本之前是默认忽略的，个人认为忽略是不负责任的行为，即使错误就不该被执行)
-     * @param \PDOStatement $statement
-     * @return Dao|string
-     */
-    public function execute(array $input_parameters = null, \PDOStatement $statement=null){
-        isset($statement) and $this->curStatement = $statement;
-        self::$_query[] = $this->curStatement->queryString;
-//        Util::dump($this->curStatement->queryString,$input_parameters);exit;
-        return $this->curStatement->execute($input_parameters)?$this:$this->getErrorInfo();
     }
 
     /**
@@ -785,5 +535,311 @@ class Dao{
         return $this->curStatement->rowCount();
     }
 
+
+/******************************** TODO:高级功能(CURD) *********************************************************************************/
+    /**
+     * 执行结果信息返回
+     * @return int|string 返回受影响行数，发生错误时返回错误信息
+     */
+    public function doneExecute(){
+        $errorInfo = $this->getErrorInfo();
+        return empty($errorInfo)?$this->rowCount():$errorInfo;
+    }
+    /**
+     * 查询结果集返回
+     * @return string|Dao 返回查询结果集，发生错误时返回错误信息
+     */
+    public function doneQuery(){
+        $errorInfo = $this->getErrorInfo();
+        return empty($errorInfo)?$this:$errorInfo;
+    }
+
+    /**
+     * 为指定的数据表插入一条数据
+     * <code>
+     *      $fldsMap ==> array(
+     *          //-- 第一种情况，不会进行转义 --//
+     *          'fieldName' => 'fieldValue',
+     *          //-- 第二种情况,[值，是否转义] --//
+     *          'fieldName' => array('fieldValue',boolean),
+     *      );
+     *
+     *     #牛人想到的一个办法(MySQL)
+     *     $data = ['a'=>'foo','b'=>'bar'];
+     *     $keys = array_keys($data);
+     *     $fields = '`'.implode('`, `',$keys).'`';
+     *     #here is my way
+     *     $placeholder = substr(str_repeat('?,',count($keys),0,-1));
+     *     $pdo->prepare("INSERT INTO `baz`($fields) VALUES($placeholder)")->execute(array_values($data));
+     * </code>
+     * @param string $tablename
+     * @param array $fieldsMap
+     * @return string|int
+     * @throws ParameterInvalidException
+     */
+    public function create($tablename,$fieldsMap){
+        $fields    = '';
+        $placeholder     = '';
+        $bind  = array();
+        if($fieldsMap){
+            $flag_n = true;
+            $flag = true;
+            foreach($fieldsMap as $fieldName=>$fieldValue){
+                $fieldName = trim($fieldName,' :');
+                $colnm = $fieldName;
+                if($flag_n){
+                    if(is_numeric($fieldName)){
+                        $colnm = $fieldName = 'fields_'.$fieldName;////对于array('1', '[NAME]', '[PASS]', '[EMAIL]', '', '[TIME]', '[IP]', 0, 0, '[TIME]', '1')的情况
+                        $flag = false;
+                    }
+                    $flag_n = false;
+                }
+                if(is_array($fieldValue)){
+                    $colnm = $fieldValue[1]?$this->driver->escapeField($fieldName):$fieldName;
+                    $fieldValue = $fieldValue[0];
+                }
+                if($flag){//字符
+                    //拼接插入SQL字符串
+                    $fields .= " {$colnm} ,";
+                    $placeholder  .= " :{$fieldName} ,";
+                    $bind[":{$fieldName}"] = $fieldValue;
+                }else{
+                    $placeholder .= ' ?,';
+                    $bind[] = $fieldValue;
+                }
+            }
+            $flag and ($fields = rtrim($fields,','));
+            $placeholder  = rtrim($placeholder,',');
+//            Util::dump("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );",
+//                "insert into {$tablename} VALUES ( {$placeholder} );",$bind);exit;
+            if($flag){
+                $this->prepare("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );")->execute($bind);
+                return $this->doneExecute();
+            }else{
+                $this->prepare("insert into {$tablename} VALUES ( {$placeholder} );")->execute($bind);
+                return $this->doneExecute();
+            }
+        }else{
+            throw new ParameterInvalidException($fieldsMap);
+        }
+    }
+
+    /**
+     * 为指定的数据表更新记录
+     * @param $tablename
+     * @param $flds
+     * @param $whr
+     * @return int|string 返回受影响的行数
+     */
+    public function update($tablename,$flds,$whr){
+        $fields = $this->makeSegments($flds,false);
+        $where  = $this->makeSegments($whr);
+        $this->prepare("update {$tablename} set {$fields[0]} where {$where[0]};")
+                    ->execute(array_merge($fields[1],$where[1]));
+        return $this->doneExecute();
+    }
+
+    /**
+     * 删除数据
+     * @param $tablename
+     * @param $whr
+     * @return int|string
+     */
+    public function delete($tablename,$whr){
+        $where  = $this->makeSegments($whr);
+        $this->prepare("delete from {$tablename} where {$where[0]};")
+            ->execute($where[1]);
+        return $this->doneExecute();
+    }
+
+    /**
+     * 查询一段SQL
+     * @param string $tablename
+     * @param string|array|null $fields
+     * @param string|array|null $whr
+     * @return array
+     * @throws PDOExecuteException
+     */
+    public function select($tablename,$fields=null,$whr=null){
+        if($fields){
+            if(is_array($fields)){
+                $fields = implode(',',$fields);
+            }
+        }else{
+            $fields = ' * ';
+        }
+        if(is_array($whr)){
+            $whr  = $this->makeSegments($whr);
+        }
+        return $this->prepare("select $fields from $tablename where {$whr[0]};")
+                    ->execute($whr[1])->fetchAll();
+    }
+
+
+    /**
+     * @param string $namelike
+     * @param string $dbname
+     * @return array
+     */
+    public function getTables($namelike = '%',$dbname=null){
+        return $this->driver->getTables($namelike,$dbname);
+    }
+
+    /**
+     * 综合字段绑定的方法
+     * <code>
+     *      $operator = '='
+     *          $fieldName = :$fieldName
+     *          :$fieldName => trim($fieldValue)
+     *
+     *      $operator = 'like'
+     *          $fieldName = :$fieldName
+     *          :$fieldName => dowithbinstr($fieldValue)
+     *
+     *      $operator = 'in|not_in'
+     *          $fieldName in|not_in array(...explode(...,$fieldValue)...)
+     * </code>
+     * @param string $fieldName 字段名称
+     * @param string|array $fieldValue 字段值
+     * @param string $operator 操作符
+     * @param bool $translate 是否对字段名称进行转义,MSSQL中使用[]
+     * @return array
+     * @throws ParameterInvalidException
+     */
+    protected function makeFieldBind($fieldName,$fieldValue,$operator='=',$translate=false){
+        static $suffix = 1;//使用场景是update时既有set绑定又有where绑定时，区分前后二者，将suffix设置可以防止前后冲突
+        //绑定设置
+        $fieldName = trim($fieldName, ' :');
+        $fieldBindName = null;
+        if (false !== strpos($fieldName, '.')) {//存在则选择最后一节 ot_students.id  ==> id
+            $arr = explode('.', $fieldName);
+            $fieldBindName = ':' . array_pop($arr);
+        } elseif (mb_strlen($fieldName, 'utf-8') < strlen($fieldName)) {//字段名称为其他的编码
+            $fieldBindName = ':' . md5($fieldName);
+        } else {
+            $fieldBindName = ":{$fieldName}";
+        }
+        $fieldBindName .= $suffix;//后缀衔接
+        //操作符设置
+        $operator = strtolower(trim($operator));
+        $sql = $translate ? $this->driver->escapeField($fieldName) : $fieldName ;
+        $bind = array();
+
+        switch ($operator) {
+            case '=':
+                $sql .= " = {$fieldBindName} ";
+                $bind[$fieldBindName] = $fieldValue;
+                break;
+            case 'like':
+                $sql .= " like {$fieldBindName} ";
+                $bind[$fieldBindName] = $fieldValue;
+                break;
+            case 'in':
+            case 'not in':
+                if (is_string($fieldValue)) {
+                    $sql .= " {$operator} ({$fieldValue}) ";
+                } elseif (is_array($fieldValue)) {
+                    $sql .= " {$operator} ('" . implode("','", $fieldValue) . "')";
+                } else {
+                    throw new ParameterInvalidException($fieldName);
+                }
+                break;
+            default:
+                throw new ParameterInvalidException($fieldValue);
+        }
+        ++$suffix;
+        return array(
+            $sql,
+            $bind,
+        );
+    }
+
+    /**
+     * <note>
+     *      片段准则
+     *      $map == array(
+     *          //-- 第一种情况,连接符号一定是'='，并且字段名称不是保留字 --//
+     *          'key' => $val,
+     *          //-- 第二种情况，[绑定值，是否转义，操作符] --//
+     *          'key' => array($val,true,$operator),//布尔值情况如下,遗留问题，参数二和三应该倒置
+     *          //-- 第三种情况，[完整的SQL片段，绑定名称，绑定值] --//
+     *          array('assignSql',':bindSQLSegment',value),//参数4的值为true时表示对key进行[]转义
+     *      );
+     * </note>
+     * @param array $segments 字段绑定片段
+     * @param bool $is_and 表示是否使用and作为连接符，false时为,
+     * @return array
+     */
+    protected function makeSegments($segments,$is_and=true){
+        //初始值与参数检测
+        $bind = array();
+        $sql = '';
+        if(empty($segments)){
+            return array($sql,$bind);
+        }
+        //片段之间的连接
+        $bridge = $is_and?'and':',';
+
+        //元素连接
+        foreach($segments as $key=>$val){
+            if(is_numeric($key)){//第三种情况
+                $sql .= " {$val[0]} $bridge";
+                $bind[$val[1]] = $val[2];
+            }else{
+                $rst = null;
+                if(is_array($val)){//第二种情况
+                    $rst = $this->makeFieldBind(
+                        $val[0],
+                        $val[1],
+                        empty($val[2])?' = ':$val[2],
+                        $val[3]
+                    );
+                }else{//第一种情况
+                    $rst = $this->makeFieldBind($key,$val);
+                }
+                //合并绑定参数
+                if(is_array($rst)){
+                    $sql .= " {$rst[0]} $bridge";
+                    $bind = array_merge($bind, $rst[1]);
+                }
+            }
+        }
+        return array(
+            substr($sql,0,strlen($sql)-strlen($bridge)),//去除最后一个and
+            $bind,
+        );
+    }
+
+/******************** TODO:扩展功能 ***********************************************************************************************/
+    /**
+     * 根据SQL的各个组成部分创建SQL查询语句
+     * @param string $tablename 数据表的名称
+     * @param array $components sql组成部分
+     * @param int $offset
+     * @param int $limit
+     * @return string
+     */
+    public function buildSql($tablename,array $components,$offset=NULL,$limit=NULL){
+        return $this->driver->buildSql($tablename,$components,$offset,$limit);
+    }
+    /**
+     * 取得数据表的字段信息
+     * @access public
+     * @param $tableName
+     * @return array
+     */
+    public function getFields($tableName){
+        return $this->driver->getFields($tableName);
+    }
+
+    /**
+     * 创建数据库
+     * @param string $dbname 数据库名称
+     * @return int 受影响的行数
+     */
+    public function createDatabase($dbname){
+        $sql = "CREATE DATABASE IF NOT EXISTS `{$dbname}` DEFAULT CHARACTER SET utf8";
+        return $this->driver->exec($sql);
+    }
 
 }

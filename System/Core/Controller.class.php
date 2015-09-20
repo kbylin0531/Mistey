@@ -16,15 +16,15 @@ defined('BASE_PATH') or die('No Permission!');
 class Controller{
 
     /**
-     * 模板引擎实例
-     * @var View
-     */
-    protected $_view = null;
-    /**
      * 分配给模板的变量集合
      * @var array
      */
     protected $_tVars = array();
+    /**
+     * 模板引擎实例
+     * @var View
+     */
+    protected $_view = null;
 
     /**
      * 当前控制器的默认上下文环境
@@ -75,7 +75,7 @@ class Controller{
      * @return void
      * @throws \Exception
      */
-    protected function exitWithAjax($data,$type='JSON',$json_option=0) {
+    protected function ajax($data,$type='JSON',$json_option=0) {
         switch (strtoupper($type)){
             case 'JSON' :
                 // 返回JSON数据格式到客户端 包含状态信息
@@ -142,33 +142,23 @@ class Controller{
         header( 'Cache-Control: post-check=0, pre-check=0', false );
         header( 'Pragma: no-cache' );
         $vars = array();
-
         $vars['wait'] = $wait;
         $vars['title'] = $title;
-        if($status) {
-            $vars['message'] = $message;
-            $vars['status'] = 1;
-        }else{
-            $vars['message'] = $message;
-            $vars['status'] = 0;
-        }
+        $vars['message'] = $message;
+        $vars['status'] = $status?1:0;
         switch($jumpto){
-            case 0://提示完毕后自动关闭窗口
-                $vars['jumpurl'] = 'javascript:window.close();';
-                break;
             case 1:
                 $vars['jumpurl'] = 'javascript:history.back(-1);';
                 break;
             case -1:
                 $vars['jumpurl'] = 'javascript:history.back(-1);';
                 break;
+            case 0://提示完毕后自动关闭窗口
             default:
-                throw new \Exception('Unknown jumping url!');
+                $vars['jumpurl'] = 'javascript:window.close();';
         }
         Mist::loadTemplate('jump',$vars);
     }
-
-
 
     /**
      * 设置默认的模板主题

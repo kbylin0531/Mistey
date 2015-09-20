@@ -8,23 +8,13 @@
 namespace Application\Cms\Controller;
 use Application\Cms\Model\InstallModel;
 use Application\Cms\Model\MemberModel;
-use System\Core\ConfigHelper;
+use System\Core\Configer;
 use System\Core\Controller;
 use System\Core\Storage;
 use System\Utils\SessionUtil;
 use System\Utils\Util;
 
 class InstallController extends Controller{
-    /**
-     * 安装步骤
-     * @var array
-     */
-    private static $_steps = array(
-        'index',
-        'first',
-        'second',
-        'third'
-    );
     /**
      * 安装锁的路径
      * 锁文件存在的情况下无法进行安装
@@ -35,7 +25,7 @@ class InstallController extends Controller{
     public function __construct(){
         parent::__construct();
         self::$lock_path = BASE_PATH.'Data/CMS/install.lock';
-        if(Storage::hasFile(self::$lock_path)){
+        if(Storage::has(self::$lock_path)){
             $this->error('CMS已经安装完毕!');
         }
 
@@ -108,12 +98,12 @@ class InstallController extends Controller{
                 //缓存数据库配置
                 SessionUtil::set('database_info', $config);
                 //创建数据库
-                $installModel = new InstallModel($config);
+                $installModel = new InstallModel($config,false);
                 if(!$installModel->createDatabase($config['dbname'])){
                     $this->error($installModel->getErrorInfo());
                 }else{
                     //成功创建数据库，写入配置信息
-                    if(!ConfigHelper::writeAutoConfig('cms',$config)){
+                    if(!Configer::writeAuto('cms',$config)){
                         throw new \Exception('Store Configure into file failed!');
                     }
                 }
@@ -167,7 +157,7 @@ class InstallController extends Controller{
             Util::flushMessageToClient('安装错误！');
         } else {
             SessionUtil::set('step', 3);
-            Storage::writeFile(self::$lock_path,'Install complete!');
+            Storage::write(self::$lock_path,'Install complete!');
             $this->redirect('cms/install/complete');
         }
     }
@@ -185,7 +175,7 @@ class InstallController extends Controller{
 //            $this->redirect("Install/step{$step}");
 //        }
         // 写入安装锁定文件
-        Storage::writeFile(self::$lock_path, 'lock');
+        Storage::write(self::$lock_path, 'lock');
         if(!SessionUtil::get('update')){
             //创建配置文件
             $this->assign('info',SessionUtil::get('config_file'));
@@ -204,7 +194,7 @@ class InstallController extends Controller{
         $dbconfig = SessionUtil::get('database_info');
         $installModel = new InstallModel($dbconfig);
         //读取SQL文件
-        $sqls = Storage::readFile(BASE_PATH.'Data/CMS/install.sql');
+        $sqls = Storage::read(BASE_PATH.'Data/CMS/install.sql');
         //设置前缀
         $sqls = str_replace(' `onethink_'," `{$dbconfig['prefix']}",  $sqls);
 //        Util::dump($sqls);exit;

@@ -8,7 +8,6 @@
 namespace System\Core;
 use System\Exception\FileWriteFailedException;
 use System\Mist;
-use System\Utils\Util;
 
 defined('BASE_PATH') or die('No Permission!');
 /**
@@ -25,6 +24,8 @@ class Storage {
     const FILEINFO_TYPE = 'filetype';//可能的值有 fifo，char，dir，block，link，file 和 unknown。
 
     /**
+     * 存储类驱动实例
+     * 云服务器环境下普通文件操作函数可能面临失效的情况
      * @var StorageDriver\CommonDriver
      */
     private static $driver = null;
@@ -45,8 +46,7 @@ class Storage {
      * @param string $filename  文件名
      * @return string
      */
-    public static function readFile($filename){
-        null === self::$driver and self::init();
+    public static function read($filename){
         return self::$driver->read($filename);
     }
 
@@ -57,8 +57,7 @@ class Storage {
      * @return bool
      * @throws FileWriteFailedException
      */
-    public static function writeFile($filename,$content){
-        null === self::$driver and self::init();
+    public static function write($filename,$content){
         return self::$driver->write($filename,$content);
     }
 
@@ -69,8 +68,7 @@ class Storage {
      * @param string $content  追加的文件内容
      * @return string 返回写入内容
      */
-    public static function appendFile($filename,$content){
-        null === self::$driver and self::init();
+    public static function append($filename,$content){
         return self::$driver->append($filename,$content);
     }
 
@@ -81,8 +79,7 @@ class Storage {
      * @param string $filename  文件名
      * @return boolean
      */
-    public static function hasFile($filename){
-        null === self::$driver and self::init();
+    public static function has($filename){
         return self::$driver->has($filename);
     }
 
@@ -103,8 +100,7 @@ class Storage {
      * @param string $filename  文件名
      * @return boolean
      */
-    public static function unlinkFile($filename){
-        null === self::$driver and self::init();
+    public static function unlink($filename){
         return self::$driver->unlink($filename);
     }
 
@@ -116,8 +112,7 @@ class Storage {
      * @param null $type
      * @return array|mixed
      */
-    public static function getFileInfo($filename,$type=null){
-        null === self::$driver and self::init();
+    public static function info($filename,$type=null){
         return self::$driver->info($filename,$type);
     }
 
@@ -128,10 +123,19 @@ class Storage {
      * @return bool true成功删除，false删除失败
      */
     public static function removeFolder($dir,$recursion=false) {
-        null === self::$driver and self::init();
         return self::$driver->removeFolder($dir,$recursion);
     }
-
+    /**
+     * 创建文件夹
+     * 如果文件夹已经存在，则修改权限
+     * @param string $fullpath 文件夹路径
+     * @param int $auth 文件权限，八进制表示
+     * @return bool
+     */
+    public static function makeFolder($fullpath,$auth = 0755){
+        null === self::$driver and self::init();
+        return self::$driver->makeFolder($fullpath,$auth);
+    }
     /**
      * 读取文件夹内容，并返回一个数组(不包含'.'和'..')
      * array(
@@ -146,16 +150,6 @@ class Storage {
         return self::$driver->readFolder($dir);
     }
 
-    /**
-     * 创建文件夹
-     * 如果文件夹已经存在，则修改权限
-     * @param string $fullpath 文件夹路径
-     * @param int $auth 文件权限，八进制表示
-     * @return bool
-     */
-    public static function makeFolder($fullpath,$auth = 0755){
-        null === self::$driver and self::init();
-        return self::$driver->makeFolder($fullpath,$auth);
-    }
+
 
 }

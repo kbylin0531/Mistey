@@ -9,7 +9,6 @@ namespace System\Core\StorageDriver;
 use System\Core\Storage;
 use System\Exception\FileNotFoundException;
 use System\Exception\FileWriteFailedException;
-use System\Utils\Util;
 
 /**
  * Class StorageDriver 文件系统驱动类基类
@@ -123,8 +122,8 @@ class CommonDriver{
      *      //文件内容  => 文件内容
      *      'filename' => 'file full path',
      * );
-     * @param string $path
-     * @param bool $clear
+     * @param string $path 目录
+     * @param bool $clear 是否清除之前的配置
      * @return array
      * @throws \Exception
      */
@@ -138,7 +137,7 @@ class CommonDriver{
                     if(is_file($path . '/' . $filename)) {
                         $_file[$filename] = $path . '/' . $filename;
                     }elseif(is_dir($path . '/' . $filename)) {
-                        self::readFolder($path . '/' . $filename,false);//递归
+                        self::readFolder($path . '/' . $filename,false);//递归,不清空
                     }
                 }
             }

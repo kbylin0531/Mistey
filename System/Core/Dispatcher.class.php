@@ -25,7 +25,7 @@ class Dispatcher{
 
     public static function init(){
         //获取静态方法调用的类名称使用get_called_class,对象用get_class
-        Util::mergeConf(self::$convention,ConfigHelper::loadConfig('guide'),true);
+        Util::mergeConf(self::$convention,Configer::load('guide'),true);
         static::$inited = true;
     }
 

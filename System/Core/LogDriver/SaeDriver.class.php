@@ -11,6 +11,6 @@ namespace System\Core\LogDriver;
  * Class SaeDriver 使用SAE的日志系统进行日志记录
  * @package System\Core\LogDriver
  */
-abstract class SaeDriver extends LogDriver{
+abstract class SaeDriver extends FileDriver{
 
 }
