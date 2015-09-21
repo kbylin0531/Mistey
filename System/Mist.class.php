@@ -10,6 +10,7 @@ use System\Core\Configer;
 use System\Core\Dao;
 use System\Core\Dispatcher;
 use System\Core\Log;
+use System\Core\Storage;
 use System\Core\URLHelper;
 use System\Exception\ClassNotFoundException;
 use System\Utils\Util;
@@ -121,7 +122,6 @@ final class Mist{
         //对应的驱动类都将使用该运行环境的名称为正式名称
         //....还可以是其他环境
 
-
         //-- 错误信息显示设置 --//
         if(DEBUG_MODE_ON){
             error_reporting(-1);
@@ -161,7 +161,7 @@ final class Mist{
 
             //核心类常用驱动
             'System\Core\LogDriver\FileDriver'          => SYSTEM_PATH.'Core/LogDriver/FileDriver.class.php',
-            'System\Core\StorageDriver\CommonDriver'    => SYSTEM_PATH.'Core/StorageDriver/CommonDriver.class.php',
+            'System\Core\StorageDriver\FileDriver'    => SYSTEM_PATH.'Core/StorageDriver/FileDriver.class.php',
 
             //工具类
             'System\Utils\Util'     => SYSTEM_PATH.'Utils/Util.class.php',
@@ -199,6 +199,7 @@ final class Mist{
         self::status('load_lite_end');
 
         //初始化
+        Storage::init();
         Log::init();
         Configer::init();
         URLHelper::init();

@@ -13,7 +13,7 @@ use System\Exception\FileWriteFailedException;
  * 拥有自己的一套地址映射方案
  * @package System\Core\StorageDriver
  */
-class SaeDriver extends CommonDriver{
+class SaeDriver extends FileDriver{
     /**
      * SAE Storage系统的使用
      * <code>

@@ -6,17 +6,21 @@
  * Time: 9:08
  */
 namespace System\Core;
-use System\Exception\FileWriteFailedException;
 use System\Mist;
+use System\Exception\Storage\IOException;
 
 defined('BASE_PATH') or die('No Permission!');
+
+
 /**
  * Class Storage 持久化存储类
  * 实际文件可能写在伺服器的文件中，也可能存放到数据库文件中，或者远程文件服务器中
  * @package System\Core
  */
 class Storage {
-
+    /**
+     * 文件信息获取类型
+     */
     const FILEINFO_LAST_ACCESS_TIME = 'fileatime';
     const FILEINFO_LAST_MODIFIED_TIME = 'filemtime';
     const FILEINFO_PERMISSION = 'fileperms';
@@ -26,14 +30,33 @@ class Storage {
     /**
      * 存储类驱动实例
      * 云服务器环境下普通文件操作函数可能面临失效的情况
-     * @var StorageDriver\CommonDriver
+     * @var StorageDriver\FileDriver
      */
     private static $driver = null;
 
+    /**
+     * 私有化构造函数
+     */
+    private function __construct(){}
+
+    /**
+     * 文件名编码输入输出转写
+     * @param string $str 需要转换的文件名
+     * @param bool $to_system 是否转成系统支持的编码格式（PHP的中文编码是GB2312）
+     * @return string 转换后的字符串
+     */
+    public static function transliteration(&$str,$to_system=true){
+        return $to_system ? iconv('UTF-8','GB2312//IGNORE',$str) : iconv('GB2312','UTF-8//IGNORE',$str);
+    }
+
+    /**
+     * 根据存储模式初始化驱动类
+     * @param string $mode
+     */
     public static function init($mode = null){
         Mist::status('storage_init_begin');
         //获取运行环境
-        null === $mode and $mode = RUNTIME_ENVIRONMENT;
+        null === $mode and $mode = STORAGEMODE_FILE;
         //实例化驱动类
         $driverName = "System\\Core\\StorageDriver\\{$mode}Driver";
         self::$driver = new $driverName();
@@ -41,24 +64,27 @@ class Storage {
     }
 
     /**
-     * 文件内容读取
-     * @access public
-     * @param string $filename  文件名
-     * @return string
+     * 获取文件内容
+     * @param string $filepath 文件路径
+     * @param string $file_encoding 文件内容实际编码
+     * @param string $output_encode 文件内容输出编码
+     * @return string|false 文件不存在时返回false
+     * @throws IOException
      */
-    public static function read($filename){
-        return self::$driver->read($filename);
+    public static function read($filepath,$file_encoding='UTF-8',$output_encode='UTF-8'){
+        return self::$driver->read($filepath,$file_encoding,$output_encode);
     }
 
     /**
      * 文件写入
-     * @param string $filename  文件名
-     * @param string $content  文件内容
-     * @return bool
-     * @throws FileWriteFailedException
+     * @param string $filepath 文件名
+     * @param string $content 文件内容
+     * @param string $write_encode 文件写入编码
+     * @return int 返回写入的字节数目,失败时抛出异常
+     * @throws IOException
      */
-    public static function write($filename,$content){
-        return self::$driver->write($filename,$content);
+    public static function write($filepath,$content,$write_encode='UTF-8'){
+        return self::$driver->write($filepath,$content,$write_encode);
     }
 
     /**
@@ -66,12 +92,12 @@ class Storage {
      * @access public
      * @param string $filename  文件名
      * @param string $content  追加的文件内容
+     * @param string $write_encode 文件写入编码
      * @return string 返回写入内容
      */
-    public static function append($filename,$content){
-        return self::$driver->append($filename,$content);
+    public static function append($filename,$content,$write_encode='UTF-8'){
+        return self::$driver->append($filename,$content,$write_encode);
     }
-
 
     /**
      * 文件是否存在
@@ -133,7 +159,6 @@ class Storage {
      * @return bool
      */
     public static function makeFolder($fullpath,$auth = 0755){
-        null === self::$driver and self::init();
         return self::$driver->makeFolder($fullpath,$auth);
     }
     /**
@@ -146,10 +171,7 @@ class Storage {
      * @return array
      */
     public static function readFolder($dir){
-        null === self::$driver and self::init();
         return self::$driver->readFolder($dir);
     }
-
-
 
 }

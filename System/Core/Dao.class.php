@@ -10,7 +10,8 @@ use System\Core\DaoDriver\DaoDriver;
 use System\Exception\ParameterInvalidException;
 use System\Exception\PDOExecuteException;
 use System\Mist;
-use System\Utils\SEK;
+use System\Util\SEK;
+
 defined('BASE_PATH') or die('No Permission!');
 /**
  * Class Dao 数据入口对象(DataAccessObject)
@@ -770,7 +771,7 @@ final class Dao{
      * @param bool $is_and 表示是否使用and作为连接符，false时为,
      * @return array
      */
-    protected function makeSegments($segments,$is_and=true){
+    public function makeSegments($segments,$is_and=true){
         //初始值与参数检测
         $bind = array();
         $sql = '';

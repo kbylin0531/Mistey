@@ -10,6 +10,7 @@ use System\Mist;
  * 基础目录定义
  */
 define('BASE_PATH',str_replace('\\','/',__DIR__).'/');
+include_once BASE_PATH.'System/Mist.class.php';
 
 /**
  * URL模式
@@ -20,7 +21,7 @@ const URLMODE_COMPATIBLE = 3;//兼容模式
 /**
  * 存储系统模式
  */
-const STORAGEMODE_COMMON = 'Common';
+const STORAGEMODE_FILE = 'File';
 const STORAGEMODE_SAE = 'Sae';
 /**
  * 日志频率
@@ -30,7 +31,6 @@ const STORAGEMODE_SAE = 'Sae';
 const LOGRATE_HOUR = 0;
 const LOGRATE_DAY = 1;
 
-include_once BASE_PATH.'System/Mist.class.php';
 Mist::init(array(
     'URL_MODE'          => URLMODE_PATHINFO,
 //    'TIME_ZONE'         => 'Asia/Shanghai',

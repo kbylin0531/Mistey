@@ -151,7 +151,7 @@ class Model{
      */
     public function init($config='0'){
         if(is_array($config)){
-            $this->dao = new Dao($config);
+            $this->dao = Dao::getInstance('installer',$config);
         }else{
             $this->dao = Dao::getInstance($config);
         }

@@ -222,5 +222,3 @@ class Configer{
     }
 
 }
-//别名
-class_alias('Configer','ConfigHelper');
