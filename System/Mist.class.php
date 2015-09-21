@@ -10,8 +10,8 @@ use System\Core\Configer;
 use System\Core\Dao;
 use System\Core\Dispatcher;
 use System\Core\Log;
+use System\Core\Router;
 use System\Core\Storage;
-use System\Core\URLHelper;
 use System\Exception\ClassNotFoundException;
 use System\Utils\Util;
 
@@ -150,7 +150,6 @@ final class Mist{
             //核心类
             'System\Core\Configer'  	=> SYSTEM_PATH.'Core/Configer.class.php',
             'System\Core\Dispatcher'    => SYSTEM_PATH.'Core/Dispatcher.class.php',
-            'System\Core\URLHelper'     => SYSTEM_PATH.'Core/URLHelper.class.php',
             'System\Core\Controller'    => SYSTEM_PATH.'Core/Controller.class.php',
             'System\Core\Log'           => SYSTEM_PATH.'Core/Log.class.php',
             'System\Core\Storage'       => SYSTEM_PATH.'Core/Storage.class.php',
@@ -202,10 +201,10 @@ final class Mist{
         Storage::init();
         Log::init();
         Configer::init();
-        URLHelper::init();
+        Router::init();
 
         //解析URL
-        self::$_url_components = URLHelper::parse();
+        self::$_url_components = Router::parse();
 //Util::dump(self::$_url_components);exit;
         //执行结果
         Dispatcher::execute(

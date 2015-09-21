@@ -9,7 +9,6 @@ namespace Application\Home\Controller;
 use System\Core\Controller;
 use System\Core\Storage;
 use System\Util\SEK;
-use System\Utils\Util;
 
 class IndexController extends Controller{
 

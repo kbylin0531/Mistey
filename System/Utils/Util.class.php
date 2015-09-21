@@ -7,7 +7,7 @@
  */
 namespace System\Utils;
 use System\Core\Configer;
-use System\Core\URLHelper;
+use System\Core\Router;
 use System\Exception\Template\XMLReadFailedException;
 use System\Extension\PasswordHash;
 
@@ -235,17 +235,17 @@ class Util{
      * @param array $params GET参数数组
      * @return string
      */
-    public static function url($url,array $params=array()){
+    public static function url($url=null,array $params=array()){
         //解析参数中的$url
         if(!$url){
-            return URLHelper::create(null,null,null,$params);
+            return Router::create(null,null,null,$params);
         }
         $parts = @explode('/',$url);
         //调用URLHelper创建URL
         $action  = array_pop($parts);
         $ctler   = $action?array_pop($parts):null;
         $modules = $ctler?$parts:null;
-        return URLHelper::create($modules,$ctler,$action,$params);
+        return Router::create($modules,$ctler,$action,$params);
     }
     /**
      * $url规则如：
