@@ -8,7 +8,13 @@
 
 return array(
     //模块配置 '模块名称('/分隔子模块')'=>array(...配置数组...)
-    'Home'  => array(),
-    'Admin/User'    => array(),
+    'Home'  => array(
+        'REWRITE_RULE'  => array(
+
+        )
+    ),
+    'Admin/User'    => array(
+
+    ),
 
 );

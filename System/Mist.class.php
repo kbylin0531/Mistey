@@ -274,7 +274,7 @@ final class Mist{
                 'Files'         => array_merge(array('Total'=>count($info)),$info),
                 'Status'        => $cmprst,
                 'Sql'           => Dao::log(true),
-                'Log'           => Log::getLogCache(),
+                'Log'           => Log::getCache(),
 //                'Error'         => self::$_errorCache,
                 'SERVER'        => $_SERVER,
                 'FILES'         => $_FILES,

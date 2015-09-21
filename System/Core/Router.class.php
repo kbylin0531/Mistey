@@ -10,12 +10,21 @@ use System\Utils\Util;
 defined('BASE_PATH') or die('No Permission!');
 
 /**
- * Class Route 路由定义类
+ * Class Route 路由解析类
  * @package System\Core
  */
 class Router{
 
-    protected static $convention = array();
+    protected static $convention = array(
+        //直接路由发生在URL解析之前，直接路由如果匹配了URL字符串，则直接链接到指定的模块，否则将进行URL解析和间接路由
+        'DIRECT_ROUTE_RULES'    => array(
+
+        ),
+        //间接路由在URL解析之后
+        'INDIRECT_ROUTE_RULES'   => array(
+
+        ),
+    );
 
     protected static $inited = false;
 
@@ -30,7 +39,7 @@ class Router{
 
     }
 
-    public static function parseRouteRules(){
+    public static function parseIndirectRouteRule(){
         $conf = Configer::load('');
         self::$convention = array_merge(self::$convention,$conf);
     }
@@ -39,8 +48,5 @@ class Router{
 
     }
 
-    public static function parseIndirectRouteRule($module,$controller,$action,$param=null){
-
-    }
 
 }

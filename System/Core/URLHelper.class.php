@@ -95,6 +95,39 @@ final class URLHelper{
         Mist::status('urlhelper_init_done');
     }
 
+    /**
+     * 解析域名部署
+     * @return void
+     */
+    public static function parseDomian(){
+        $conf = &self::$_convention;
+        //获取子域名的部分，并且小写
+        $name = strtolower(trim(strstr($_SERVER['HTTP_HOST'], $conf['FUL_DOMAIN'], true), '.'));
+        if (isset($conf['SUB_DOMAIN_DEPLOY_RULES'][$name])) {
+            //获取对应的规则并解析之
+            $rule = self::$_convention['SUB_DOMAIN_DEPLOY_RULES'][$name];
+            if (is_string($rule) && 0 === strpos($rule, 'http')) {
+                Util::redirect($rule);
+            }
+            if (isset($rule[0])) {
+                self::$_components['m'] = array_map(function ($val) {
+                    return ucwords($val);
+                }, explode('/', $rule[0]));
+            }
+            self::$_convention['c'] = isset($rule[1]) ? $rule[1] : NULL;
+            self::$_convention['a'] = isset($rule[2]) ? $rule[2] : NULL;
+            if (isset($rule[3])) {
+                $query = null;
+                if(is_array($rule[3])){
+                    $query = &$rule[3];
+                }elseif(is_string($rule[3])){
+                    parse_str($rule[3], $query);
+                }
+                //query 不为null或者空数组时合并
+                $query and self::$_convention['p'] = array_merge(self::$_components['p'],$rule[3]);
+            }
+        }
+    }
 
     /**
      * 解析URL中的参数信息
@@ -129,36 +162,6 @@ final class URLHelper{
         $_GET = array_merge($_GET,self::$_components['p']);
         return self::$_components;
 	}
-
-    public static function parseDomian(){
-        $conf = &self::$_convention;
-        //获取子域名的部分，并且小写
-        $name = strtolower(trim(strstr($_SERVER['HTTP_HOST'], $conf['FUL_DOMAIN'], true), '.'));
-        if (isset($conf['SUB_DOMAIN_DEPLOY_RULES'][$name])) {
-            //获取对应的规则并解析之
-            $rule = self::$_convention['SUB_DOMAIN_DEPLOY_RULES'][$name];
-            if (is_string($rule) && 0 === strpos($rule, 'http')) {
-                Util::redirect($rule);
-            }
-            if (isset($rule[0])) {
-                self::$_components['m'] = array_map(function ($val) {
-                    return ucwords($val);
-                }, explode('/', $rule[0]));
-            }
-            self::$_convention['c'] = isset($rule[1]) ? $rule[1] : NULL;
-            self::$_convention['a'] = isset($rule[2]) ? $rule[2] : NULL;
-            if (isset($rule[3])) {
-                $query = null;
-                if(is_array($rule[3])){
-                    $query = &$rule[3];
-                }elseif(is_string($rule[3])){
-                    parse_str($rule[3], $query);
-                }
-                //query 不为null或者空数组时合并
-                $query and self::$_convention['p'] = array_merge(self::$_components['p'],$rule[3]);
-            }
-        }
-    }
 
     /**
      * <关键>
@@ -274,7 +277,8 @@ final class URLHelper{
         //-- 解析PATHINFO --//
         //截取参数段param与定位段local
         $papos          = strpos($_SERVER['PATH_INFO'],self::$_convention['AP_BRIDGE']);
-        $mcapart = $pparts = '';
+        $mcapart = null;
+        $pparts = '';
         if(false === $papos){
             $mcapart  = trim($_SERVER['PATH_INFO'],'/');//不存在参数则认定PATH_INFO全部是MCA的部分，否则得到结果substr($_SERVER['PATH_INFO'],0,0)即空字符串
         }else{
@@ -301,7 +305,6 @@ final class URLHelper{
             //CA存在衔接符 则说明一定存在控制器
             $mcalen = strlen($mcapart);
             $mcpart = substr($mcapart,0,$capos-$mcalen);//去除了action的部分
-//Util::dump($mcpart,self::$_convention['MC_BRIDGE'],strpos($mcpart,self::$_convention['MC_BRIDGE']),$capos,$mcalen);exit;
             if(strlen($mcapart)){
                 $mcpos = strpos($mcpart,self::$_convention['MC_BRIDGE']);
                 if(false === $mcpos){
@@ -338,22 +341,8 @@ final class URLHelper{
         Mist::status('parseurl_in_pathinfo_getmac_done');
 
         //-- 解析参数部分 --//
-        self::$_components['p'] = self::switchTranslateParameters($pparts,false);
+        self::$_components['p'] = self::translateParameters($pparts,false);
         Mist::status('parseurl_in_pathinfo_end');
-    }
-
-    /**
-     * 加入匿名URL参数
-     * @param $value
-     * @param array $pc
-     * @return void
-     */
-    private static function pushAnonParam($value,&$pc=null){
-        if(null === $pc){
-            $pc = self::$_components['p'];
-        }
-        !isset($pc['anonymous']) and $pc['anonymous'] = array();
-        $pc['anonymous'][] = $value;
     }
 
     /**
@@ -420,13 +409,13 @@ final class URLHelper{
     public static function createInPathinfo($modules,$controller,$action,$params,$withtail=true){
         if(is_array($modules)) self::translateModules($modules);
         $conf = &self::$_convention;
-        $params = self::switchTranslateParameters($params);
+        $params = self::translateParameters($params);
         empty($params) or $params = "{$conf['AP_BRIDGE']}{$params}";
         $url = $_SERVER['SCRIPT_NAME']."/{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
-        if(isset(self::$_convention['MASQUERADE_TAIL']) and $withtail){
-            $url .= self::$_convention['MASQUERADE_TAIL'];
+        if(isset($conf['MASQUERADE_TAIL']) && $withtail){
+            $url .= $conf['MASQUERADE_TAIL'];
         }
-        REWRITE_ENGINE_ON and self::applyRewriteHidden($url);
+        REWRITE_ENGINE_ON and self::rewrite($url);
         return $url;
     }
 
@@ -442,15 +431,17 @@ final class URLHelper{
     public static function createInCompatible($modules,$controller,$action,$params,$withtail=true){
         if(is_array($modules)) self::translateModules($modules);
         $conf = &self::$_convention;
-        $params = self::switchTranslateParameters($params);
+        $params = self::translateParameters($params);
         empty($params) or $params = "{$conf['AP_BRIDGE']}{$params}";
-        $url = $_SERVER['SCRIPT_NAME']."?{$conf['URL_COMPATIBLE_VARIABLE']}{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
+        $url = $_SERVER['SCRIPT_NAME']."?{$conf['URL_COMPATIBLE_VARIABLE']}=/{$modules}{$conf['MC_BRIDGE']}{$controller}{$conf['CA_BRIDGE']}{$action}{$params}";
         if(isset(self::$_convention['MASQUERADE_TAIL']) and $withtail){
             $url .= self::$_convention['MASQUERADE_TAIL'];
         }
-        REWRITE_ENGINE_ON and self::applyRewriteHidden($url);
+        REWRITE_ENGINE_ON and self::rewrite($url);
         return $url;
     }
+
+
 
     /**
      * 实现模块序列的字符串和数组之间的转化
@@ -469,17 +460,15 @@ final class URLHelper{
             },explode(self::$_convention['MM_BRIDGE'],$modules));
         }
     }
-
     /**
      * Pathinfo及相关模式下pathinfo参数的创建和解析
      * @param array|string $params 需要解析的参数
      * @param bool $toString 是否将参数解析成字符串，默认是
      * @return array|string
      */
-    private static function switchTranslateParameters($params,$toString=true){
+    private static function translateParameters($params,$toString=true){
         $ppb    = &self::$_convention['PP_BRIDGE']; //参数与参数之间的衔接符
         $pkvb   = &self::$_convention['PKV_BRIDGE'];//参数键值对之间的衔接符
-
         if($toString){
             //希望返回的是字符串是，返回值是void，直接修改自$params
             $temp = '';
@@ -523,13 +512,45 @@ final class URLHelper{
     }
 
     /**
-     * 创建网站地址
+     * 对url进行url重写处理，需要借助以.htaccess或者虚拟主机配置才能正常解析URL
+     * @param $url
+     * @throws URLRewriteFailedException
      */
-    public static function createRootURL(){
-        static $_root = null;
-        isset($_root) or $_root = str_replace(Util::path($_SERVER['SCRIPT_NAME']),'',Util::path(dirname(dirname(__FILE__))).'/index.php').'/';
+    private static function rewrite(&$url){
+        $pos = stripos($url,self::$_convention['REWRITE_HIDDEN']);//获取第一个位置
+        if(false !== $pos){
+            $url = Util::strReplaceJustOnce(self::$_convention['REWRITE_HIDDEN'],'',$url);
+        }
     }
 
+
+
+
+
+
+    /**
+     * TODO:加入匿名URL参数
+     * @param $value
+     * @param array $pc
+     * @return void
+     */
+    private static function pushAnonParam($value,&$pc=null){
+        if(null === $pc){
+            $pc = self::$_components['p'];
+        }
+        !isset($pc['anonymous']) and $pc['anonymous'] = array();
+        $pc['anonymous'][] = $value;
+    }
+
+    /**
+     * TODO:创建模板常量
+     * @param string|array $modulelist
+     * @param string $controller
+     * @param string $action
+     * @param array $params
+     * @return string
+     * @throws \Exception
+     */
     public static function createTemplateConstant($modulelist=null,$controller=null,$action=null,array $params=array()){
         $url = null;
         if(URLMODE_TOPSPEED_ON){
@@ -558,19 +579,5 @@ final class URLHelper{
         return rtrim($url,'/');
     }
 
-    /**
-     * 对url进行url重写处理，需要借助以.htaccess或者虚拟主机配置才能正常解析URL
-     * @param $url
-     * @throws URLRewriteFailedException
-     */
-    private static function applyRewriteHidden(&$url){
-        $pos = stripos($url,self::$_convention['REWRITE_HIDDEN']);//获取第一个位置
-        if(false !== $pos){
-            $url = Util::strReplaceJustOnce(self::$_convention['REWRITE_HIDDEN'],'',$url);
-        }
-    }
 
-
-
-	
 }

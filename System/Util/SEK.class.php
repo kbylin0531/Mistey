@@ -63,4 +63,19 @@ final class SEK {
         }
         echo '</pre>';
     }
+
+    /**
+     * 获取日期时间
+     * @param string $format
+     * @param int $timestap
+     * @return bool|string false时可能的原因是日期时间格式错误
+     */
+    public static function date($format = 'Y-m-d H:i:s',$timestap=null){
+        static $date = null;
+        if(null === $date){
+            $date = date($format,$timestap);
+        }
+        return $date;
+    }
+
 }

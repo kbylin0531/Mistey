@@ -8,6 +8,7 @@
 namespace System\Core;
 use System\Exception\ClassNotFoundException;
 use System\Mist;
+use System\Util\SEK;
 
 defined('BASE_PATH') or die('No Permission!');
 
@@ -36,14 +37,13 @@ class Log{
     protected static $_time = null;
 
     /**
-     * @var LogDriver\LogDriver;
+     * @var LogDriver\FileDriver;
      */
     private static $_driver = null;
 
     public static function init($type = self::LOGTYPE_FILE){
         Mist::status('log_init_begin');
         if(null === self::$_driver){
-            new LogDriver\FileDriver();
             $clsnm = 'System\\Core\\LogDriver\\'.$type.'Driver';
             if(!class_exists($clsnm)){
                 throw new ClassNotFoundException($clsnm);
@@ -87,8 +87,25 @@ class Log{
      * 返回此次运行保留的日志信息
      * @return array
      */
-    public static function getLogCache(){
-        return self::$_driver->getLogCache();
+    public static function getCache(){
+        return self::$_driver->getCache();
+    }
+
+    /**
+     * 获取日期
+     * 短日期格式如："1992-05-31"
+     * 长日期格式如："2038-01-19 11:14:07"(date('Y-m-d H:i:s',PHP_INT_MAX))
+     * @return string 日期字符串
+     */
+    public static function getTime(){
+        static $date = null;
+        if(null === $date){
+            $datestr = SEK::date();
+            $date[0] = LOG_RATE?'':substr($datestr,0,10);//年月日 文件夹名称,''表示创建文件夹
+            $date[1] = LOG_RATE?substr($datestr,0,10):substr($datestr,11,2);//时 文件名称,按日频度计算则显示年月入，否则显示小时
+            $date[2] = substr($datestr,11);//时分秒 具体时间
+        }
+        return $date;
     }
 
     /**
