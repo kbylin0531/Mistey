@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>环境检测</title>
+	<link rel="Shortcut Icon" href="{$smarty.const.URL_KOE_STATIC_PATH}/favicon.ico">
+	<link href="{$smarty.const.URL_KOE_STYLE_PATH}/bootstrap.css" rel="stylesheet"/>
+	<link rel="stylesheet" href="{$smarty.const.URL_KOE_STYLE_PATH}/font-awesome/css/font-awesome.css">
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="{$smarty.const.URL_KOE_STYLE_PATH}/font-awesome/css/font-awesome-ie7.css">
+	<![endif]-->
+	<link rel="stylesheet" type="text/css" href="{$smarty.const.URL_KOE_STYLE_PATH}/login.css">
+</head>
+
+<body>
+    <div class="background" style='background-image:url("{$wall_page_url}")'></div>
+	<div class="loginbox" >
+		<div class="title">
+			<div class="logo"><i class="icon-cloud"></i>Koe</div>
+			<div class='info'>——Koe Info</div>
+		</div>
+		<div class="form" style="padding: 10px 20px;">
+			<h3>php_env_check</h3>
+            {if $errors == false}
+                <div class="success">
+                    <h4>Successful!</h4>
+                    Use the following account login
+                    <br/>root：admin/admin(need change)<br/>default：demo/demo<br/>guest：guest/guest</div></div><div class="guest">
+                    <a href="{$loginFirstUrl}">login</a>
+                </div>
+            {else}
+                <div class="error">
+                    <h4>error:</h4>
+                    <ul>
+                        {* 遍历数组 *}
+                        {foreach $errors as $error}
+                            <li>{$error}</li>
+                        {/foreach}
+                    </ul>
+                </div>
+                <div class="guest">
+                    <a href="{$loginFirstUrl}">Ignore</a>
+                </div>
+            {/if}
+		</div>
+	</div>
+<div class="common_footer">test Mist</div>
+</body>
+</html>
