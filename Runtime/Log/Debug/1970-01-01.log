@@ -1,0 +1,252 @@
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+System\Exception\Storage\FileNotFoundException : File '/mnt/hgfs/Webroot/Mist/Runtime/configure.php' do not exist!
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/StorageDriver/FileDriver.class.php   Line:143
+||--trace--||
+#0 /mnt/hgfs/Webroot/Mist/System/Core/Storage.class.php(142): System\Core\StorageDriver\FileDriver->info('/mnt/hgfs/Webro...', 'filemtime')
+#1 /mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php(46): System\Core\Storage::info('/mnt/hgfs/Webro...', 'filemtime')
+#2 /mnt/hgfs/Webroot/Mist/System/Mist.class.php(203): System\Core\Configer::init()
+#3 /mnt/hgfs/Webroot/Mist/index.php(49): System\Mist::start()
+#4 {main}
+
+            
+=====================================================================================
+
+
+
+
+
