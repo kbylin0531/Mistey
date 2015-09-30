@@ -5,7 +5,7 @@
     'port' => '3306',
     'password' => '123456',
     'username' => 'root',
-    'dbname' => 'test',
+    'dbname' => 'MistCMS',
     'host' => '127.0.0.1',
     'type' => 'mysql',
   ),
@@ -37,10 +37,16 @@
   'guide' => 
   array (
   ),
+  'log' => 
+  array (
+  ),
   'modules' => 
   array (
     'Home' => 
     array (
+      'REWRITE_RULE' => 
+      array (
+      ),
     ),
     'Admin/User' => 
     array (
