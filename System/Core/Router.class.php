@@ -95,7 +95,7 @@ class Router{
         Mist::status('router_init_begin');
         //初始化类
         Util::mergeConf(self::$_convention,
-            isset($config) ? $config : Configer::load('url'),
+            isset($config) ? $config : Configer::load('route'),
             true
         );
         //参数确实时返回默认配置
@@ -501,7 +501,6 @@ class Router{
                     $pos = strpos($val,$pkvb);
                     if(false === $pos){
                         //非键值对，赋值数字键
-                        self::pushAnonParam($val,$pc);
                     }else{
                         $key = substr($val,0,$pos);
                         $val = substr($val,$pos+strlen($pkvb));
@@ -515,7 +514,7 @@ class Router{
                     if(isset($elements[$i+1])){
                         $pc[$elements[$i]] = $elements[$i+1];
                     }else{
-                        self::pushAnonParam($elements[$i],$pc);//单个将被投入匿名参数
+                        //单个将被投入匿名参数
                     }
                 }
             }
@@ -526,7 +525,7 @@ class Router{
     /**
      * 对url进行url重写处理，需要借助以.htaccess或者虚拟主机配置才能正常解析URL
      * @param $url
-     * @throws URLRewriteFailedException
+     * @param $url
      */
     private static function rewrite(&$url){
         $pos = stripos($url,self::$_convention['REWRITE_HIDDEN']);//获取第一个位置
@@ -535,20 +534,6 @@ class Router{
         }
     }
 
-
-    /**
-     * TODO:加入匿名URL参数
-     * @param $value
-     * @param array $pc
-     * @return void
-     */
-    private static function pushAnonParam($value,&$pc=null){
-        if(null === $pc){
-            $pc = self::$_components['p'];
-        }
-        !isset($pc['anonymous']) and $pc['anonymous'] = array();
-        $pc['anonymous'][] = $value;
-    }
 
     /**
      * TODO:创建模板常量

@@ -55,7 +55,7 @@ class IndexController extends Controller{
 //endline;
 
 
-//        $this->display('index');
+        $this->display('index');
 //        trigger_error('发生了错误,- -#，这个是错误信息！ ',E_USER_ERROR);
 
     }

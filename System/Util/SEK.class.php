@@ -6,16 +6,13 @@
  * Time: 11:15
  */
 namespace System\Util;
-
 use System\Exception\ParameterInvalidException;
-
 /**
  * Class SEK 系统执行工具(System Execute Kits)
  * 不直接面向用户
  * @package System\Utils
  */
 final class SEK {
-
     /**
      * 合并数组配置(参数二合并到参数一上)
      * @param array $dest
@@ -41,9 +38,8 @@ final class SEK {
             throw new ParameterInvalidException($sourse);
         }
     }
-
     /**
-     * debug参数
+     * 打印参数
      * @return void
      */
     public static function dump(){
@@ -63,7 +59,6 @@ final class SEK {
         }
         echo '</pre>';
     }
-
     /**
      * 获取日期时间
      * @param string $format
@@ -71,11 +66,35 @@ final class SEK {
      * @return bool|string false时可能的原因是日期时间格式错误
      */
     public static function date($format = 'Y-m-d H:i:s',$timestap=null){
-        static $date = null;
-        if(null === $date){
-            $date = date($format,$timestap);
-        }
+        if(empty($format))$format = 'Y-m-d H:i:s';
+        $date = date($format,$timestap);
         return $date;
     }
-
+    /**
+     * Formats a numbers as bytes, based on size, and adds the appropriate suffix
+     * 摘录自：CI_SAE\system\helpers\number_helper.php
+     * @access	public
+     * @param int $num 待格式化的数据
+     * @param int $precision 精度
+     * @return string
+     */
+    function byteFormat($num, $precision = 1){
+        $unit = 'Bytes';//合适的单位
+        if ($num >= 1000000000000){//0.9XX +++
+            $num = round($num / 1099511627776, $precision);
+            $unit = 'TB';
+        }elseif ($num >= 1000000000){
+            $num = round($num / 1073741824, $precision);
+            $unit = 'GB';
+        }elseif ($num >= 1000000){
+            $num = round($num / 1048576, $precision);
+            $unit = 'MB';
+        }elseif ($num >= 1000){
+            $num = round($num / 1024, $precision);
+            $unit = 'KB';
+        }else{
+            return number_format($num).' '.$unit;
+        }
+        return number_format($num, $precision).' '.$unit;
+    }
 }

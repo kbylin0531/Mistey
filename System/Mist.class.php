@@ -275,6 +275,8 @@ final class Mist{
                 'Sql'           => Dao::log(true),
                 'Log'           => Log::getCache(),
 //                'Error'         => self::$_errorCache,
+                'GET'           => $_GET,
+                'POST'          => $_POST,
                 'SERVER'        => $_SERVER,
                 'FILES'         => $_FILES,
                 'ENV'           => $_ENV,

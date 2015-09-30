@@ -13,9 +13,7 @@ namespace System\Extension;
  * Base64 加密实现类
  */
 class ThinkBase64 {
-
     private static $key = 'linzhv@qq.com';
-
     /**
      * 设置加密的钥匙
      * @param $key
@@ -39,19 +37,16 @@ class ThinkBase64 {
         $len  = strlen($data);
         $l    = strlen($key);
         $char = $str    =   '';
-
         for ($i = 0; $i < $len; $i++) {
             if ($x == $l) $x = 0;
             $char .= substr($key, $x, 1);
             $x++;
         }
-
         for ($i = 0; $i < $len; $i++) {
             $str .= chr(ord(substr($data, $i, 1)) + (ord(substr($char, $i, 1)))%256);
         }
         return str_replace(array('+','/','='),array('-','_',''),base64_encode($str));
     }
-
     /**
      * 解密字符串
      * @param string $data 字符串
@@ -66,18 +61,15 @@ class ThinkBase64 {
             $data .= substr('====', $mod4);
         }
         $data   = base64_decode($data);
-
         $x      = 0;
         $len    = strlen($data);
         $l      = strlen($key);
         $char   = $str = '';
-
         for ($i = 0; $i < $len; $i++) {
             if ($x == $l) $x = 0;
             $char .= substr($key, $x, 1);
             $x++;
         }
-
         for ($i = 0; $i < $len; $i++) {
             if (ord(substr($data, $i, 1))<ord(substr($char, $i, 1))) {
                 $str .= chr((ord(substr($data, $i, 1)) + 256) - ord(substr($char, $i, 1)));

@@ -6,13 +6,11 @@
  * Time: 12:32
  */
 namespace System\Utils;
-
 /**
  * Class FileUtil 文件操作工具
  * @package System\Utils
  */
 class FileUtil {
-
     /**
      * 读取目录下的所有文件
      * @param string $path 目录的路径
@@ -40,8 +38,4 @@ class FileUtil {
         }
         return $_file;
     }
-
-
-
-
 }

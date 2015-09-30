@@ -8,7 +8,6 @@
 namespace System\Core;
 use System\Exception\FileNotFoundException;
 use System\Mist;
-use System\Utils\FileUtil;
 use System\Utils\LiteBuilder;
 use System\Utils\Util;
 

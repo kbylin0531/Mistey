@@ -6,10 +6,7 @@
  * Time: 20:41
  */
 namespace System\Extension;
-
 class Des {
-
-
     public static function des ($key, $message, $encrypt, $mode, $iv, $padding) {
         $message0 = $message;
         //declaring this locally speeds things up a bit
@@ -22,7 +19,6 @@ class Des {
         $spfunction7 = array (0x200000,0x4200002,0x4000802,0,0x800,0x4000802,0x200802,0x4200800,0x4200802,0x200000,0,0x4000002,0x2,0x4000000,0x4200002,0x802,0x4000800,0x200802,0x200002,0x4000800,0x4000002,0x4200000,0x4200800,0x200002,0x4200000,0x800,0x802,0x4200802,0x200800,0x2,0x4000000,0x200800,0x4000000,0x200800,0x200000,0x4000802,0x4000802,0x4200002,0x4200002,0x2,0x200002,0x4000000,0x4000800,0x200000,0x4200800,0x802,0x200802,0x4200800,0x802,0x4000002,0x4200802,0x4200000,0x200800,0,0x2,0x4200802,0,0x200802,0x4200000,0x800,0x4000002,0x4000800,0x800,0x200002);
         $spfunction8 = array (0x10001040,0x1000,0x40000,0x10041040,0x10000000,0x10001040,0x40,0x10000000,0x40040,0x10040000,0x10041040,0x41000,0x10041000,0x41040,0x1000,0x40,0x10040000,0x10000040,0x10001000,0x1040,0x41000,0x40040,0x10040040,0x10041000,0x1040,0,0,0x10040040,0x10000040,0x10001000,0x41040,0x40000,0x41040,0x40000,0x10041000,0x1000,0x40,0x10040040,0x1000,0x41040,0x10001000,0x40,0x10000040,0x10040000,0x10040040,0x10000000,0x40000,0x10001040,0,0x10041040,0x40040,0x10000040,0x10040000,0x10001000,0x10001040,0,0x10041040,0x41000,0x41000,0x1040,0x1040,0x40040,0x10000000,0x10041000);
         $masks = array (4294967295,2147483647,1073741823,536870911,268435455,134217727,67108863,33554431,16777215,8388607,4194303,2097151,1048575,524287,262143,131071,65535,32767,16383,8191,4095,2047,1023,511,255,127,63,31,15,7,3,1,0);
-
         //create the 16 or 48 subkeys we will need
         $keys = self::des_createKeys ($key);
         $m=0;
@@ -41,7 +37,6 @@ class Des {
                 for($i=0;$i<5;$i++)
                     $message.=chr(5);
             }
-
             if($len%8==4){
                 for($i=0;$i<4;$i++)
                     $message.=chr(4);
@@ -71,55 +66,45 @@ class Des {
         $iterations = ((count($keys) == 32) ? 3 : 9); //single or triple des
         if ($iterations == 3) {$looping = (($encrypt) ? array (0, 32, 2) : array (30, -2, -2));}
         else {$looping = (($encrypt) ? array (0, 32, 2, 62, 30, -2, 64, 96, 2) : array (94, 62, -2, 32, 64, 2, 30, -2, -2));}
-
         echo "3.iterations".$iterations;
         echo "<br> 4.looping:";
         for($ii = 0; $ii < count($looping); $ii++){
             echo ",".$looping[$ii];
         }
         echo "<br>";
-
         //pad the message depending on the padding parameter
 //  if ($padding == 2) $message .= "        "; //pad the message with spaces
 //  else if ($padding == 1) {$temp = chr (8-($len%8)); $message .= $temp . $temp . $temp . $temp . $temp . $temp . $temp . $temp; if ($temp==8) $len+=8;} //PKCS7 padding
 //  else if (!$padding) $message .= (chr(0) . chr(0) . chr(0) . chr(0) . chr(0) . chr(0) . chr(0) . chr(0)); //pad the message out with null bytes
-
         //store the result here
         $result = "";
         $tempresult = "";
         $cbcleft = $cbcright = 0;
-
         if ($mode == 1) { //CBC mode
             $cbcleft = (ord($iv{$m++}) << 24) | (ord($iv{$m++}) << 16) | (ord($iv{$m++}) << 8) | ord($iv{$m++});
             $cbcright = (ord($iv{$m++}) << 24) | (ord($iv{$m++}) << 16) | (ord($iv{$m++}) << 8) | ord($iv{$m++});
             $m=0;
         }
-
         echo "mode:".$mode;
         echo "<br>";
         echo "5.cbcleft:".$cbcleft;
         echo "<br>";
         echo "6.cbcright:".$cbcright;
         echo "<br>";
-
         //loop through each 64 bit chunk of the message
         while ($m < $len) {
             $left = (ord($message{$m++}) << 24) | (ord($message{$m++}) << 16) | (ord($message{$m++}) << 8) | ord($message{$m++});
             $right = (ord($message{$m++}) << 24) | (ord($message{$m++}) << 16) | (ord($message{$m++}) << 8) | ord($message{$m++});
-
             //for Cipher Block Chaining mode, xor the message with the previous result
             if ($mode == 1) {if ($encrypt) {$left ^= $cbcleft; $right ^= $cbcright;} else {$cbcleft2 = $cbcleft; $cbcright2 = $cbcright; $cbcleft = $left; $cbcright = $right;}}
-
             //first each 64 but chunk of the message must be permuted according to IP
             $temp = (($left >> 4 & $masks[4]) ^ $right) & 0x0f0f0f0f; $right ^= $temp; $left ^= ($temp << 4);
             $temp = (($left >> 16 & $masks[16]) ^ $right) & 0x0000ffff; $right ^= $temp; $left ^= ($temp << 16);
             $temp = (($right >> 2 & $masks[2]) ^ $left) & 0x33333333; $left ^= $temp; $right ^= ($temp << 2);
             $temp = (($right >> 8 & $masks[8]) ^ $left) & 0x00ff00ff; $left ^= $temp; $right ^= ($temp << 8);
             $temp = (($left >> 1 & $masks[1]) ^ $right) & 0x55555555; $right ^= $temp; $left ^= ($temp << 1);
-
             $left = (($left << 1) | ($left >> 31 & $masks[31]));
             $right = (($right << 1) | ($right >> 31 & $masks[31]));
-
             //do this either 1 or 3 times for each chunk of the message
             for ($j=0; $j<$iterations; $j+=3) {
                 $endloop = $looping[$j+1];
@@ -138,30 +123,24 @@ class Des {
                 }
                 $temp = $left; $left = $right; $right = $temp; //unreverse left and right
             } //for either 1 or 3 iterations
-
             //move then each one bit to the right
             $left = (($left >> 1 & $masks[1]) | ($left << 31));
             $right = (($right >> 1 & $masks[1]) | ($right << 31));
-
             //now perform IP-1, which is IP in the opposite direction
             $temp = (($left >> 1 & $masks[1]) ^ $right) & 0x55555555; $right ^= $temp; $left ^= ($temp << 1);
             $temp = (($right >> 8 & $masks[8]) ^ $left) & 0x00ff00ff; $left ^= $temp; $right ^= ($temp << 8);
             $temp = (($right >> 2 & $masks[2]) ^ $left) & 0x33333333; $left ^= $temp; $right ^= ($temp << 2);
             $temp = (($left >> 16 & $masks[16]) ^ $right) & 0x0000ffff; $right ^= $temp; $left ^= ($temp << 16);
             $temp = (($left >> 4 & $masks[4]) ^ $right) & 0x0f0f0f0f; $right ^= $temp; $left ^= ($temp << 4);
-
             //for Cipher Block Chaining mode, xor the message with the previous result
             if ($mode == 1) {if ($encrypt) {$cbcleft = $left; $cbcright = $right;} else {$left ^= $cbcleft2; $right ^= $cbcright2;}}
             $tempresult .= (chr($left>>24 & $masks[24]) . chr(($left>>16 & $masks[16]) & 0xff) . chr(($left>>8 & $masks[8]) & 0xff) . chr($left & 0xff) . chr($right>>24 & $masks[24]) . chr(($right>>16 & $masks[16]) & 0xff) . chr(($right>>8 & $masks[8]) & 0xff) . chr($right & 0xff));
-
             $chunk += 8;
             if ($chunk == 512) {$result .= $tempresult; $tempresult = ""; $chunk = 0;}
         } //for every 8 characters, or 64 bits in the message
-
         //return the result as an array
         return ($result . $tempresult);
     } //end of des
-
 //des_createKeys
 //this takes as input a 64 bit key (even though only 56 bits are used)
 //as an array of 2 integers, and returns 16 48 bit keys
@@ -182,7 +161,6 @@ class Des {
         $pc2bytes12 = array (0,0x1000,0x8000000,0x8001000,0x80000,0x81000,0x8080000,0x8081000,0x10,0x1010,0x8000010,0x8001010,0x80010,0x81010,0x8080010,0x8081010);
         $pc2bytes13 = array (0,0x4,0x100,0x104,0,0x4,0x100,0x104,0x1,0x5,0x101,0x105,0x1,0x5,0x101,0x105);
         $masks = array (4294967295,2147483647,1073741823,536870911,268435455,134217727,67108863,33554431,16777215,8388607,4194303,2097151,1048575,524287,262143,131071,65535,32767,16383,8191,4095,2047,1023,511,255,127,63,31,15,7,3,1,0);
-
         //how many iterations (1 for des, 3 for triple des)
 //  $iterations = ((strlen($key) > 8) ? 3 : 1); //changed by Paul 16/6/2007 to use Triple DES for 9+ byte keys
         $iterations = ((strlen($key) > 24) ? 3 : 1); //changed by Paul 16/6/2007 to use Triple DES for 9+ byte keys
@@ -193,11 +171,9 @@ class Des {
         //other variables
         $m=0;
         $n=0;
-
         for ($j=0; $j<$iterations; $j++) { //either 1 or 3 iterations
             $left = (ord($key{$m++}) << 24) | (ord($key{$m++}) << 16) | (ord($key{$m++}) << 8) | ord($key{$m++});
             $right = (ord($key{$m++}) << 24) | (ord($key{$m++}) << 16) | (ord($key{$m++}) << 8) | ord($key{$m++});
-
             $temp = (($left >> 4 & $masks[4]) ^ $right) & 0x0f0f0f0f; $right ^= $temp; $left ^= ($temp << 4);
             $temp = (($right >> 16 & $masks[16]) ^ $left) & 0x0000ffff; $left ^= $temp; $right ^= ($temp << 16);
             $temp = (($left >> 2 & $masks[2]) ^ $right) & 0x33333333; $right ^= $temp; $left ^= ($temp << 2);
@@ -205,13 +181,11 @@ class Des {
             $temp = (($left >> 1 & $masks[1]) ^ $right) & 0x55555555; $right ^= $temp; $left ^= ($temp << 1);
             $temp = (($right >> 8 & $masks[8]) ^ $left) & 0x00ff00ff; $left ^= $temp; $right ^= ($temp << 8);
             $temp = (($left >> 1 & $masks[1]) ^ $right) & 0x55555555; $right ^= $temp; $left ^= ($temp << 1);
-
             //the right side needs to be shifted and to get the last four bits of the left side
             $temp = ($left << 8) | (($right >> 20 & $masks[20]) & 0x000000f0);
             //left needs to be put upside down
             $left = ($right << 24) | (($right << 8) & 0xff0000) | (($right >> 8 & $masks[8]) & 0xff00) | (($right >> 24 & $masks[24]) & 0xf0);
             $right = $temp;
-
             //now go through and perform these shifts on the left and right keys
             for ($i=0; $i < count($shifts); $i++) {
                 //shift the keys either one or two bits to the left
@@ -224,7 +198,6 @@ class Des {
                 }
                 $left = $left & -0xf;
                 $right = $right & -0xf;
-
                 //now apply PC-2, in such a way that E is easier when encrypting or decrypting
                 //this conversion will look like PC-2 except only the last 6 bits of each byte are used
                 //rather than 48 consecutive bits and the order of lines will be according to
@@ -248,7 +221,6 @@ class Des {
         echo "<br>";
         return $keys;
     } //end of des_createKeys
-
 ////////////////////////////// TEST //////////////////////////////
     public static function stringToHex ($s) {
         $r = "0x";
@@ -256,49 +228,36 @@ class Des {
         for ($i=0; $i<strlen($s); $i++) {$r .= ($hexes [(ord($s{$i}) >> 4)] . $hexes [(ord($s{$i}) & 0xf)]);}
         return $r;
     }
-
     public static function hexToString ($h) {
         $r = "";
         for ($i= (substr($h, 0, 2)=="0x")?2:0; $i<strlen($h); $i+=2) {$r .= chr (base_convert (substr ($h, $i, 2), 16, 10));}
         return $r;
     }
-
     public static function idtag_des_encode($text)
     {
-
         $key = '12345678';
         $y=pkcs5_pad($text);
-
         echo "y:".$y;
         echo "<br />";
-
         $td = mcrypt_module_open(MCRYPT_DES,'',MCRYPT_MODE_CBC,''); //Ê¹ÓÃMCRYPT_DESËã·¨,cbcÄ£Ê½
         $iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td), MCRYPT_RAND);
         $ks = mcrypt_enc_get_key_size($td);
         mcrypt_generic_init($td, $key, $key);       //³õÊ¼´¦Àí
-
         $encrypted = mcrypt_generic($td, $y);       //½âÃÜ
-
         mcrypt_generic_deinit($td);       //½áÊø
         mcrypt_module_close($td);
-
         return $encrypted;
 //    return base64_encode($encrypted);
     }
-
     function pkcs5_pad($text,$block=8)
     {
         $pad = $block - (strlen($text) % $block);
         return $text . str_repeat(chr($pad), $pad);
     }
-
-
-
     private static function test(){
         $key = "12345678";
         $message = "str4";
         $ciphertext = des ($key, $message, 1, 1, $key,null);
-
 //echo "stringToHex (ciphertext): " . stringToHex ($ciphertext);
 //echo "<br />";
         echo "base64_encode(ciphertext): " . base64_encode($ciphertext);
@@ -314,7 +273,4 @@ class Des {
 //echo "\n";
 //echo "DES Test Decrypted: " . $recovered_message;
     }
-
-
-
 }

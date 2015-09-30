@@ -37,15 +37,12 @@ namespace Utils\Koe;
 class FileCache{
     private $data;
     private $file;
-
     function __construct($file)
     {
         $this->file = $file;
         $this->data = self::load($file);
-
         defined('CONFIG_EXIT') or define('CONFIG_EXIT', '<?php exit;?>');
     }
-
     /**
      * 重置所有数据；不传参数代表清空数据
      * @param array $list
@@ -55,7 +52,6 @@ class FileCache{
         $this->data = $list;
         self::save($this->file, $this->data);
     }
-
     /**
      * 添加一条数据，不能重复；如果已存在则返回false;1k次/s
      * @param $k
@@ -71,7 +67,6 @@ class FileCache{
         }
         return false;
     }
-
     /**
      * 获取数据;不存在则返回false;100w次/s
      * @param string $k 不传则返回全部;
@@ -82,7 +77,6 @@ class FileCache{
     public function get($k = '', $v = '', $search_value = false)
     {
         if ($k === '') return $this->data;
-
         $search = array();
         if ($search_value === false) {
             if (is_array($k)) {
@@ -107,7 +101,6 @@ class FileCache{
         }
         return false;
     }
-
     /**
      * 更新数据;不存在;或者任意一条不存在则返回false;不进行保存
      * @param string $k 为字符串；则根据key只更新一条数据
@@ -145,7 +138,6 @@ class FileCache{
         }
         return false;
     }
-
     /**
      * 替换方式更新；满足key更新的需求
      * @param $key_old
@@ -164,7 +156,6 @@ class FileCache{
         }
         return false;
     }
-
     /**
      * 删除;不存在返回false
      * @param $k
@@ -201,8 +192,6 @@ class FileCache{
         }
         return false;
     }
-
-
     /**
      * 排序
      * @param $arr
@@ -227,7 +216,6 @@ class FileCache{
         }
         return $new_array;
     }
-
     /**
      * 加载数据；并解析成程序数据
      * @param $file
@@ -242,7 +230,6 @@ class FileCache{
         if (is_null($data)) $data = array();
         return $data;
     }
-
     /**
      * 保存数据；
      * @param $file

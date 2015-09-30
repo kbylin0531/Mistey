@@ -58,7 +58,7 @@ class FileDriver{
      * 返回本次脚本执行的日志缓存数组
      * @return array
      */
-    public function getLogCache(){
+    public function getCache(){
         return $this->_cache;
     }
 

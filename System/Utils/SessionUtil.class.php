@@ -6,9 +6,7 @@
  * Time: 17:51
  */
 namespace System\Utils;
-
 use System\Exception\ParameterInvalidException;
-
 /**
  * Class SessionUtil 会话操作类
  * @package System\Utils
@@ -27,7 +25,6 @@ class SessionUtil{
      * private 表示允许客户端缓存， 但是不允许代理服务器缓存内容
      * private 模式下， 包括 Mozilla 在内的一些浏览器可能无法正确处理 Expire 响应头， 通过使用 private_no_expire 模式可以解决这个问题：在这种模式下， 不会向客户端发送 Expire 响应头
      */
-
     /**
      * Expires: Thu, 19 Nov 1981 08:52:00 GMT
      * Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
@@ -53,14 +50,10 @@ class SessionUtil{
      * Last-Modified: （会话最后保存时间）
      */
     const LIMITER_PEIVATE_WITHOUT_EXPIRE = 'private_no_expire';
-
-
     private static $_config = array(
         'cache_expire'  => 180,//默认session到期时间
         'name'          => APP_NAME,//会话名称
-
     );
-
     /**
      * 对session操作类进行初始化配置
      * @param array $config
@@ -73,7 +66,6 @@ class SessionUtil{
         }
         return false;
     }
-
     /**
      * 获取 或者 设置当前缓存的到期时间
      * 注意需要在session_start之前调用才有效
@@ -89,7 +81,6 @@ class SessionUtil{
         }
         return session_cache_expire();
     }
-
     /**
      * 获取和设置当前缓存限制器的名称
      * 注意需要在session_start之前调用才有效
@@ -102,7 +93,6 @@ class SessionUtil{
         }
         return session_cache_limiter($cache_limiter);
     }
-
     /**
      * 读取/设置会话名称
      * 用在 cookie 或者 URL 中的会话名称， 例如：PHPSESSID。
@@ -129,7 +119,6 @@ class SessionUtil{
     public static function commit(){
         session_write_close();
     }
-
     /**
      * 返回当前会话编码后的数据，即$_SESSION
      * @return string
@@ -137,7 +126,6 @@ class SessionUtil{
     public static function encode(){
         return session_encode();
     }
-
     /**
      * 对参数进行session解码，并填充到$_SESSION变量中
      * @param string $code_data 待解码的数据
@@ -146,7 +134,6 @@ class SessionUtil{
     public static function decode($code_data){
         return session_decode($code_data);
     }
-
     /**
      * Re-initialize session array with original values
      * 重置session的改动，恢复到最初的状态
@@ -155,7 +142,6 @@ class SessionUtil{
     public static function reset(){
         session_reset();
     }
-
     /**
      * 获取和设置session的保存路径
      * @param string|null $path 参数为null时获取保存路径
@@ -164,7 +150,6 @@ class SessionUtil{
     public static function savePath($path=null){
         return session_save_path($path);
     }
-
     /**
      * 获取session的状态(5.4)
      * PHP_SESSION_DISABLED if sessions are disabled.
@@ -199,7 +184,6 @@ class SessionUtil{
             throw new ParameterInvalidException($name);
         }
     }
-
     /**
      * 检查是否设置
      * @param string $name
@@ -213,7 +197,6 @@ class SessionUtil{
             return isset($_SESSION[$name]);
         }
     }
-
     /**
      * @param null|string $name 为null时获取全部session
      * @return null
@@ -231,11 +214,8 @@ class SessionUtil{
             }
         }
     }
-
     public static function sessionAutoStart(){
-
     }
-
     /**
      * 开启会话
      * 必须在脚本输出之前调用
@@ -249,14 +229,12 @@ class SessionUtil{
         }
         return false;
     }
-
     /**
      * @return void
      */
     public static function pause(){
         session_write_close();
     }
-
     /**
      * 销毁会话中全部数据
      * 要想重新使用session，需要重新调用session_start函数
@@ -269,7 +247,6 @@ class SessionUtil{
         session_unset();
         return session_destroy();
     }
-
     /**
      * sessionID操作
      * @param string|null  $id 设置的sessionID
@@ -280,7 +257,6 @@ class SessionUtil{
         $regenerate and session_regenerate_id();
         return session_id($id);
     }
-
     /**
      * 要求PHP版本在5.4之后才能使用
      *  设置用户自定义会话存储处理类（版本5.4以后使用）
@@ -292,7 +268,6 @@ class SessionUtil{
     public static function setSaveHandler(\SessionHandlerInterface $session_handler, $register_shutdown= true){
         return @session_set_save_handler($session_handler, $register_shutdown);
     }
-
     /**
      * 获取/设置会话 cookie 参数
      * 返回数组 array(
@@ -325,7 +300,6 @@ class SessionUtil{
         }
         return session_get_cookie_params();
     }
-
     /**
      * 设置session
      * @param string $name
@@ -341,5 +315,4 @@ class SessionUtil{
             $_SESSION[$name] = $value;
         }
     }
-
 }
