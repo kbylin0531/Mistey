@@ -6,9 +6,11 @@
  * Time: 18:44
  */
 namespace Application\Home\Controller;
+use Application\Home\Model\IndexModel;
 use System\Core\Controller;
 use System\Core\Storage;
 use System\Util\SEK;
+use System\Utils\Util;
 
 class IndexController extends Controller{
 
@@ -86,6 +88,11 @@ class IndexController extends Controller{
         SEK::dump($rst);
     }
 
+
+    public function testModel(){
+        $model = new IndexModel();
+        $model->index();
+    }
 
 
 }

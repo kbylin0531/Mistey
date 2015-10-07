@@ -14,12 +14,11 @@ use System\Util\SEK;
 
 defined('BASE_PATH') or die('No Permission!');
 /**
- * Class Dao 数据入口对象(DataAccessObject)
+ * Class Dao 数据入口对象(Data Access Object)
  * 具体方法的实现以来于各个驱动
  * @package System\Core
  */
 final class Dao{
-
     /**
      * 数据库类型
      * 具体驱动的名称要根据驱动类型的名称而定
@@ -35,38 +34,37 @@ final class Dao{
     public $driver;
 
     /**
-     * PDOStatement池
-     * @var array
-     */
-    protected $statementPool = array();
-    /**
      * 指向当前的PDOStatement对象
      * @var \PDOStatement
      */
-    protected $curStatement = null;
+    private $curStatement = null;
+    /**
+     * SQL执行发生的错误信息
+     * @var mixed
+     */
+    private $error = null;
 
     /**
      * 实例共用的配置信息
-     *
-     * PDO连接信息必须包含： host  username  password [port]
+     *  PDO连接信息必须包含： host  username  password [port]
      * @var array
      */
-    protected static $config = array(
+    private static $config = array(
         'MASTER_NO'    => 0,
         'DB_CONNECT'   =>   array(
             0   =>  array(
                 'type'   =>  Dao::DB_TYPE_MYSQL,//数据库类型
-                'dbname'   => 'ot-1.1',//选择的数据库
+                'dbname'   => 'test',//选择的数据库
                 'username'   =>  'root',
                 'password'   => '123456',
                 'host' => 'localhost',
                 'port' => '3306',
                 'charset'   => 'UTF8',
-                'dsn'       => null,//默认先检查差DSN是否正确
+                'dsn'       => null,//默认先检查差DSN是否正确,直接写dsn而不设置其他的参数可以提高效率，也可以避免潜在的bug
                 'options'    => array(
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,//默认异常模式
                 ),
-            )
+            ),
         ),
     );
     /**
@@ -87,7 +85,7 @@ final class Dao{
      * @param array $config 数据库连接参数
      * @throws ParameterInvalidException
      */
-    protected function __construct(array $config){
+    private function __construct(array $config){
         //检查必要参数
         if(isset($config['type'],$config['username'],$config['password'])){
             throw new ParameterInvalidException($config);
@@ -101,31 +99,13 @@ final class Dao{
         }
         try{
             $this->driver = new $classname($dsn,$config['username'],$config['password'],$config['options']);
-        }catch (\PDOException $e){//连接失败总会抛出异常
+        }catch (\PDOException $e){//连接失败总会抛出异常PDOException
             Mist::handleException($e);
         }
     }
-
 /***************************** TODO:静态方法 *******************************************************************************/
     /**
-     * 创建数据库连接
-     * 当设置参数二时，将选用参数二作为连接配置创建连接并命名为参数一表示的标识符
-     * @param int|string $identifier 连接标识符，可以自己创建或者选自self::$_conf['DB_CONNECT']
-     * @param array|null $connect_config
-     * @return Dao
-     */
-    public static function getInstance($identifier=0,array $connect_config=null){
-        self::$_hasInited or self::init();
-        if(isset($connect_config)){
-            self::$daoPool[$identifier] = new Dao($connect_config);
-        }elseif(!isset(self::$daoPool[$identifier])){//创建连接
-            self::$daoPool[$identifier] = new Dao(self::$config['DB_CONNECT'][$identifier]);
-        }
-        return self::$daoPool[$identifier];
-    }
-
-    /**
-     * 获取应用实例
+     * 初始化实例
      * @param string $confnm 配置名称，存放在根目录下的Configure/文件夹下
      * @return void
      * @throws \System\Exception\ConfigLoadFailedException
@@ -137,11 +117,29 @@ final class Dao{
         }
         self::$_hasInited = true;
     }
+    /**
+     * 创建数据库连接
+     * 当设置参数二时，将选用参数二作为连接配置创建连接并命名为参数一表示的标识符
+     * @param int|string $identifier 连接标识符，可以自己创建或者选自self::$_conf['DB_CONNECT']
+     * @param array|null $connect_config
+     * @return Dao
+     * @throws ParameterInvalidException
+     */
+    public static function getInstance($identifier=0,array $connect_config=null){
+        self::$_hasInited or self::init();
+        if(!isset($connect_config) and isset(self::$daoPool[$identifier])){
+            $connect_config = self::$config['DB_CONNECT'][$identifier];
+        }else{
+            throw new ParameterInvalidException($identifier=0,$connect_config);
+        }
+        return self::$daoPool[$identifier] = new Dao($connect_config);
+    }
 
     /**
      * 更具不同的数据库类型获取不同的DSN
      * @param array $config 数据库连接配置
      * @return string|null
+     * @throws ParameterInvalidException
      */
     public static function buildDSN($config){
         $dsn = null;
@@ -176,7 +174,8 @@ final class Dao{
                     $dsn  .= ';charset='.$config['charset'];
                 }
                 break;
-            default:;
+            default:
+                throw new ParameterInvalidException($config);
         }
         return $dsn;
     }
@@ -221,45 +220,54 @@ final class Dao{
 
 /******************* TODO:基本功能 ***************************************************************************************/
     /**
-     * @param array $input_parameters
-     *                  一个元素个数和将被执行的 SQL 语句中绑定的参数一样多的数组。
-     *                  所有的值作为 PDO::PARAM_STR 对待。
-     *                  不能绑定多个值到一个单独的参数,如果在 input_parameters 中
-     *                  存在比 PDO::prepare() 预处理的SQL 指定的多的键名，
-     *                  则此语句将会失败并发出一个错误。
-     *                  (这个错误在PHP 5.2.0版本之前是默认忽略的，个人认为忽略是不负责任的行为，即使错误就不该被执行)
-     * @param \PDOStatement $statement
-     * @return Dao|string
+     * @param array|null $input_parameters
+     *                  一个元素个数和将被执行的 SQL 语句中绑定的参数一样多的数组。所有的值作为 PDO::PARAM_STR 对待。
+     *                  不能绑定多个值到一个单独的参数,如果在 input_parameters 中存在比 PDO::prepare() 预处理的SQL 指定的多的键名，
+     *                  则此语句将会失败并发出一个错误。(这个错误在PHP 5.2.0版本之前是默认忽略的)
+     * @param \PDOStatement|null $statement
+     * @return bool
      * @throws PDOExecuteException
      * @throws ParameterInvalidException
      */
     public function execute(array $input_parameters = null, \PDOStatement $statement=null){
         isset($statement) and $this->curStatement = $statement;
-        if($this->curStatement){
-            self::log(array($this->curStatement->queryString,$input_parameters));
-//        Util::dump($this->curStatement->queryString,$input_parameters);exit;
-            return $this->curStatement->execute($input_parameters)?$this:$this->getErrorInfo();
-        }else{
+        if(!$this->curStatement){
             throw new PDOExecuteException($this->curStatement,$input_parameters);
         }
+        self::log(array($this->curStatement->queryString,$input_parameters));
+        if(!$this->curStatement->execute($input_parameters)){
+            $this->error = $this->getStatementErrorInfo();
+            return false;
+        }
+        return true;
     }
     /**
      * 查询一段SQL，并且将解析出所有的结果集合
      * @param string $sql
-     * @return array|mixed
+     * @return array|false
      */
     public function query($sql){
         self::log($sql);
-        return $this->driver->query($sql)->fetchAll();
+        $rst = $this->driver->query($sql);
+        if(false === $rst){
+            $this->error = $this->getPdoErrorInfo();
+            return false;
+        }
+        return $rst->fetchAll();
     }
     /**
      * 简单地执行Insert、Delete、Update操作
      * @param string $sql
-     * @return int 返回受到影响的行数，但是可能不会太可靠
+     * @return int|false 返回受到影响的行数，但是可能不会太可靠，需要用===判断返回值是0还是false
      */
     public function exec($sql){
         self::log($sql);
-        return $this->driver->exec($sql);
+        $rst = $this->driver->exec($sql);
+        if($rst){
+            $this->error = $this->getPdoErrorInfo();
+            return false;
+        }
+        return $rst;
     }
     /**
      * 准备一段SQL
@@ -269,22 +277,11 @@ final class Dao{
      *      prepare('insert *****');  将SQL语句设置ID为0并默认指向0
      *  </note>
      * @param string $sql 查询的SQL，当参数二指定的ID存在，只有在参数一布尔值不为false时，会进行真正地prepare
-     * @param null|string $id   不设置ID或者ID的值为布尔类型的false时，将把ID设置为0，并默认指针指向0
-     *                          设置了ID时将先检查对应的ID是否存在对应的PDOStatement，如果不存在则将当前查询的语句绑定到该ID下
      * @param array $option prepare方法参数二
      * @return $this
      */
-    public function prepare($sql,$id=NULL,$option=array()){
-        !$id and $id = 0;
-        if(!isset($this->statementPool[$id])){
-            //采取默认的方式准备一个查询语句 或者 重新设置一个查询语句
-            try{
-                $this->statementPool[$id] = $this->driver->prepare($sql,$option);
-            }catch (\PDOException $e){
-                Mist::handleException($e);
-            }
-        }
-        $this->curStatement = &$this->statementPool[$id];
+    public function prepare($sql,$option=array()){
+        $this->curStatement = $this->driver->prepare($sql,$option);
         return $this;
     }
     /**
@@ -367,15 +364,27 @@ final class Dao{
      * @return string 返回错误信息字符串，没有错误发生时返回空字符串
      */
     public function getErrorInfo(){
-        $message = '';
-        $pdoError = $this->driver->errorInfo();
-        isset($pdoError[1]) and $message .= "Code:{$pdoError[0]} [{$pdoError[1]}]:[{$pdoError[2]}]";
-        if(isset($this->curStatement)){
-            $stmtError = $this->curStatement->errorInfo();
-            isset($stmtError[1]) and $message .= "[{$stmtError[1]}]:[{$stmtError[2]}]";
-        }
-        return $message;
+        return $this->error;
     }
+
+    /**
+     * 获取PDO对象查询时发生的错误
+     * @return string
+     */
+    public function getPdoErrorInfo(){
+        $pdoError = $this->driver->errorInfo();
+        return isset($pdoError[1])?"Code:{$pdoError[0]} [{$pdoError[1]}]:[{$pdoError[2]}]":'';
+    }
+
+    /**
+     * 获取PDOStatemnent对象上查询时发生的错误
+     * @return string
+     */
+    public function getStatementErrorInfo(){
+        $stmtError = $this->curStatement->errorInfo();
+        return isset($stmtError[1])?"[{$stmtError[1]}]:[{$stmtError[2]}]":'';
+    }
+
     /**
      * 开启事务
      * @return bool
@@ -450,6 +459,7 @@ final class Dao{
     }
 
     /**
+     * 从结果集中获取下一行
      * @param int $fetch_style
      *              \PDO::FETCH_ASSOC 关联数组
      *              \PDO::FETCH_BOUND 使用PDOStatement::bindColumn()方法时绑定变量
@@ -611,8 +621,6 @@ final class Dao{
             }
             $flag and ($fields = rtrim($fields,','));
             $placeholder  = rtrim($placeholder,',');
-//            Util::dump("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );",
-//                "insert into {$tablename} VALUES ( {$placeholder} );",$bind);exit;
             if($flag){
                 $this->prepare("insert into {$tablename} ( {$fields} ) VALUES ( {$placeholder} );")->execute($bind);
                 return $this->doneExecute();
@@ -627,16 +635,16 @@ final class Dao{
 
     /**
      * 为指定的数据表更新记录
-     * @param $tablename
-     * @param $flds
-     * @param $whr
+     * @param string $tablename
+     * @param string|array $flds
+     * @param string|array $whr
      * @return int|string 返回受影响的行数
      */
     public function update($tablename,$flds,$whr){
-        $fields = $this->makeSegments($flds,false);
-        $where  = $this->makeSegments($whr);
-        $this->prepare("update {$tablename} set {$fields[0]} where {$where[0]};")
-                    ->execute(array_merge($fields[1],$where[1]));
+        $fields = is_string($flds)?array($flds,array()):$this->makeSegments($flds,false);
+        $where  = is_string($whr) ?array($whr,array()) :$this->makeSegments($whr, false);
+        $input_params = (empty($fields[1]) && empty($where[1]))?null:array_merge($fields[1],$where[1]);
+        $this->prepare("update {$tablename} set {$fields[0]} where {$where[0]};")->execute($input_params);
         return $this->doneExecute();
     }
 
@@ -662,18 +670,17 @@ final class Dao{
      * @throws PDOExecuteException
      */
     public function select($tablename,$fields=null,$whr=null){
-        if($fields){
-            if(is_array($fields)){
-                $fields = implode(',',$fields);
-            }
+        if($fields and is_array($fields)){
+            $fields = implode(',',$fields);
         }else{
             $fields = ' * ';
         }
-        if(is_array($whr)){
-            $whr  = $this->makeSegments($whr);
+        $whr  = is_string($whr)?array($whr,null):$this->makeSegments($whr);
+        $rst = $this->prepare("select $fields from $tablename where {$whr[0]};")->execute($whr[1]);
+        if(false === $rst ){
+            return false;
         }
-        return $this->prepare("select $fields from $tablename where {$whr[0]};")
-                    ->execute($whr[1])->fetchAll();
+        return $this->fetchAll();
     }
 
 
@@ -707,7 +714,7 @@ final class Dao{
      * @return array
      * @throws ParameterInvalidException
      */
-    protected function makeFieldBind($fieldName,$fieldValue,$operator='=',$translate=false){
+    private function makeFieldBind($fieldName,$fieldValue,$operator='=',$translate=false){
         static $suffix = 1;//使用场景是update时既有set绑定又有where绑定时，区分前后二者，将suffix设置可以防止前后冲突
         //绑定设置
         $fieldName = trim($fieldName, ' :');

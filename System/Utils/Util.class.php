@@ -50,6 +50,8 @@ class Util{
 
     /**
      * 字符串命名风格转换
+     * C风格      如： sub_string
+     * JAVA风格   如： subString
      * @param string $str 字符串
      * @param bool $type 转换类型 true表示将C风格转换为Java的风格 false将Java风格转换为C的风格
      * @return string

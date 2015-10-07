@@ -79,13 +79,12 @@ abstract class DaoDriver extends \PDO{
 
     /**
      * 调用PDO底层的prepare，获取PDO对象
-     * @param string $sql SQL语句
-     * @param array $option 默认的配置为array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY);  \PDO::CURSOR_SCROLL前后可以回滚的不常使用
-     * @return false|\PDOStatement 异常处理机制设置为费Exception时
-     * @throws PDOPrepareFailedException
+     * @param string $statement SQL语句
+     * @param array $driver_options 默认的配置为array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY);  \PDO::CURSOR_SCROLL前后可以回滚的不常使用
+     * @return \PDOStatement
      */
-    public function prepare($sql, $option=null){
-        return $this->curStatement = parent::prepare($sql,$option);
+    public function prepare($statement, array $driver_options = array()){
+        return $this->curStatement = parent::prepare($statement,$driver_options);
     }
     /**
      * PDO对象上的execute方法
