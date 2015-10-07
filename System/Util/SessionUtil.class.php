@@ -5,7 +5,7 @@
  * Date: 2015/9/12
  * Time: 17:51
  */
-namespace System\Utils;
+namespace System\Util;
 use System\Exception\ParameterInvalidException;
 /**
  * Class SessionUtil 会话操作类
@@ -50,6 +50,10 @@ class SessionUtil{
      * Last-Modified: （会话最后保存时间）
      */
     const LIMITER_PEIVATE_WITHOUT_EXPIRE = 'private_no_expire';
+    /**
+     * 配置选项
+     * @var array
+     */
     private static $_config = array(
         'cache_expire'  => 180,//默认session到期时间
         'name'          => APP_NAME,//会话名称
@@ -222,12 +226,10 @@ class SessionUtil{
      * @return bool
      */
     public static function start(){
-//        Util::dump($_SESSION,PHP_SESSION_DISABLED ,PHP_SESSION_ACTIVE,PHP_SESSION_NONE,
-//            self::status());exit;
         if(PHP_SESSION_ACTIVE !== self::status()){
             return session_start();
         }
-        return false;
+        return true;
     }
     /**
      * @return void

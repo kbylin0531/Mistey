@@ -86,6 +86,21 @@ final class SEK {
         }
     }
     /**
+     * 判断是否是https请求
+     * @return bool
+     */
+    public static function isHttps(){
+        if(!isset($_SERVER['HTTPS']))  return FALSE;
+        if($_SERVER['HTTPS'] === 1){  //Apache
+            return true;
+        }elseif($_SERVER['HTTPS'] === 'on'){ //IIS
+            return true;
+        }elseif($_SERVER['SERVER_PORT'] == 443){ //其他
+            return true;
+        }
+        return false;
+    }
+    /**
      * 获取客户端IP地址
      * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
      * @param boolean $adv 是否进行高级模式获取（有可能被伪装）

@@ -11,9 +11,13 @@ use Application\Cms\Model\MemberModel;
 use System\Core\Configer;
 use System\Core\Controller;
 use System\Core\Storage;
-use System\Utils\SessionUtil;
+use System\Util\SessionUtil;
 use System\Utils\Util;
 
+/**
+ * Class InstallController CMS安装控制器
+ * @package Application\Cms\Controller
+ */
 class InstallController extends Controller{
     /**
      * 安装锁的路径
@@ -28,10 +32,8 @@ class InstallController extends Controller{
         if(Storage::has(self::$lock_path)){
             $this->error('CMS已经安装完毕!');
         }
-
-        //静态文件目录
+        //静态可以直接访问的文件目录
         defined('URL_CMS_STATIC_PATH') or define('URL_CMS_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
-
 
     }
 
@@ -47,8 +49,8 @@ class InstallController extends Controller{
      */
     public function first(){
         $env = $this->checkEnv();
-        $dirfile = $this->checkDirfile();
         $funcs = $this->checkFunc();
+        $dirfile = $this->checkDirfile();
 
         SessionUtil::set('step', 1);
 
@@ -186,7 +188,6 @@ class InstallController extends Controller{
         $this->display();
     }
 
-
     /**
      * 创建数据表
      */
@@ -302,8 +303,9 @@ class InstallController extends Controller{
         }
 
         //附件上传检测
-        if(@ini_get('file_uploads'))
+        if(@ini_get('file_uploads')){
             $items['upload'][3] = ini_get('upload_max_filesize');
+        }
 
         //GD库检测
         $tmp = function_exists('gd_info') ? gd_info() : array();
@@ -320,7 +322,6 @@ class InstallController extends Controller{
         if(function_exists('disk_free_space')) {
             $items['disk'][3] = floor(disk_free_space(BASE_PATH) / (1024*1024)).'M';
         }
-
         return $items;
     }
 
