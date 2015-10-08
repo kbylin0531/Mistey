@@ -87,7 +87,7 @@ final class Dao{
      */
     private function __construct(array $config){
         //检查必要参数
-        if(isset($config['type'],$config['username'],$config['password'])){
+        if(!isset($config['type'],$config['username'],$config['password'])){
             throw new ParameterInvalidException($config);
         }
         $classname = 'System\\Core\\DaoDriver\\'.ucwords($config['type']).'Driver';
@@ -120,17 +120,20 @@ final class Dao{
     /**
      * 创建数据库连接
      * 当设置参数二时，将选用参数二作为连接配置创建连接并命名为参数一表示的标识符
-     * @param int|string $identifier 连接标识符，可以自己创建或者选自self::$_conf['DB_CONNECT']
+     * @param int|string|array $identifier 连接标识符，可以自己创建或者选自self::$_conf['DB_CONNECT']
+     *                  如果参数一时数组，则被认为是临时配置，不会被记录，需要用户自己保存好句柄
      * @param array|null $connect_config
      * @return Dao
      * @throws ParameterInvalidException
      */
     public static function getInstance($identifier=0,array $connect_config=null){
         self::$_hasInited or self::init();
-        if(!isset($connect_config) and isset(self::$daoPool[$identifier])){
+        if(is_array($identifier)){
+            return new Dao($identifier);
+        }elseif(!isset($connect_config) and isset(self::$daoPool[$identifier])){
             $connect_config = self::$config['DB_CONNECT'][$identifier];
         }else{
-            throw new ParameterInvalidException($identifier=0,$connect_config);
+            throw new ParameterInvalidException($identifier,$connect_config);
         }
         return self::$daoPool[$identifier] = new Dao($connect_config);
     }

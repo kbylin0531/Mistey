@@ -19,7 +19,7 @@ class InstallModel extends Model{
     public function __construct($config='0',$withdb=true){
 //        isset($config) and unset($config['dbname']);/不行，因为unset是操作符，同throw
         if(!$withdb and isset($config['dbname'])){
-            unset($config['dbname']);
+            unset($config['dbname']);//创建数据库时不能带有数据库名称，否则会尝试连接这个不存在的数据库而导致错误的发生
         }
         isset($config) and $this->init($config);
         parent::__construct();

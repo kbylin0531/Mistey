@@ -336,3 +336,87 @@ File:/mnt/hgfs/Webroot/Mist/System/Core/Configer.class.php   Line:220
 
 
 
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2 Illegal offset type in isset or empty
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/Dao.class.php   Line:130
+||--trace--||
+#0  System\Mist::handleError(2, Illegal offset type in isset or empty, /mnt/hgfs/Webroot/Mist/System/Core/Dao.class.php, 130, Array ([identifier] => Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql),[connect_config] => )) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dao.class.php:130]
+#1  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/System/Core/Model.class.php:121]
+#2  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/Application/Cms/Model/InstallModel.class.php:24]
+#3  Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => testcms2,[host] => 127.0.0.1,[type] => mysql), ) called at [/mnt/hgfs/Webroot/Mist/Application/Cms/Controller/InstallController.class.php:116]
+#4  Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => testcms2,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => root,[1] => 123456,[2] => 123456,[3] => 784855684@qq.com))
+#5  ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => testcms2,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => root,[1] => 123456,[2] => 123456,[3] => 784855684@qq.com))) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dispatcher.class.php:121]
+#6  System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [/mnt/hgfs/Webroot/Mist/System/Mist.class.php:213]
+#7  System\Mist::start() called at [/mnt/hgfs/Webroot/Mist/index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 Array to string conversion
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Exception/ParameterInvalidException.class.php   Line:24
+||--trace--||
+#0  System\Mist::handleError(8, Array to string conversion, /mnt/hgfs/Webroot/Mist/System/Exception/ParameterInvalidException.class.php, 24, Array ([arguments] => Array ([0] => Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)),[val] => Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql))) called at [/mnt/hgfs/Webroot/Mist/System/Exception/ParameterInvalidException.class.php:24]
+#1  System\Exception\ParameterInvalidException->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dao.class.php:91]
+#2  System\Core\Dao->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dao.class.php:132]
+#3  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/System/Core/Model.class.php:121]
+#4  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/Application/Cms/Model/InstallModel.class.php:24]
+#5  Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => testcms2,[host] => 127.0.0.1,[type] => mysql), ) called at [/mnt/hgfs/Webroot/Mist/Application/Cms/Controller/InstallController.class.php:116]
+#6  Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => testcms2,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => root,[1] => 123456,[2] => 123456,[3] => 784855684@qq.com))
+#7  ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => testcms2,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => root,[1] => 123456,[2] => 123456,[3] => 784855684@qq.com))) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dispatcher.class.php:121]
+#8  System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [/mnt/hgfs/Webroot/Mist/System/Mist.class.php:213]
+#9  System\Mist::start() called at [/mnt/hgfs/Webroot/Mist/index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2048 Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL)
+||--position--||
+File:/mnt/hgfs/Webroot/Mist/System/Core/DaoDriver/DaoDriver.class.php   Line:151
+||--trace--||
+#0  System\Mist::handleError(2048, Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL), /mnt/hgfs/Webroot/Mist/System/Core/DaoDriver/DaoDriver.class.php, 151, Array ([clsnm] => System\Core\DaoDriver\DaoDriver,[basename] => System,[dir] => /mnt/hgfs/Webroot/Mist/System,[filename] => /mnt/hgfs/Webroot/Mist/System/Core/DaoDriver/DaoDriver.class.php)) called at [/mnt/hgfs/Webroot/Mist/System/Mist.class.php:349]
+#1  System\Mist::loadClass() called at [/mnt/hgfs/Webroot/Mist/System/Mist.class.php:349]
+#2  System\Mist::loadClass(System\Core\DaoDriver\DaoDriver)
+#3  spl_autoload_call(System\Core\DaoDriver\DaoDriver) called at [/mnt/hgfs/Webroot/Mist/System/Core/DaoDriver/MysqlDriver.class.php:17]
+#4  include_once(/mnt/hgfs/Webroot/Mist/System/Core/DaoDriver/MysqlDriver.class.php) called at [/mnt/hgfs/Webroot/Mist/System/Mist.class.php:349]
+#5  System\Mist::loadClass(System\Core\DaoDriver\MysqlDriver)
+#6  spl_autoload_call(System\Core\DaoDriver\MysqlDriver) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dao.class.php:101]
+#7  System\Core\Dao->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dao.class.php:132]
+#8  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/System/Core/Model.class.php:121]
+#9  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [/mnt/hgfs/Webroot/Mist/Application/Cms/Model/InstallModel.class.php:24]
+#10 Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => testcms2,[host] => 127.0.0.1,[type] => mysql), ) called at [/mnt/hgfs/Webroot/Mist/Application/Cms/Controller/InstallController.class.php:116]
+#11 Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => testcms2,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => root,[1] => 123456,[2] => 123456,[3] => 784855684@qq.com))
+#12 ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => testcms2,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => root,[1] => 123456,[2] => 123456,[3] => 784855684@qq.com))) called at [/mnt/hgfs/Webroot/Mist/System/Core/Dispatcher.class.php:121]
+#13 System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [/mnt/hgfs/Webroot/Mist/System/Mist.class.php:213]
+#14 System\Mist::start() called at [/mnt/hgfs/Webroot/Mist/index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+

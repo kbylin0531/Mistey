@@ -11,6 +11,7 @@ use Application\Cms\Model\MemberModel;
 use System\Core\Configer;
 use System\Core\Controller;
 use System\Core\Storage;
+use System\Util\SEK;
 use System\Util\SessionUtil;
 use System\Utils\Util;
 
@@ -25,6 +26,17 @@ class InstallController extends Controller{
      * @var string
      */
     private static $lock_path = null;
+    /**
+     * 安装步骤
+     * @var array
+     */
+    private static $steps = array(
+        0   => 'Cms/install/index',
+        1   => 'Cms/install/first',
+        2   => 'Cms/install/second',
+        3   => 'Cms/install/third',
+        4   => 'Cms/install/complete'
+    );
 
     public function __construct(){
         parent::__construct();
@@ -69,13 +81,13 @@ class InstallController extends Controller{
      */
     public function second($db = null, $admin = null){
         if(IS_POST){
-            //检测管理员信息
-            if(Util::checkInvalidExistInStrict(true,
+            //检测管理员配置
+            if(SEK::checkInvalidValueExistInStrict(true,
                 !is_array($admin) ,
                 empty($admin[0]) , //名称
                 empty($admin[1]),//密码 2-密码确认
                 empty($admin[3])//邮箱
-            ) ){
+            )){
                 //任意一项为空
                 $this->error('请填写完整管理员信息');
             }else{
@@ -89,7 +101,7 @@ class InstallController extends Controller{
             }
 
             //检测数据库配置
-            if(Util::checkInvalidExistInStrict(true,
+            if(SEK::checkInvalidValueExistInStrict(true,
                 !is_array($db), empty($db[0]),empty($db[1]) , empty($db[2]) , empty($db[3])) ){
                 //任意一项为空
                 $this->error('请填写完整的数据库配置');
@@ -97,6 +109,7 @@ class InstallController extends Controller{
                 $config = array();
                 list($config['type'], $config['host'], $config['dbname'], $config['username'],
                     $config['password'],$config['port'],$config['prefix']) = $db;
+                $config['prefix'] = 'ot_';
                 //缓存数据库配置
                 SessionUtil::set('database_info', $config);
                 //创建数据库
@@ -111,7 +124,7 @@ class InstallController extends Controller{
                 }
             }
             //跳转到数据库安装页面
-            $this->redirect('Cms/install/third');
+            $this->takeSteps();
         }
 
         //检查并设置session
@@ -119,11 +132,10 @@ class InstallController extends Controller{
             $this->error('环境检测没有通过，请调整环境后重试！');
         }
         $step = SessionUtil::get('step');
-        if($step != 1 && $step != 2){
-            $this->redirect('Cms/install/first');
+        if($step !== 1 && $step !== 2){
+            $this->takeSteps(false);
         }
         SessionUtil::set('step', 2);
-
 
         $this->display();
     }
@@ -134,9 +146,10 @@ class InstallController extends Controller{
      */
     public function third(){
         if(SessionUtil::get('step') != 2){
-            $this->redirect('Cms/install/second');
+            $this->takeSteps(2);
         }
         $this->display();
+
         //创建数据表
         $this->createTables();
 
@@ -189,6 +202,20 @@ class InstallController extends Controller{
     }
 
     /**
+     * 步骤跳转
+     * @param bool|true $forward true表示进入下一步，false表示返回上一步，int类型表示跳到制定的步骤
+     */
+    private function takeSteps($forward=true){
+        if(is_bool($forward)){
+            $curstep = SessionUtil::get('step');
+            $forward? ++$curstep: --$curstep;
+        }else{
+            $curstep = $forward;
+        }
+        $this->redirect(self::$steps[$curstep]);
+    }
+
+    /**
      * 创建数据表
      */
     private function createTables(){
@@ -221,7 +248,7 @@ class InstallController extends Controller{
     }
 
     /**
-     * 函数检测是否存在
+     * 函数、扩展、方法的检测
      * @return array 检测数据
      */
     private function checkFunc(){
@@ -251,9 +278,11 @@ class InstallController extends Controller{
      */
     private function checkDirfile(){
         $items = array(
+            //文件类型、所需状态、检测结果、目录名称(不完整)
             array('dir',  '可写', 'success', 'Data/CMS/'),
         );
 
+        //目录检测
         foreach ($items as &$val) {
             $item =	BASE_PATH . $val[3];
             if('dir' == $val[0]){//如果是目录
@@ -268,7 +297,7 @@ class InstallController extends Controller{
                         SessionUtil::set('error', true);
                     }
                 }
-            } else {//如果是文件
+            }else{//如果是文件
                 if(file_exists($item)) {
                     if(!is_writable($item)) {
                         $val[1] = '不可写';
@@ -287,8 +316,13 @@ class InstallController extends Controller{
         return $items;
     }
 
+    /**
+     * 运行环境检测
+     * @return array
+     */
     private function checkEnv(){
         $items = array(
+            //检测相名称、所需配置、？、当前详细信息、检测结果
             'os'      => array('操作系统', '不限制', '类Unix', PHP_OS, 'success'),
             'php'     => array('PHP版本', '5.3', '5.3+', PHP_VERSION, 'success'),
             'upload'  => array('附件上传', '不限制', '2M+', '未知', 'success'),
@@ -305,6 +339,9 @@ class InstallController extends Controller{
         //附件上传检测
         if(@ini_get('file_uploads')){
             $items['upload'][3] = ini_get('upload_max_filesize');
+        }else{
+            //配置项目不存在
+            SessionUtil::set('error', true);
         }
 
         //GD库检测
@@ -320,7 +357,7 @@ class InstallController extends Controller{
 
         //磁盘空间检测
         if(function_exists('disk_free_space')) {
-            $items['disk'][3] = floor(disk_free_space(BASE_PATH) / (1024*1024)).'M';
+            $items['disk'][3] = SEK::byteFormat(disk_free_space(BASE_PATH));
         }
         return $items;
     }

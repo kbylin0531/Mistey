@@ -137,7 +137,7 @@ final class SEK {
      * @param int $precision 精度
      * @return string
      */
-    function byteFormat($num, $precision = 1){
+    public static function byteFormat($num, $precision = 1){
         $unit = 'Bytes';//合适的单位
         if ($num >= 1000000000000){//0.9XX +++
             $num = round($num / 1099511627776, $precision);
@@ -155,5 +155,60 @@ final class SEK {
             return number_format($num).' '.$unit;
         }
         return number_format($num, $precision).' '.$unit;
+    }
+    /**
+     * 数据签名认证
+     * @param  array  $data 被认证的数据
+     * @return string 签名
+     * @author 麦当苗儿 <zuojiazi@vip.qq.com>
+     */
+    public static function dataAuthSign($data) {
+        //统一转换为数组类型
+        if(!is_array($data)) $data = (array)$data;
+        //统一排序
+        ksort($data);
+        $sign = sha1(serialize($data)); //序列化并生成生成签名
+        return $sign;
+    }
+
+    /**
+     * 判断是否有不合法的参数存在，不合法的参数参照参数一（使用严格的比较-判断类型）
+     * 第一个参数将会被认为是不合法的值，参数一可以是单个字符串或者数组
+     * 第二个参数开始是要比较的参数列表，如果任何一个参数"匹配"了参数一，将返回true表示存在不合法的参数
+     * @return bool
+     */
+    public static function checkInvalidValueExistInStrict(){
+        $params = func_get_args();
+        return self::checkInvalidValueExist($params,true);
+    }
+    /**
+     * 判断是否有不合法的参数存在，不合法的参数参照参数一（使用宽松的比较-不判断类型）
+     * 第一个参数将会被认为是不合法的值，参数一可以是单个字符串或者数组
+     * 第二个参数开始是要比较的参数列表，如果任何一个参数"匹配"了参数一，将返回true表示存在不合法的参数
+     * @return bool
+     */
+    public static function checkInvalidValueExistInEase(){
+        $params = func_get_args();
+        return self::checkInvalidValueExist($params);
+    }
+    /**
+     * 检测是否存在不合法的值
+     * 参数一种第一个元素作为比较对象
+     * 如果是数组，则数组中都是不合法的值，如果是单值，使用===进行比较
+     * @param array $params 参与比较的值的有序集合
+     * @param bool|false $district 比较时是否判断其类型，默认是
+     * @return bool
+     */
+    public static function checkInvalidValueExist($params,$district=false){
+        $invalidVal = array_shift($params);
+        foreach ($params as $key=>&$val){
+            if(is_array($invalidVal)){
+                //参数三决定是否使用严格的方式
+                if(in_array(trim($val),$invalidVal,$district)) return true;
+            }else{
+                if($district? ($invalidVal === $val) : ($invalidVal == $val)) return true;
+            }
+        }
+        return false;
     }
 }
