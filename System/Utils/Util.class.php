@@ -50,6 +50,8 @@ class Util{
 
     /**
      * 字符串命名风格转换
+     * C风格      如： sub_string
+     * JAVA风格   如： subString
      * @param string $str 字符串
      * @param bool $type 转换类型 true表示将C风格转换为Java的风格 false将Java风格转换为C的风格
      * @return string
@@ -89,27 +91,6 @@ class Util{
     }
 
     /**
-     * 判断是否有不合法的参数存在，不合法的参数参照参数一（使用严格的比较-判断类型）
-     * 第一个参数将会被认为是不合法的值，参数一可以是单个字符串或者数组
-     * 第二个参数开始是要比较的参数列表，如果任何一个参数"匹配"了参数一，将返回true表示存在不合法的参数
-     * @return bool
-     */
-    public static function checkInvalidExistInStrict(){
-        $params = func_get_args();
-        return self::checkInvalidExist($params,true);
-    }
-    /**
-     * 判断是否有不合法的参数存在，不合法的参数参照参数一（使用宽松的比较-不判断类型）
-     * 第一个参数将会被认为是不合法的值，参数一可以是单个字符串或者数组
-     * 第二个参数开始是要比较的参数列表，如果任何一个参数"匹配"了参数一，将返回true表示存在不合法的参数
-     * @return bool
-     */
-    public static function checkInvalidExistInEase(){
-        $params = func_get_args();
-        return self::checkInvalidExist($params);
-    }
-
-    /**
      * 及时显示提示信息
      * @param string $msg 提示信息
      * @param string $class 提示信息类型
@@ -120,23 +101,7 @@ class Util{
         ob_flush();
     }
 
-    /**
-     * @param array $params 参数
-     * @param bool|false $district 比较时是否判断其类型，默认是
-     * @return bool
-     */
-    public static function checkInvalidExist($params,$district=false){
-        $invalidVal = array_shift($params);
-        foreach ($params as $key=>&$val){
-            if(is_array($invalidVal)){
-                //参数三决定是否使用严格的方式
-                return in_array(trim($val),$invalidVal,$district);
-            }else{
-                return $district? ($invalidVal === $val) : ($invalidVal == $val);
-            }
-        }
-        return false;
-    }
+
 
     /**
      * 打印变量的详细信息
@@ -425,7 +390,7 @@ class Util{
      * @return array
      */
     public static function loadConf($confName,$modlist=''){
-        Configer::load($confName,$modlist);
+        Configer::load($confName);
     }
 
 

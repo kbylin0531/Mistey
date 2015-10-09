@@ -13,6 +13,7 @@ use System\Core\Log;
 use System\Core\Router;
 use System\Core\Storage;
 use System\Exception\ClassNotFoundException;
+use System\Util\SEK;
 use System\Utils\Util;
 
 defined('BASE_PATH') or die('No Permission!');
@@ -135,12 +136,12 @@ final class Mist{
             }
         }
 
-
-        define('URL_BASE_PATH', (Util::isHTTPS() ? 'https://' :'http://').$_SERVER['HTTP_HOST'].dirname($_SERVER['SCRIPT_NAME']).'/');
+        //-- 常用URL可以访问的路径 --//
+        define('URL_BASE_PATH', (SEK::isHTTPS() ? 'https://' :'http://').$_SERVER['HTTP_HOST'].dirname($_SERVER['SCRIPT_NAME']).'/');
         define('URL_PUBLIC_PATH',URL_BASE_PATH.'Public/');
 
-
         self::status('init_begin');
+        //-- 时间处理句柄注册 --//
         register_shutdown_function('System\Mist::end');
         set_error_handler('System\Mist::handleError',E_ALL|E_STRICT );//报告所有的错误，PHP5.4以后E_STRICT成为E_ALL的一部分
         set_exception_handler('System\Mist::handleException');
@@ -272,7 +273,7 @@ final class Mist{
                 ),
                 'Files'         => array_merge(array('Total'=>count($info)),$info),
                 'Status'        => $cmprst,
-                'Sql'           => Dao::log(true),
+                'SQL'           => Dao::log(true),
                 'Log'           => Log::getCache(),
 //                'Error'         => self::$_errorCache,
                 'GET'           => $_GET,
@@ -282,8 +283,8 @@ final class Mist{
                 'ENV'           => $_ENV,
                 'SESSION'       => isset($_SESSION)?$_SESSION:array('SESSION state disabled'),//session_start()之后$_SESSION数组才会被创建
                 'IP'            => array(
-                    '$_SERVER["HTTP_X_FORWARDED_FOR"]'  =>  isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:'',
-                    '$_SERVER["HTTP_CLIENT_IP"]'  =>  isset($_SERVER['HTTP_CLIENT_IP'])?$_SERVER['HTTP_CLIENT_IP']:'',
+                    '$_SERVER["HTTP_X_FORWARDED_FOR"]'  =>  isset($_SERVER['HTTP_X_FORWARDED_FOR'])?$_SERVER['HTTP_X_FORWARDED_FOR']:'NULL',
+                    '$_SERVER["HTTP_CLIENT_IP"]'  =>  isset($_SERVER['HTTP_CLIENT_IP'])?$_SERVER['HTTP_CLIENT_IP']:'NULL',
                     '$_SERVER["REMOTE_ADDR"]'  =>  $_SERVER['REMOTE_ADDR'],
                     'getenv("HTTP_X_FORWARDED_FOR")'  =>  getenv('HTTP_X_FORWARDED_FOR'),
                     'getenv("HTTP_CLIENT_IP")'  =>  getenv('HTTP_CLIENT_IP'),

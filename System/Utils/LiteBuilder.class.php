@@ -8,9 +8,7 @@
 namespace System\Utils;
 use System\Core\Storage;
 use System\Mist;
-
 class LiteBuilder {
-
     /**
      * 程序结束时调用
      * @param string $litefile 生成的lite文件名称
@@ -38,7 +36,6 @@ class LiteBuilder {
         Storage::write($litefile,'<?php '.$content);
 //        Storage::write($litefile,self::stripWhitespace('<?php '.$content));
     }
-
     /**
      * 获取文件编译后的内容
      * @param string $filename 文件名
@@ -58,7 +55,6 @@ class LiteBuilder {
             $content    = substr($content, 0, -2);
         return $content.'}';
     }
-
     /**
      * 去除代码中的空白和注释
      * @param string $content 代码内容
@@ -108,7 +104,6 @@ class LiteBuilder {
         }
         return $stripStr;
     }
-
     /**
      * 根据数组生成常量定义
      * @param array $array 常量数组

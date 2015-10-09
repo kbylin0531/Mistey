@@ -61,7 +61,7 @@ class Input {
             $headers['Content-Type'] = (isset($_SERVER['CONTENT_TYPE'])) ? $_SERVER['CONTENT_TYPE'] : @getenv('CONTENT_TYPE');
             foreach ($_SERVER as $key => $val){
                 if (strncmp($key, 'HTTP_', 5) === 0){
-                    $headers[substr($key, 5)] = $this->_fetch_from_array($_SERVER, $key, $xss_clean);
+//                    $headers[substr($key, 5)] = $this->_fetch_from_array($_SERVER, $key, $xss_clean);
                 }
             }
         }

@@ -89,4 +89,27 @@
     'TEMPLATE_LAYOUT_ON' => false,
     'TEMPLATE_LAYOUT_FILENAME' => NULL,
   ),
-); ?>
+  'url' => 
+  array (
+    'URL_MODULE_VARIABLE' => 'm',
+    'URL_CONTROLLER_VARIABLE' => 'c',
+    'URL_ACTION_VARIABLE' => 'a',
+    'URL_COMPATIBLE_VARIABLE' => 'pathinfo',
+    'MM_BRIDGE' => '+',
+    'MC_BRIDGE' => '/',
+    'CA_BRIDGE' => '/',
+    'AP_BRIDGE' => '.',
+    'PP_BRIDGE' => '-',
+    'PKV_BRIDGE' => '-',
+    'MASQUERADE_TAIL' => '.html',
+    'REWRITE_HIDDEN' => '/index.php',
+    'DEFAULT_MODULE' => 'Home',
+    'DEFAULT_CONTROLLER' => 'Index',
+    'DEFAULT_ACTION' => 'index',
+    'DOMAIN_DEPLOY_ON' => false,
+    'FUL_DOMAIN' => '',
+    'SUB_DOMAIN_DEPLOY_RULES' => 
+    array (
+    ),
+  ),
+);

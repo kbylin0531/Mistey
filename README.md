@@ -44,6 +44,9 @@
    15.stdClass内置对象
       $condition = new stdClass();
       $condition->name = 'thinkphp';
+<<<<<<< HEAD
+      $condition->status= 1;
+=======
       $condition->status= 1;
    16.PHP红色的类似函数的部分是语言结构，区别于函数的时效率非常高
    17. 批量属性赋值
@@ -56,3 +59,4 @@
    				}
    			}
    18.ctype_digit 如果 text 字符串是一个十进制数字，就返回 TRUE  ；反之就返回 FALSE
+>>>>>>> mist/master

@@ -6,9 +6,7 @@
  * Time: 21:53
  */
 namespace System\Utils;
-
 class CookieUtil {
-
     private static $_config = array(
         'prefix'    =>  '', // cookie 名称前缀
         'expire'    =>  0, // cookie 保存时间
@@ -17,7 +15,6 @@ class CookieUtil {
         'secure'    =>  false, //  cookie 启用安全传输
         'httponly'  =>  0, // httponly设置
     );
-
     /**
      * 对session操作类进行初始化配置
      * @param array $config
@@ -30,7 +27,6 @@ class CookieUtil {
         }
         return false;
     }
-
     public static function clear($name=''){
         if('' === $name){
             //清除所有
@@ -54,10 +50,8 @@ class CookieUtil {
                 //为空数组
             }
         }else{
-
         }
     }
-
     /**
      * 向客户端发送cookie
      * @param $name
@@ -75,7 +69,6 @@ class CookieUtil {
         );
         $_COOKIE[$name] = $value;
     }
-
     /**
      * 获取cookie数据
      * @param $name
@@ -88,6 +81,4 @@ class CookieUtil {
         $key = self::$_config['prefix'].$name;
         return isset($_COOKIE[$key])?$_COOKIE[$key]:$defult_value;
     }
-
-
 }

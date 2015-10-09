@@ -45,6 +45,7 @@ class MysqlDriver extends DaoDriver{
         return self::$_l_quote.$fieldname.self::$_r_quote;
     }
 
+
     /**
      * 根据SQL的各个组成部分创建SQL查询语句
      * @param string $tablename 数据表的名称

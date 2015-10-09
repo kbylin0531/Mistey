@@ -43,15 +43,15 @@ class Configer{
             //文件不存在 或者 目录时间更加新 的情况下读取配置并写入配置
             //可以设置AUTO_CHECK_CONFIG_ON = false来阻止稳定运行情况下的检查(消耗时间减少三分之二)
             $hasfile = Storage::has($file);
-            $filetime = Storage::info($file,Storage::FILEINFO_LAST_MODIFIED_TIME);
-            $dirtime  = Storage::info($dir,Storage::FILEINFO_LAST_MODIFIED_TIME);
-            if(false === ($hasfile and ($filetime > $dirtime)))
+            if(false === ($hasfile and
+                    (Storage::info($file,Storage::FILEINFO_LAST_MODIFIED_TIME) >
+                        Storage::info($dir,Storage::FILEINFO_LAST_MODIFIED_TIME))))
             {
                 foreach(Storage::readFolder($dir) as $filename => $filepath){
                     //读取所有的配置文件
                     self::$_configures[substr($filename,0,strpos($filename,'.'))] = self::read($filepath);
                 }
-                Storage::write($file,'<?php return '.var_export(self::$_configures,true).'; ?>'); //闭包函数无法写入
+                Storage::write($file,'<?php return '.var_export(self::$_configures,true).'; '); //闭包函数无法写入
                 Mist::status('config_init_and_writetemp_done');
                 return;
             }

@@ -6,9 +6,7 @@
  * Time: 21:41
  */
 namespace Utils\Koe;
-
 class WebTool{
-
     /**
      * 获取客户端IP地址
      * @return string
@@ -34,7 +32,6 @@ class WebTool{
         }
         return $client_ip;
     }
-
     /**
      * url头部数据
      * @param $url
@@ -44,7 +41,6 @@ class WebTool{
         $name = '';$length=0;
         $header = @get_headers($url,true);
         if (!$header) return false;
-
         if(isset($header['Content-Length'])){
             if(is_array($header['Content-Length'])){
                 $length = array_pop($header['Content-Length']);
@@ -73,7 +69,6 @@ class WebTool{
         // return $header;
         return array('length'=>$length,'name'=>$name);
     }
-
     /**
      * url检查
      * @param $url
@@ -89,7 +84,6 @@ class WebTool{
             return true;
         }
     }
-
     /**
      * 获取网络url文件内容，加入ua，以解决防采集的站
      * @param $url
@@ -108,7 +102,6 @@ class WebTool{
         curl_close($ch);
         return $file_contents;
     }
-
     /**
      * 返回refer URL 地址
      * @return string
@@ -116,7 +109,6 @@ class WebTool{
     public static function refer_url(){
         return isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : '';
     }
-
     /**
      * 返回当前页面的 URL 地址
      * @return string
@@ -126,7 +118,6 @@ class WebTool{
         $s_url .= '://';
         return $s_url . $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
     }
-
     /**
      * @param $array
      * @return int
@@ -143,7 +134,6 @@ class WebTool{
         }
         return $chosen;
     }
-
     /**
      * 去除非法代码
      * @param mixed $value
@@ -153,7 +143,6 @@ class WebTool{
         $value = is_array($value) ? array_map('stripslashes_deep', $value) : (isset($value) ? stripslashes($value) : null);
         return $value;
     }
-
     /**
      * GET/POST数据统一入口
      * 将GET和POST的数据进行过滤，去掉非法字符以及hacker code，返回一个数组
@@ -162,7 +151,6 @@ class WebTool{
      */
     public static function parseIncoming(){
         global $_GET, $_POST,$_COOKIE;
-
         $_COOKIE = self::stripslashesDeeply($_COOKIE);
         $_GET	 = self::stripslashesDeeply($_GET);
         $_POST	 = self::stripslashesDeeply($_POST);
@@ -172,7 +160,6 @@ class WebTool{
         $rst['URLremote'] = $remote;
         return $rst;
     }
-
     /**
      * @param $index_url
      * @param $preg_url
@@ -182,7 +169,6 @@ class WebTool{
         if (preg_match('/[a-zA-Z]*\:\/\//', $preg_url)) return $preg_url;
         preg_match('/([a-zA-Z]*\:\/\/.*)\//', $index_url, $match);
         $index_url_temp = $match[1];
-
         foreach(explode('/', $preg_url) as $key => $var) {
             if ($key == 0 && $var == '') {
                 preg_match('/([a-zA-Z]*\:\/\/[^\/]*)\//', $index_url, $match);
@@ -196,7 +182,6 @@ class WebTool{
         }
         return $index_url_temp;
     }
-
     /**
      * 将字符串转换成URL的编码，gbk的和utf8的 $to="gbk" 或"utf8"
      * @param $str
@@ -212,7 +197,6 @@ class WebTool{
         }
         return $result;
     }
-
     /**
      * 输出js
      * @param $js
@@ -220,7 +204,6 @@ class WebTool{
     public static function exec_js($js){
         echo "<script language='JavaScript'> " . $js . " </script>";
     }
-
     /**
      * 禁止缓存
      */
@@ -229,7 +212,6 @@ class WebTool{
         header("Cache-Control:no-cache\r\n");
         header("Expires:0\r\n");
     }
-
     /**
      * 生成javascript转向
      * @param string $url
@@ -242,7 +224,6 @@ class WebTool{
         echo "</script>\n {$msg}";
         exit;
     }
-
     /**
      * 消息框。eg
      * msg("falied","/",10);
@@ -278,7 +259,6 @@ class WebTool{
 endline;
         exit;
     }
-
     /**
      * @param $i_status
      * @param string $s_message
@@ -332,7 +312,6 @@ endline;
             505 => 'HTTP Version Not Supported',
             509 => 'Bandwidth Limit Exceeded'
         );
-
         if (array_key_exists($i_status, $a_status)) {
             header('HTTP/1.1 ' . $i_status . ' ' . $a_status[$i_status]);
         }
@@ -341,7 +320,6 @@ endline;
             exit();
         }
     }
-
     /**
      * 获取操作系统信息
      * @return null|string
@@ -409,7 +387,6 @@ endline;
         }
         return $os;
     }
-
     /**
      * 根据扩展名获取mime
      * @param $ext
@@ -610,7 +587,6 @@ endline;
             "z" => "application/x-compress",
             "zip" => "application/zip"
         );
-
         //代码 或文本浏览器输出
         $text = array('oexe','inc','inf','csv','log','asc','tsv');
         $code = array("abap","abc","as","ada","adb","htgroups","htpasswd","conf","htaccess","htgroups",
@@ -639,5 +615,4 @@ endline;
             return 'application/octet-stream';
         }
     }
-
 }

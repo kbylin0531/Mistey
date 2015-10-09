@@ -89,6 +89,11 @@ class View{
         $this->registerPlugin('function','U',array($this,'U'));
     }
 
+    /**
+     * 创建模板URL
+     * @param array $params U函数的属性数组，属性名为变量名称，属性值为变量值
+     * @return string
+     */
     public function U($params){
         return Util::url($params['url']);
     }
