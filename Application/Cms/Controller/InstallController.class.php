@@ -14,7 +14,6 @@ use System\Core\Controller;
 use System\Core\Storage;
 use System\Util\SEK;
 use System\Util\SessionUtil;
-use System\Utils\Util;
 
 /**
  * Class InstallController CMS安装控制器
@@ -27,6 +26,8 @@ class InstallController extends Controller{
      * @var string
      */
     private static $lock_path = null;
+
+    private static $config_file_path = null;
     /**
      * 安装步骤
      * @var array
@@ -42,12 +43,12 @@ class InstallController extends Controller{
     public function __construct(){
         parent::__construct();
         self::$lock_path = BASE_PATH.'Data/CMS/install.lock';
-        if(Storage::has(self::$lock_path)){
-            $this->error('CMS已经安装完毕!');
+        self::$config_file_path = BASE_PATH.$this->context['m'].'/Configure/database.config.php';
+        if(Storage::has(self::$lock_path)){//已经安装完毕，直接跳转到完成界面
+            $this->takeSteps(4);
         }
         //静态可以直接访问的文件目录
         defined('URL_CMS_STATIC_PATH') or define('URL_CMS_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
-
     }
 
     /**
@@ -59,6 +60,7 @@ class InstallController extends Controller{
 
     /**
      * 第一步操作页面
+     * 运行环境检测
      */
     public function first(){
         $env = $this->checkEnv();
@@ -74,7 +76,7 @@ class InstallController extends Controller{
     }
 
     /**
-     * 数据库配置
+     * 数据库配置和安装
      * @param array $db 数据库连接配置
      * @param array $admin 数据库管理员配置
      * @return void
@@ -115,10 +117,10 @@ class InstallController extends Controller{
                 //创建数据库
                 $installModel = new InstallModel($config,false);
                 if(!$installModel->createDatabase($config['dbname'])){
-                    $this->error($installModel->getErrorInfo());
+                    $this->error('创建数据库失败，错误信息：'.$installModel->getErrorInfo());
                 }else{
                     //成功创建数据库，写入配置信息
-                    if(!Configer::writeAuto('cms',$config)){
+                    if(!Configer::write(self::$config_file_path, $config)){
                         throw new \Exception('Store Configure into file failed!');
                     }
                 }
@@ -129,26 +131,29 @@ class InstallController extends Controller{
 
         //检查并设置session
         if(SessionUtil::get('error')){
-            $this->error('环境检测没有通过，请调整环境后重试！');
+            $this->takeSteps(false,3,'环境检测没有通过，请调整环境后重试！');
         }
         $step = SessionUtil::get('step');
         if($step !== 1 && $step !== 2){
-            $this->takeSteps(false);
+            $this->takeSteps(1,3,'即将跳转以重新检测环境！');
         }
-        SessionUtil::set('step', 2);
 
+        SessionUtil::set('step', 2);
         $this->display();
     }
 
     /**
-     * 实际安装数据库表和管理员账号设置
+     * 实际安装数据库表并设置管理员账号
      * @return void
      */
     public function third(){
-        if(SessionUtil::get('step') != 2){
+        $step = SessionUtil::get('step');
+        if($step != 2 && $step !== 3){
             $this->takeSteps(0);
         }
         $this->display();
+
+
         //创建数据表
         CmsKits::flushMessageToClient('开始安装数据库...');
         $this->createTables();
@@ -182,11 +187,10 @@ class InstallController extends Controller{
      * @throws \System\Exception\ParameterInvalidException
      */
     public function complete(){
-        if(!SessionUtil::get('step')){
-            $this->takeSteps(0);
+        if(!Storage::has(self::$lock_path)){
+            // 写入安装锁定文件
+            Storage::write(self::$lock_path, 'lock');
         }
-        // 写入安装锁定文件
-        Storage::write(self::$lock_path, 'lock');
         if(!SessionUtil::get('update')){
             //创建配置文件
             $this->assign('info',SessionUtil::get('config_file'));
@@ -200,15 +204,17 @@ class InstallController extends Controller{
     /**
      * 步骤跳转
      * @param bool|true $forward true表示进入下一步，false表示返回上一步，int类型表示跳到制定的步骤
+     * @param int $time          等待时间
+     * @param string $message    跳转等待提示语
      */
-    private function takeSteps($forward=true){
+    private function takeSteps($forward=true,$time=0,$message=''){
         if(is_bool($forward)){
             $curstep = SessionUtil::get('step');
             $forward? ++$curstep: --$curstep;
         }else{
             $curstep = $forward;
         }
-        $this->redirect(self::$steps[$curstep]);
+        $this->redirect(self::$steps[$curstep],array(),$time,$message);
     }
 
     /**

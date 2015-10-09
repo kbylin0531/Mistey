@@ -1,7 +1,7 @@
-<?php /* Smarty version 3.1.24, created on 2015-10-07 19:54:12
+<?php /* Smarty version 3.1.24, created on 2015-10-09 19:36:20
          compiled from "/mnt/hgfs/Webroot/Mist/Application/Cms/View/Install/first.html" */ ?>
 <?php
-/*%%SmartyHeaderCode:603101191561507e4c3b1a6_40904225%%*/
+/*%%SmartyHeaderCode:18804670545617a6b4b5d3d5_60895093%%*/
 if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
@@ -9,7 +9,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'c187cd85e44b086fe0a67e87fa6c54bf026945f3' => 
     array (
       0 => '/mnt/hgfs/Webroot/Mist/Application/Cms/View/Install/first.html',
-      1 => 1442490477,
+      1 => 1444305998,
       2 => 'file',
     ),
     '8bfd9808552b0c1721dbc9bbedf1c0b41b71b3c6' => 
@@ -18,35 +18,35 @@ $_valid = $_smarty_tpl->decodeProperties(array (
       1 => 1442397397,
       2 => 'file',
     ),
-    'a32a8f89539b698ee743be1f6374afc4341661cc' => 
+    'ca5825c8c8db6b6de16e38d6d1b41c0b43020f47' => 
     array (
-      0 => 'a32a8f89539b698ee743be1f6374afc4341661cc',
+      0 => 'ca5825c8c8db6b6de16e38d6d1b41c0b43020f47',
       1 => 0,
       2 => 'string',
     ),
-    '6c09f85611442a10b032905b0ce3f3714def5cb2' => 
+    'b8f634923d896a7ff761dbcf9bd76b5523942892' => 
     array (
-      0 => '6c09f85611442a10b032905b0ce3f3714def5cb2',
+      0 => 'b8f634923d896a7ff761dbcf9bd76b5523942892',
       1 => 0,
       2 => 'string',
     ),
-    'c42a7308b61b89f919a749a52941f66fccc7fb4d' => 
+    '475b3fec4f663bb2e9258bc262dfd18afd7d3fa4' => 
     array (
-      0 => 'c42a7308b61b89f919a749a52941f66fccc7fb4d',
+      0 => '475b3fec4f663bb2e9258bc262dfd18afd7d3fa4',
       1 => 0,
       2 => 'string',
     ),
   ),
-  'nocache_hash' => '603101191561507e4c3b1a6_40904225',
+  'nocache_hash' => '18804670545617a6b4b5d3d5_60895093',
   'has_nocache_code' => false,
   'version' => '3.1.24',
-  'unifunc' => 'content_561507e4e6e000_79649202',
+  'unifunc' => 'content_5617a6b4db4e63_73365774',
 ),false);
 /*/%%SmartyHeaderCode%%*/
-if ($_valid && !is_callable('content_561507e4e6e000_79649202')) {
-function content_561507e4e6e000_79649202 ($_smarty_tpl) {
+if ($_valid && !is_callable('content_5617a6b4db4e63_73365774')) {
+function content_5617a6b4db4e63_73365774 ($_smarty_tpl) {
 
-$_smarty_tpl->properties['nocache_hash'] = '603101191561507e4c3b1a6_40904225';
+$_smarty_tpl->properties['nocache_hash'] = '18804670545617a6b4b5d3d5_60895093';
 ?>
 <!DOCTYPE html>
 <html>
@@ -97,17 +97,13 @@ $_smarty_tpl->properties['nocache_hash'] = '603101191561507e4c3b1a6_40904225';
             <div class="nav-collapse collapse">
                 <ul id="step" class="nav">
                     <?php
-$_smarty_tpl->properties['nocache_hash'] = '603101191561507e4c3b1a6_40904225';
+$_smarty_tpl->properties['nocache_hash'] = '18804670545617a6b4b5d3d5_60895093';
 ?>
 
     <li class="active"><a href="javascript:void(0);">安装协议</a></li>
     <li class="active"><a href="javascript:void(0);">环境检测</a></li>
     <li><a href="javascript:void(0);">创建数据库</a></li>
-    <li>
-        <a href="javascript:void(0);">
-                安装
-        </a>
-    </li>
+    <li><a href="javascript:void(0);">安装</a></li>
     <li><a href="javascript:void(0);">完成</a></li>
 
                 </ul>
@@ -119,7 +115,7 @@ $_smarty_tpl->properties['nocache_hash'] = '603101191561507e4c3b1a6_40904225';
 <div class="jumbotron masthead">
     <div class="container">
         <?php
-$_smarty_tpl->properties['nocache_hash'] = '603101191561507e4c3b1a6_40904225';
+$_smarty_tpl->properties['nocache_hash'] = '18804670545617a6b4b5d3d5_60895093';
 ?>
 
     <h1>环境检测</h1>
@@ -134,7 +130,7 @@ $_smarty_tpl->properties['nocache_hash'] = '603101191561507e4c3b1a6_40904225';
         </thead>
         <tbody>
         
-            <?php
+        <?php
 $_from = $_smarty_tpl->tpl_vars['env']->value;
 if (!is_array($_from) && !is_object($_from)) {
 settype($_from, 'array');
@@ -154,7 +150,7 @@ $foreach_item_Sav = $_smarty_tpl->tpl_vars['item'];
 ">&nbsp;</i><?php echo $_smarty_tpl->tpl_vars['item']->value[3];?>
 </td>
             </tr>
-            <?php
+        <?php
 $_smarty_tpl->tpl_vars['item'] = $foreach_item_Sav;
 }
 ?>
@@ -247,7 +243,7 @@ $_smarty_tpl->tpl_vars['item'] = $foreach_item_Sav;
     <div class="container">
         <div>
             <?php
-$_smarty_tpl->properties['nocache_hash'] = '603101191561507e4c3b1a6_40904225';
+$_smarty_tpl->properties['nocache_hash'] = '18804670545617a6b4b5d3d5_60895093';
 ?>
 
     <a class="btn btn-success btn-large" href="<?php echo $_smarty_tpl->smarty->registered_plugins[Smarty::PLUGIN_FUNCTION]['U'][0][0]->U(array('url'=>'Cms/install/index'),$_smarty_tpl);?>

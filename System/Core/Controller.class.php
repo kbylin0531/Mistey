@@ -114,12 +114,14 @@ class Controller{
 
     /**
      * 页面跳转
-     * @param string $compo 形式如'Cms/install/third' 的action定位
-     * @param array $params
+     * @param string $compo   形式如'Cms/install/third' 的action定位
+     * @param array $params   URL参数
+     * @param int $time       等待时间
+     * @param string $message 跳转等待提示语
      * @return void
      */
-    public function redirect($compo,array $params=array()){
-        Util::redirect(Util::url($compo,$params));
+    public function redirect($compo,array $params=array(),$time=0,$message=''){
+        Util::redirect(Util::url($compo,$params),$time,$message);
     }
 
     /**

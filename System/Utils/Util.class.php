@@ -222,7 +222,7 @@ class Util{
      * @param string $message
      * @return void
      */
-    public static function redirect($url, $time=0,$message=''){
+    public static function redirect($url,$time=0,$message=''){
         if(headers_sent()){//检查头部是否已经发送
             exit("<meta http-equiv='Refresh' content='{$time};URL={$url}'>$message");
         }else{
