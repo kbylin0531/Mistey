@@ -144,9 +144,13 @@ class MysqlDriver extends DaoDriver{
         return $info;
     }
 
-
-
-
-
-
+    /**
+     * 创建数据库
+     * @param string $dbname 数据库名称
+     * @return int 受影响的行数
+     */
+    public function createDatabase($dbname){
+        $sql = "CREATE DATABASE IF NOT EXISTS `{$dbname}` DEFAULT CHARACTER SET utf8";
+        return $this->exec($sql);
+    }
 }

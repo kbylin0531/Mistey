@@ -90,6 +90,7 @@ final class Dao{
         if(!isset($config['type'],$config['username'],$config['password'])){
             throw new ParameterInvalidException($config);
         }
+        isset($config['options']) or $config['options'] = self::$config['DB_CONNECT'][0]['options'];
         $classname = 'System\\Core\\DaoDriver\\'.ucwords($config['type']).'Driver';
         $dsn = null;
         if(isset($config['dsn'])){
@@ -262,15 +263,21 @@ final class Dao{
      * 简单地执行Insert、Delete、Update操作
      * @param string $sql
      * @return int|false 返回受到影响的行数，但是可能不会太可靠，需要用===判断返回值是0还是false
+     * @throws \PDOException
      */
     public function exec($sql){
         self::log($sql);
-        $rst = $this->driver->exec($sql);
-        if($rst){
-            $this->error = $this->getPdoErrorInfo();
+        try{
+            $rst = $this->driver->exec($sql);
+            if(false === $rst){
+                $this->error = $this->getPdoErrorInfo();
+                return false;
+            }
+            return $rst;
+        }catch (\PDOException $e){
+            $this->error = "exec sql of '{$sql}' failed!";
             return false;
         }
-        return $rst;
     }
     /**
      * 准备一段SQL
@@ -849,8 +856,7 @@ final class Dao{
      * @return int 受影响的行数
      */
     public function createDatabase($dbname){
-        $sql = "CREATE DATABASE IF NOT EXISTS `{$dbname}` DEFAULT CHARACTER SET utf8";
-        return $this->driver->exec($sql);
+        return $this->driver->createDatabase($dbname);
     }
 
 }

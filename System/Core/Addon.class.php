@@ -5,7 +5,7 @@
  * Date: 2015/9/22
  * Time: 9:40
  */
-namespace System\Exte;
+namespace System\Core;
 
 /**
  * Class Addon 附加插件

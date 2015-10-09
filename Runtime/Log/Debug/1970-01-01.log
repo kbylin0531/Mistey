@@ -420,3 +420,1544 @@ File:/mnt/hgfs/Webroot/Mist/System/Core/DaoDriver/DaoDriver.class.php   Line:151
 
 
 
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2048 Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL)
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php   Line:151
+||--trace--||
+#0  System\Mist::handleError(2048, Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL), E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php, 151, Array ([clsnm] => System\Core\DaoDriver\DaoDriver,[basename] => System,[dir] => E:/Web/Webroot/Mistey/System,[filename] => E:/Web/Webroot/Mistey/System/Core/DaoDriver/DaoDriver.class.php)) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#1  System\Mist::loadClass() called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#2  System\Mist::loadClass(System\Core\DaoDriver\DaoDriver)
+#3  spl_autoload_call(System\Core\DaoDriver\DaoDriver) called at [E:\Web\Webroot\Mistey\System\Core\DaoDriver\MysqlDriver.class.php:17]
+#4  include_once(E:\Web\Webroot\Mistey\System\Core\DaoDriver\MysqlDriver.class.php) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#5  System\Mist::loadClass(System\Core\DaoDriver\MysqlDriver)
+#6  spl_autoload_call(System\Core\DaoDriver\MysqlDriver) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:101]
+#7  System\Core\Dao->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:132]
+#8  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Model.class.php:121]
+#9  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php:24]
+#10 Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => onethink,[host] => 127.0.0.1,[type] => mysql), ) called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:116]
+#11 Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))
+#12 ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))) called at [E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php:121]
+#13 System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:213]
+#14 System\Mist::start() called at [E:\Web\Webroot\Mistey\index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2048 Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL)
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php   Line:151
+||--trace--||
+#0  System\Mist::handleError(2048, Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL), E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php, 151, Array ([clsnm] => System\Core\DaoDriver\DaoDriver,[basename] => System,[dir] => E:/Web/Webroot/Mistey/System,[filename] => E:/Web/Webroot/Mistey/System/Core/DaoDriver/DaoDriver.class.php)) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#1  System\Mist::loadClass() called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#2  System\Mist::loadClass(System\Core\DaoDriver\DaoDriver)
+#3  spl_autoload_call(System\Core\DaoDriver\DaoDriver) called at [E:\Web\Webroot\Mistey\System\Core\DaoDriver\MysqlDriver.class.php:17]
+#4  include_once(E:\Web\Webroot\Mistey\System\Core\DaoDriver\MysqlDriver.class.php) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#5  System\Mist::loadClass(System\Core\DaoDriver\MysqlDriver)
+#6  spl_autoload_call(System\Core\DaoDriver\MysqlDriver) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:101]
+#7  System\Core\Dao->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:132]
+#8  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Model.class.php:121]
+#9  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php:24]
+#10 Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => onethink,[host] => 127.0.0.1,[type] => mysql), ) called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:116]
+#11 Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))
+#12 ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))) called at [E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php:121]
+#13 System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:213]
+#14 System\Mist::start() called at [E:\Web\Webroot\Mistey\index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2048 Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL)
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php   Line:151
+||--trace--||
+#0  System\Mist::handleError(2048, Declaration of System\Core\DaoDriver\DaoDriver::prepare() should be compatible with PDO::prepare($statement, $options = NULL), E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php, 151, Array ([clsnm] => System\Core\DaoDriver\DaoDriver,[basename] => System,[dir] => E:/Web/Webroot/Mistey/System,[filename] => E:/Web/Webroot/Mistey/System/Core/DaoDriver/DaoDriver.class.php)) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#1  System\Mist::loadClass() called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#2  System\Mist::loadClass(System\Core\DaoDriver\DaoDriver)
+#3  spl_autoload_call(System\Core\DaoDriver\DaoDriver) called at [E:\Web\Webroot\Mistey\System\Core\DaoDriver\MysqlDriver.class.php:17]
+#4  include_once(E:\Web\Webroot\Mistey\System\Core\DaoDriver\MysqlDriver.class.php) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:349]
+#5  System\Mist::loadClass(System\Core\DaoDriver\MysqlDriver)
+#6  spl_autoload_call(System\Core\DaoDriver\MysqlDriver) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:101]
+#7  System\Core\Dao->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:132]
+#8  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Model.class.php:121]
+#9  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php:24]
+#10 Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => onethink,[host] => 127.0.0.1,[type] => mysql), ) called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:116]
+#11 Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))
+#12 ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))) called at [E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php:121]
+#13 System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:213]
+#14 System\Mist::start() called at [E:\Web\Webroot\Mistey\index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 Undefined index: options
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:101
+||--trace--||
+#0  System\Mist::handleError(8, Undefined index: options, E:\Web\Webroot\Mistey\System\Core\Dao.class.php, 101, Array ([config] => Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql),[classname] => System\Core\DaoDriver\MysqlDriver,[dsn] => mysql:host=127.0.0.1;port=3306)) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:101]
+#1  System\Core\Dao->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:132]
+#2  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Model.class.php:121]
+#3  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php:24]
+#4  Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => onethink,[host] => 127.0.0.1,[type] => mysql), ) called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:116]
+#5  Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))
+#6  ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))) called at [E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php:121]
+#7  System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:213]
+#8  System\Mist::start() called at [E:\Web\Webroot\Mistey\index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 Undefined index: options
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:102
+||--trace--||
+#0  System\Mist::handleError(8, Undefined index: options, E:\Web\Webroot\Mistey\System\Core\Dao.class.php, 102, Array ([config] => Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql),[classname] => System\Core\DaoDriver\MysqlDriver,[dsn] => mysql:host=127.0.0.1;port=3306)) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:102]
+#1  System\Core\Dao->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Dao.class.php:133]
+#2  System\Core\Dao::getInstance(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\System\Core\Model.class.php:121]
+#3  System\Core\Model->init(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php:24]
+#4  Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => onethink,[host] => 127.0.0.1,[type] => mysql), ) called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:116]
+#5  Application\Cms\Controller\InstallController->second(Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_), Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))
+#6  ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => Array ([0] => mysql,[1] => 127.0.0.1,[2] => onethink,[3] => root,[4] => 123456,[5] => 3306,[6] => ot_),[1] => Array ([0] => admin,[1] => admin,[2] => admin,[3] => linzhv@qq.com))) called at [E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php:121]
+#7  System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:213]
+#8  System\Mist::start() called at [E:\Web\Webroot\Mistey\index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'title' at row 1
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:269
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(269): PDO->exec('INSERT INTO `ot...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(55): System\Core\Dao->exec('INSERT INTO `ot...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(240): Application\Cms\Model\InstallModel->execSql('INSERT INTO `ot...')
+#3 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(154): Application\Cms\Controller\InstallController->createTables()
+#4 [internal function]: Application\Cms\Controller\InstallController->third()
+#5 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#6 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#7 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#8 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'title' at row 1
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:269
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(269): PDO->exec('INSERT INTO `ot...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(55): System\Core\Dao->exec('INSERT INTO `ot...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('INSERT INTO `ot...')
+#3 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#4 [internal function]: Application\Cms\Controller\InstallController->third()
+#5 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#6 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#7 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#8 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'ot_action' already exists
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:269
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(269): PDO->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(47): System\Core\Dao->exec('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#3 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#4 [internal function]: Application\Cms\Controller\InstallController->third()
+#5 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#6 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#7 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#8 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[HY000] [1049] Unknown database 'onethink'
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php   Line:77
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\DaoDriver\DaoDriver.class.php(77): PDO->__construct('mysql:host=127....', 'root', '123456', Array)
+#1 E:\Web\Webroot\Mistey\System\Core\DaoDriver\MysqlDriver.class.php(30): System\Core\DaoDriver\DaoDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#2 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(102): System\Core\DaoDriver\MysqlDriver->__construct('mysql:host=127....', 'root', '123456', Array)
+#3 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(133): System\Core\Dao->__construct(Array)
+#4 E:\Web\Webroot\Mistey\System\Core\Model.class.php(121): System\Core\Dao::getInstance(Array)
+#5 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(24): System\Core\Model->init(Array)
+#6 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(221): Application\Cms\Model\InstallModel->__construct(Array)
+#7 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#8 [internal function]: Application\Cms\Controller\InstallController->third()
+#9 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#10 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#11 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#12 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'title' at row 1
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:269
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(269): PDO->exec('INSERT INTO `ot...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(54): System\Core\Dao->exec('INSERT INTO `ot...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('INSERT INTO `ot...')
+#3 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#4 [internal function]: Application\Cms\Controller\InstallController->third()
+#5 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#6 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#7 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#8 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 iconv(): Detected an illegal character in input string
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Mist.class.php   Line:445
+||--trace--||
+#0  System\Mist::handleError(8, iconv(): Detected an illegal character in input string, E:\Web\Webroot\Mistey\System\Mist.class.php, 445, Array ([e] => Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 278,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ),[traceString] => #0 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(47): System\Core\Dao->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#3 [internal function]: Application\Cms\Controller\InstallController->third()
+#4 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#5 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#6 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#7 {main}))
+#1  iconv(gbk, utf-8, CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:445]
+#2  System\Mist::handleException(Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 278,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ))
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 iconv(): Detected an illegal character in input string
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Mist.class.php   Line:445
+||--trace--||
+#0  System\Mist::handleError(8, iconv(): Detected an illegal character in input string, E:\Web\Webroot\Mistey\System\Mist.class.php, 445, Array ([e] => Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ),[traceString] => #0 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(47): System\Core\Dao->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#3 [internal function]: Application\Cms\Controller\InstallController->third()
+#4 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#5 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#6 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#7 {main}))
+#1  iconv(gbk, utf-8, CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:445]
+#2  System\Mist::handleException(Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ))
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 iconv(): Detected an illegal character in input string
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Mist.class.php   Line:445
+||--trace--||
+#0  System\Mist::handleError(8, iconv(): Detected an illegal character in input string, E:\Web\Webroot\Mistey\System\Mist.class.php, 445, Array ([e] => Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ),[traceString] => #0 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(47): System\Core\Dao->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#3 [internal function]: Application\Cms\Controller\InstallController->third()
+#4 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#5 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#6 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#7 {main}))
+#1  iconv(gbk, utf-8, CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:445]
+#2  System\Mist::handleException(Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ))
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 iconv(): Detected an illegal character in input string
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Mist.class.php   Line:445
+||--trace--||
+#0  System\Mist::handleError(8, iconv(): Detected an illegal character in input string, E:\Web\Webroot\Mistey\System\Mist.class.php, 445, Array ([e] => Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ),[traceString] => #0 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(47): System\Core\Dao->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#3 [internal function]: Application\Cms\Controller\InstallController->third()
+#4 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#5 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#6 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#7 {main}))
+#1  iconv(gbk, utf-8, CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:445]
+#2  System\Mist::handleException(Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ))
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 iconv(): Detected an illegal character in input string
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Mist.class.php   Line:445
+||--trace--||
+#0  System\Mist::handleError(8, iconv(): Detected an illegal character in input string, E:\Web\Webroot\Mistey\System\Mist.class.php, 445, Array ([e] => Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ),[traceString] => #0 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(47): System\Core\Dao->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#3 [internal function]: Application\Cms\Controller\InstallController->third()
+#4 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#5 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#6 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#7 {main}))
+#1  iconv(gbk, utf-8, CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:445]
+#2  System\Mist::handleException(Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ))
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 iconv(): Detected an illegal character in input string
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Mist.class.php   Line:445
+||--trace--||
+#0  System\Mist::handleError(8, iconv(): Detected an illegal character in input string, E:\Web\Webroot\Mistey\System\Mist.class.php, 445, Array ([e] => Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ),[traceString] => #0 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(47): System\Core\Dao->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#3 [internal function]: Application\Cms\Controller\InstallController->third()
+#4 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#5 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#6 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#7 {main}))
+#1  iconv(gbk, utf-8, CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:445]
+#2  System\Mist::handleException(Exception Object ([] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表' exec failed!,[] => ,[] => 0,[] => E:\Web\Webroot\Mistey\System\Core\Dao.class.php,[] => 279,[] => Array ([0] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php,[line] => 47,[function] => exec,[class] => System\Core\Dao,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[1] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 237,[function] => execSql,[class] => Application\Cms\Model\InstallModel,[type] => ->,[args] => Array ([0] => CREATE TABLE `ot_action` (
+
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+
+  `name` char(30) NOT NULL DEFAULT '' COMMENT '行为唯一标识',
+
+  `title` char(80) NOT NULL DEFAULT '' COMMENT '行为说明',
+
+  `remark` char(140) NOT NULL DEFAULT '' COMMENT '行为描述',
+
+  `rule` text NULL  COMMENT '行为规则',
+
+  `log` text NULL  COMMENT '日志规则',
+
+  `type` tinyint(2) unsigned NOT NULL DEFAULT '1' COMMENT '类型',
+
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
+
+  `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '修改时间',
+
+  PRIMARY KEY (`id`)
+
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统行为表')),[2] => Array ([file] => E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php,[line] => 152,[function] => createTables,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[3] => Array ([function] => third,[class] => Application\Cms\Controller\InstallController,[type] => ->,[args] => Array ()),[4] => Array ([file] => E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php,[line] => 123,[function] => invoke,[class] => ReflectionMethod,[type] => ->,[args] => Array ([0] => Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third)))),[5] => Array ([file] => E:\Web\Webroot\Mistey\System\Mist.class.php,[line] => 213,[function] => execute,[class] => System\Core\Dispatcher,[type] => ::,[args] => Array ([0] => Cms,[1] => Install,[2] => third,[3] => Array ())),[6] => Array ([file] => E:\Web\Webroot\Mistey\index.php,[line] => 49,[function] => start,[class] => System\Mist,[type] => ::,[args] => Array ())),[] => ))
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'ot_action' already exists
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:270
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(270): PDO->exec('CREATE TABLE `o...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(50): System\Core\Dao->exec('CREATE TABLE `o...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('CREATE TABLE `o...')
+#3 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#4 [internal function]: Application\Cms\Controller\InstallController->third()
+#5 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#6 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#7 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#8 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'title' at row 1
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:270
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(270): PDO->exec('INSERT INTO `ot...')
+#1 E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php(57): System\Core\Dao->exec('INSERT INTO `ot...')
+#2 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(237): Application\Cms\Model\InstallModel->execSql('INSERT INTO `ot...')
+#3 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(152): Application\Cms\Controller\InstallController->createTables()
+#4 [internal function]: Application\Cms\Controller\InstallController->third()
+#5 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#6 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#7 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#8 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2 strpos(): Empty needle
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Model.class.php   Line:108
+||--trace--||
+#0  System\Mist::handleError(2, strpos(): Empty needle, E:\Web\Webroot\Mistey\System\Core\Model.class.php, 108, Array ([tablename] => install,[autofill_prefix] => 1))
+#1  strpos(install, ) called at [E:\Web\Webroot\Mistey\System\Core\Model.class.php:108]
+#2  System\Core\Model->setTableName(install) called at [E:\Web\Webroot\Mistey\System\Core\Model.class.php:97]
+#3  System\Core\Model->__construct() called at [E:\Web\Webroot\Mistey\Application\Cms\Model\InstallModel.class.php:26]
+#4  Application\Cms\Model\InstallModel->__construct(Array ([prefix] => ot_,[port] => 3306,[password] => 123456,[username] => root,[dbname] => onethink,[host] => 127.0.0.1,[type] => mysql)) called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:219]
+#5  Application\Cms\Controller\InstallController->createTables() called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:154]
+#6  Application\Cms\Controller\InstallController->third()
+#7  ReflectionMethod->invoke(Application\Cms\Controller\InstallController Object ([] => Array (),[] => System\Core\View Object ([] => E:/Web/Webroot/Mistey/Application/Cms/View/Install/,[] => E:/Web/Webroot/Mistey/Runtime/cache/Cms/Install/,[] => ,[] => ,[] => Array ()),[] => Array ([m] => Cms,[c] => Install,[t] => ,[a] => third))) called at [E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php:123]
+#8  System\Core\Dispatcher::execute(Cms, Install, third, Array ()) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:213]
+#9  System\Mist::start() called at [E:\Web\Webroot\Mistey\index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[42S02]: Base table or view not found: 1146 Table 'onethink.ucenter_member' doesn't exist
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:294
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(294): PDO->prepare('insert into uce...', Array)
+#1 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(638): System\Core\Dao->prepare('insert into uce...')
+#2 E:\Web\Webroot\Mistey\System\Core\Model.class.php(144): System\Core\Dao->create('ucenter_member', Array)
+#3 E:\Web\Webroot\Mistey\Application\Cms\Model\MemberModel.class.php(37): System\Core\Model->create(Array, 'ucenter_member')
+#4 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(164): Application\Cms\Model\MemberModel->registerMember(Array)
+#5 [internal function]: Application\Cms\Controller\InstallController->third()
+#6 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#7 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#8 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#9 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[42S02]: Base table or view not found: 1146 Table 'onethink.ucenter_member' doesn't exist
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:294
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(294): PDO->prepare('insert into uce...', Array)
+#1 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(638): System\Core\Dao->prepare('insert into uce...')
+#2 E:\Web\Webroot\Mistey\System\Core\Model.class.php(144): System\Core\Dao->create('ucenter_member', Array)
+#3 E:\Web\Webroot\Mistey\Application\Cms\Model\MemberModel.class.php(38): System\Core\Model->create(Array, 'ucenter_member')
+#4 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(164): Application\Cms\Model\MemberModel->registerMember(Array)
+#5 [internal function]: Application\Cms\Controller\InstallController->third()
+#6 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#7 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#8 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#9 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+PDOException : SQLSTATE[42S02]: Base table or view not found: 1146 Table 'onethink.ucenter_member' doesn't exist
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dao.class.php   Line:294
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(294): PDO->prepare('insert into uce...', Array)
+#1 E:\Web\Webroot\Mistey\System\Core\Dao.class.php(638): System\Core\Dao->prepare('insert into uce...')
+#2 E:\Web\Webroot\Mistey\System\Core\Model.class.php(144): System\Core\Dao->create('ucenter_member', Array)
+#3 E:\Web\Webroot\Mistey\Application\Cms\Model\MemberModel.class.php(38): System\Core\Model->create(Array, 'ucenter_member')
+#4 E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php(164): Application\Cms\Model\MemberModel->registerMember(Array)
+#5 [internal function]: Application\Cms\Controller\InstallController->third()
+#6 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Cms\Controller\InstallController))
+#7 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Cms', 'Install', 'third', Array)
+#8 E:\Web\Webroot\Mistey\index.php(49): System\Mist::start()
+#9 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+8 Undefined index: 
+||--position--||
+File:E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php   Line:211
+||--trace--||
+#0  System\Mist::handleError(8, Undefined index: , E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php, 211, Array ([forward] => ,[curstep] => )) called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:211]
+#1  Application\Cms\Controller\InstallController->takeSteps() called at [E:\Web\Webroot\Mistey\Application\Cms\Controller\InstallController.class.php:136]
+#2  Application\Cms\Controller\InstallController->second(, )
+#3  ReflectionMethod->invokeArgs(Application\Cms\Controller\InstallController Object ([] => Array (),[] => ,[] => Array ([m] => Cms,[c] => Install,[t] => )), Array ([0] => ,[1] => )) called at [E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php:121]
+#4  System\Core\Dispatcher::execute(Cms, Install, second, Array ()) called at [E:\Web\Webroot\Mistey\System\Mist.class.php:213]
+#5  System\Mist::start() called at [E:\Web\Webroot\Mistey\index.php:49]
+
+
+            
+=====================================================================================
+
+
+
+
+

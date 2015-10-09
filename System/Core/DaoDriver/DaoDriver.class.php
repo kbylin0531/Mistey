@@ -78,34 +78,6 @@ abstract class DaoDriver extends \PDO{
     }
 
     /**
-     * 调用PDO底层的prepare，获取PDO对象
-     * @param string $statement SQL语句
-     * @param array $driver_options 默认的配置为array(PDO::ATTR_CURSOR => PDO::CURSOR_FWDONLY);  \PDO::CURSOR_SCROLL前后可以回滚的不常使用
-     * @return \PDOStatement
-     */
-    public function prepare($statement, array $driver_options = array()){
-        return $this->curStatement = parent::prepare($statement,$driver_options);
-    }
-    /**
-     * PDO对象上的execute方法
-     *  注意与PDO::exec()和PDOStatement::execute()相区别
-     * 执行预处理语句
-     * 与方法exec的却别是，后者直接执行返回受影响结果
-     * @param array $input_parameters
-     * @param null|\PDOStatement 执行SQL的PDO对象，如果缺少该参数则使用上次的prepare的参数
-     * @return bool|null 成功或者失败，返回null表示执行出错
-     */
-    public function execute(array $input_parameters = null,$pdoStatement=null){
-        $rst = null;
-        if($pdoStatement instanceof \PDOStatement){
-            $rst = $pdoStatement->execute($input_parameters);
-        }elseif($this->curStatement instanceof \PDOStatement){
-            $rst = $this->curStatement->execute($input_parameters);
-        }
-        return $rst;
-    }
-
-    /**
      * 获取数据表
      * @param string $namelike
      * @param string $dbname 数据库名称
@@ -146,6 +118,11 @@ abstract class DaoDriver extends \PDO{
         return call_user_func_array(array($this,$name),$args);
     }
 
-
+    /**
+     * 创建数据库
+     * @param string $dbname 数据库名称
+     * @return int 受影响的行数
+     */
+    abstract public function createDatabase($dbname);
 
 }

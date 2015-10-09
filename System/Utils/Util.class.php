@@ -90,18 +90,6 @@ class Util{
         return substr($chars, 0, 40);
     }
 
-    /**
-     * 及时显示提示信息
-     * @param string $msg 提示信息
-     * @param string $class 提示信息类型
-     */
-    public static function flushMessageToClient($msg, $class = ''){
-        echo "<script type=\"text/javascript\">showmsg(\"{$msg}\", \"{$class}\")</script>";
-        flush();
-        ob_flush();
-    }
-
-
 
     /**
      * 打印变量的详细信息

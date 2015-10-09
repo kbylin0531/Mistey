@@ -8,6 +8,7 @@
 namespace Application\Cms\Controller;
 use Application\Cms\Model\InstallModel;
 use Application\Cms\Model\MemberModel;
+use Application\Cms\Util\CmsKits;
 use System\Core\Configer;
 use System\Core\Controller;
 use System\Core\Storage;
@@ -109,7 +110,6 @@ class InstallController extends Controller{
                 $config = array();
                 list($config['type'], $config['host'], $config['dbname'], $config['username'],
                     $config['password'],$config['port'],$config['prefix']) = $db;
-                $config['prefix'] = 'ot_';
                 //缓存数据库配置
                 SessionUtil::set('database_info', $config);
                 //创建数据库
@@ -146,34 +146,34 @@ class InstallController extends Controller{
      */
     public function third(){
         if(SessionUtil::get('step') != 2){
-            $this->takeSteps(2);
+            $this->takeSteps(0);
         }
         $this->display();
-
         //创建数据表
+        CmsKits::flushMessageToClient('开始安装数据库...');
         $this->createTables();
 
-        Util::flushMessageToClient('开始注册创始人帐号...');
-        $dbconfig = SessionUtil::get('database_info');
+        //注册创始人帐号
+        CmsKits::flushMessageToClient('开始注册创始人帐号...');
+        //重新设定数据库连接配置
+        $db_info = SessionUtil::get('database_info');
         $memberModel = new MemberModel();
-        $memberModel->init($dbconfig);
-        $admin = SessionUtil::get('admin_info');
-        $db_config = SessionUtil::get('database_info');
-        $rst = $memberModel->registerMember($admin,$db_config['prefix']);
+        $memberModel->init($db_info);
+        //创建创始人账号
+        $admin_info = SessionUtil::get('admin_info');
+        $rst = $memberModel->registerMember($admin_info);
         if(is_string($rst) or !$rst){
-            Util::flushMessageToClient('创始人帐号注册失败！'.$rst);
+            CmsKits::flushMessageToClient('创始人帐号注册失败！'.$rst);
         }else{
-            Util::flushMessageToClient('创始人帐号注册完成！');
+            CmsKits::flushMessageToClient('创始人帐号注册成功！');
         }
-//        $this->registerAdmin(SessionUtil::get('admin_info'));
 
         if(SessionUtil::get('error')){
-            //show_msg();
-            Util::flushMessageToClient('安装错误！');
+            CmsKits::flushMessageToClient('安装错误！');
         } else {
             SessionUtil::set('step', 3);
             Storage::write(self::$lock_path,'Install complete!');
-            $this->redirect('cms/install/complete');
+            $this->takeSteps();
         }
     }
 
@@ -182,13 +182,9 @@ class InstallController extends Controller{
      * @throws \System\Exception\ParameterInvalidException
      */
     public function complete(){
-        $step = SessionUtil::get('step');
-        if(!$step){
-            $this->redirect('cms/install/index');
+        if(!SessionUtil::get('step')){
+            $this->takeSteps(0);
         }
-//        elseif($step != 3) {
-//            $this->redirect("Install/step{$step}");
-//        }
         // 写入安装锁定文件
         Storage::write(self::$lock_path, 'lock');
         if(!SessionUtil::get('update')){
@@ -225,24 +221,19 @@ class InstallController extends Controller{
         $sqls = Storage::read(BASE_PATH.'Data/CMS/install.sql');
         //设置前缀
         $sqls = str_replace(' `onethink_'," `{$dbconfig['prefix']}",  $sqls);
-//        Util::dump($sqls);exit;
         $sqls = str_replace("\r", "\n", $sqls);//windows下转化换行符
         $sqls = explode(";\n", $sqls);
 
-
-//        Util::dump($dbconfig);exit;
         //开始安装
-        Util::flushMessageToClient('开始安装数据库...');
         foreach ($sqls as $sql) {
             $sql = trim($sql);
             if(empty($sql) or substr($sql,0,2) === '--') continue;
-
             $msg = $installModel->execSql($sql);
             if(is_array($msg)){
-                if(!$msg[0]){
+                if(false === $msg[0]){
                     SessionUtil::set('error',true);
                 }
-                Util::flushMessageToClient($msg[1]);
+                CmsKits::flushMessageToClient($msg[1]);
             }
         }
     }

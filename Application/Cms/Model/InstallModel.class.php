@@ -7,6 +7,7 @@
  */
 namespace Application\Cms\Model;
 use System\Core\Model;
+use System\Util\SEK;
 
 class InstallModel extends Model{
 
@@ -38,18 +39,17 @@ class InstallModel extends Model{
     /**
      * 执行创建数据库和插入记录的操作
      * @param string $sql 执行的SQL语句
-     * @return int|string
+     * @return array|false|int
      */
     public function execSql($sql){
         if(strtoupper(substr($sql, 0, 12)) == 'CREATE TABLE') {
             $name = preg_replace('/^CREATE TABLE `(\w+)` .*/s', '\1', $sql);
             $msg  = "正在创建数据表'{$name}'";
-            $this->dao->exec($sql);
-
-            if($this->dao->getTables($name)){
-                return array(true,$msg.'...成功！');
+            $rst = $this->dao->exec($sql);
+            if(false !== $rst){
+                return array(true, "{$msg}...成功,影响结果为{$rst}！");
             }else{
-                return array(false,$msg.'...失败！');
+                return array(false,"{$msg}...失败,影响结果为{$rst}！");
             }
         }
         return $this->dao->exec($sql);
