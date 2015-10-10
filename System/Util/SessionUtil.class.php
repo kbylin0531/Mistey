@@ -306,7 +306,7 @@ class SessionUtil{
      * 设置session
      * @param string $name
      * @param mixed $value
-     * @return void
+     * @return mixed 返回设置的值
      */
     public static function set($name,$value){
         self::start();
@@ -316,5 +316,6 @@ class SessionUtil{
         }else{
             $_SESSION[$name] = $value;
         }
+        return $value;
     }
 }

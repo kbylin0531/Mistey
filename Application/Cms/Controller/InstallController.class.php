@@ -21,12 +21,10 @@ use System\Util\SessionUtil;
  */
 class InstallController extends Controller{
     /**
-     * 安装锁的路径
-     * 锁文件存在的情况下无法进行安装
+     * 安装配置文件目录
+     * 同时兼任确定是否已经安装过
      * @var string
      */
-    private static $lock_path = null;
-
     private static $config_file_path = null;
     /**
      * 安装步骤
@@ -42,13 +40,20 @@ class InstallController extends Controller{
 
     public function __construct(){
         parent::__construct();
-        self::$lock_path = BASE_PATH.'Data/CMS/install.lock';
-        self::$config_file_path = BASE_PATH.$this->context['m'].'/Configure/database.config.php';
-        if(Storage::has(self::$lock_path)){//已经安装完毕，直接跳转到完成界面
+        self::$config_file_path = $this->module_path.'/Configure/database.config.php';
+        if($this->checkInstalled()){//已经安装完毕，直接跳转到完成界面
             $this->takeSteps(4);
         }
         //静态可以直接访问的文件目录
         defined('URL_CMS_STATIC_PATH') or define('URL_CMS_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
+    }
+
+    /**
+     * 确认是否安装过
+     * @return bool
+     */
+    private function checkInstalled(){
+        return SessionUtil::set('hasInstalled',Storage::has(self::$config_file_path));
     }
 
     /**
@@ -118,12 +123,8 @@ class InstallController extends Controller{
                 $installModel = new InstallModel($config,false);
                 if(!$installModel->createDatabase($config['dbname'])){
                     $this->error('创建数据库失败，错误信息：'.$installModel->getErrorInfo());
-                }else{
-                    //成功创建数据库，写入配置信息
-                    if(!Configer::write(self::$config_file_path, $config)){
-                        throw new \Exception('Store Configure into file failed!');
-                    }
                 }
+
             }
             //跳转到数据库安装页面
             $this->takeSteps();
@@ -145,6 +146,8 @@ class InstallController extends Controller{
     /**
      * 实际安装数据库表并设置管理员账号
      * @return void
+     * @throws \Exception
+     * @throws \System\Exception\FileNotFoundException
      */
     public function third(){
         $step = SessionUtil::get('step');
@@ -177,7 +180,10 @@ class InstallController extends Controller{
             CmsKits::flushMessageToClient('安装错误！');
         } else {
             SessionUtil::set('step', 3);
-            Storage::write(self::$lock_path,'Install complete!');
+            //成功创建数据库，写入配置信息
+            if(!Configer::write(self::$config_file_path, $db_info)){
+                throw new \Exception('Store Configure into file failed!');
+            }
             $this->takeSteps();
         }
     }
@@ -187,17 +193,12 @@ class InstallController extends Controller{
      * @throws \System\Exception\ParameterInvalidException
      */
     public function complete(){
-        if(!Storage::has(self::$lock_path)){
+        if(!Storage::has(self::$config_file_path)){
             // 写入安装锁定文件
-            Storage::write(self::$lock_path, 'lock');
+            Storage::write(self::$config_file_path, 'lock');
         }
-        if(!SessionUtil::get('update')){
-            //创建配置文件
-            $this->assign('info',SessionUtil::get('config_file'));
-        }
-        SessionUtil::clear('step');
+        SessionUtil::set('step',4);
         SessionUtil::clear('error');
-        SessionUtil::clear('update');
         $this->display();
     }
 
@@ -212,6 +213,7 @@ class InstallController extends Controller{
             $curstep = SessionUtil::get('step');
             $forward? ++$curstep: --$curstep;
         }else{
+            SessionUtil::set('step',$forward);
             $curstep = $forward;
         }
         $this->redirect(self::$steps[$curstep],array(),$time,$message);
@@ -224,7 +226,7 @@ class InstallController extends Controller{
         $dbconfig = SessionUtil::get('database_info');
         $installModel = new InstallModel($dbconfig);
         //读取SQL文件
-        $sqls = Storage::read(BASE_PATH.'Data/CMS/install.sql');
+        $sqls = Storage::read($this->module_path.'Common/install.sql');
         //设置前缀
         $sqls = str_replace(' `onethink_'," `{$dbconfig['prefix']}",  $sqls);
         $sqls = str_replace("\r", "\n", $sqls);//windows下转化换行符

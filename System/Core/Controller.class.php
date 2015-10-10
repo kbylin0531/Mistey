@@ -35,6 +35,11 @@ class Controller{
         'c' => null,//当前访问的控制器名称
         't' => null,//默认的模板主题
     );
+    /**
+     * 模块目录
+     * @var string
+     */
+    protected $module_path = null;
 
     /**
      * 模板引擎驱动
@@ -42,6 +47,7 @@ class Controller{
      * @var \Smarty
      */
     protected static $template_engine = null;
+
 
     /**
      * 初始化控制器
@@ -63,6 +69,7 @@ class Controller{
             throw new \Exception('Class "'.get_called_class().'" can not fetch modules and controller!');
         }
         null === $context or $this->context = array_merge($this->context,$context);
+        $this->module_path = BASE_PATH.'Application/'.$this->context['m'].'/';
     }
 
 
