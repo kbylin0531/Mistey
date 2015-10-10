@@ -6,8 +6,8 @@
  * Time: 9:27
  */
 namespace Application\Cms\Controller;
+use Application\Cms\Util\CmsKits;
 use System\Core\Controller;
-use Utils\Cms\CmsUtil;
 
 /**
  * Class AdminController CMS控制器基类 (除了install控制器之外)
@@ -31,7 +31,7 @@ class AdminController extends Controller{
      */
     protected function initialize(){
         if(defined('UID')) return;
-        $uid = CmsUtil::getUid();
+        $uid = CmsKits::getUid();
         if(0 === $uid){//用户未登陆
             if(defined('GO_MEMBER') and GO_MEMBER){
                 //直接前往login操作

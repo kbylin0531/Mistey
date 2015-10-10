@@ -9,6 +9,8 @@ namespace System\Core;
 use System\Exception\ConfigLoadFailedException;
 use System\Exception\FileNotFoundException;
 use System\Mist;
+use System\Util\SEK;
+
 defined('BASE_PATH') or die('No Permission!');
 /**
  * Class Configer 配置加载帮助类
@@ -192,14 +194,14 @@ class Configer{
      * @return bool
      * @throws FileNotFoundException
      */
-    public static function writeAuto($confnm,array $config,$path = null){
-        isset($path) or $path = BASE_PATH.'Configure/Auto/';
+    public static function writeConfig($confnm,array $config,$path){
         //配置文件路径，不同的配置文件类型拥有不同的后缀
-        $path = "{$path}auto_{$confnm}.config.php";
+        $path = "{$path}/{$confnm}.config.php";
         if(Storage::has($path)){
             //文件存在，读取并合并配置
             $origin_config = self::read($path);
-            $config = array_merge($origin_config,$config);//后者覆盖前者
+            SEK::merge($origin_config,$config);//后者覆盖前者
+            $config = $origin_config;
         }
         return Storage::write($path,'<?php return '.var_export($config,true).'; ?>'); //闭包函数无法写入
     }
