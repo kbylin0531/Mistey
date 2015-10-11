@@ -171,17 +171,13 @@ class Configer{
      * @throws FileNotFoundException
      */
     public static function write($path,array $config,$type=self::CONFIGTYPE_PHP){
-        if(Storage::has($path)){
-            switch($type){
-                //...other config type ...
-                case self::CONFIGTYPE_PHP:
-                default:
-                    $filename = pathinfo($path,PATHINFO_FILENAME);
-                    self::$_configures[substr($filename,0,strpos($filename,'.'))] = $config;
-                    return Storage::write($path,'<?php return '.var_export($config,true).'; ?>'); //闭包函数无法写入
-            }
-        }else{
-            throw new FileNotFoundException($path);
+        switch($type){
+            //...other config type ...
+            case self::CONFIGTYPE_PHP:
+            default:
+                $filename = pathinfo($path,PATHINFO_FILENAME);
+                self::$_configures[substr($filename,0,strpos($filename,'.'))] = $config;
+                return Storage::write($path,'<?php return '.var_export($config,true).'; ?>'); //闭包函数无法写入
         }
     }
 

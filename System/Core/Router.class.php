@@ -108,6 +108,19 @@ class Router{
     }
 
     /**
+     * 获取解析结果
+     * @param string $part
+     * @return array|string|null
+     */
+    public static function getParsed($part=null){
+        if(isset($part)){
+            return isset(self::$_components[$part])?self::$_components[$part]:null;
+        }else{
+            return self::$_components;
+        }
+    }
+
+    /**
      * 解析域名部署
      * @return void
      */

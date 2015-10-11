@@ -207,9 +207,7 @@ class SessionUtil{
      */
     public static function get($name=null){
         self::start();
-        if(!isset($name)){//获取全部
-            return $_SESSION;
-        }else{
+        if(isset($name)){
             if(strpos($name,'.')){
                 list($name1,$name2) =   explode('.',$name);
                 return isset($_SESSION[$name1][$name2])?$_SESSION[$name1][$name2]:null;
@@ -217,7 +215,9 @@ class SessionUtil{
                 return isset($_SESSION[$name])?$_SESSION[$name]:null;
             }
         }
+        return $_SESSION;
     }
+
     public static function sessionAutoStart(){
     }
     /**
