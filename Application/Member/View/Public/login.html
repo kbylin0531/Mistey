@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>欢迎您的登录</title>
+    <title>欢迎登录</title>
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_CMS_ADMIN_CSS_PATH}/login.css" media="all">
     <link rel="stylesheet" type="text/css" href="{$smarty.const.URL_CMS_ADMIN_CSS_PATH}/default_color.css" media="all">
-
     <!--[if lt IE 9]>
     <script type="text/javascript" src="{$smarty.const.URL_PUBLIC_PATH}/js/jquery-1.10.2.min.js"></script>
     <![endif]-->
@@ -47,8 +46,11 @@
             });
 
             $(function(){
+
+                var itembox = $("#itemBox");
+
                 //初始化选中用户名输入框
-                $("#itemBox").find("input[name=username]").focus();
+                itembox.find("#username").focus();
                 //刷新验证码
                 var verifyimg = $(".verifyimg").attr("src");
                 $(".reloadverify").click(function(){
@@ -66,7 +68,7 @@
                     return "placeholder" in input;
                 }
                 //如果不支持
-                var itemBoxInput = $("#itemBox input");
+                var itemBoxInput = itembox.find("input");
                 if(!isPlaceholer()){
                     $(".placeholder_copy").css({
                         display:'block'
@@ -95,16 +97,15 @@
 </head>
 <body id="login-page">
 <div id="main-content">
-
     <!-- 主体 -->
     <div class="login-body">
         <div class="login-main pr">
-            <form action="{U url='cms/member/login'}" method="post" class="login-form">
+            <form action="{U url='member/public/login'}" method="post" class="login-form">
                 <h3 class="welcome"><i class="login-logo"></i>OneThink管理平台</h3>
                 <div id="itemBox" class="item-box">
                     <div class="item">
                         <i class="icon-login-user"></i>
-                        <input type="text" name="username" placeholder="请填写用户名" autocomplete="off" />
+                        <input type="text" id="username" name="username" placeholder="请填写用户名" autocomplete="off" />
                     </div>
                     <span class="placeholder_copy placeholder_un">请填写用户名</span>
                     <div class="item b0">
@@ -119,7 +120,7 @@
                     </div>
                     <span class="placeholder_copy placeholder_check">请填写验证码</span>
                     <div>
-                        <img class="verifyimg reloadverify" alt="点击切换" src="{U url='cms/member/createVerify'}">
+                        <img class="verifyimg reloadverify" alt="点击切换" src="{U url='member/public/createVerify'}">
                     </div>
                 </div>
                 <div class="login_btn_panel">

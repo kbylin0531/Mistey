@@ -91,11 +91,14 @@ class View{
 
     /**
      * 创建模板URL
+     * U参数规则：url参数表示modules/controller/action 其他参数则作为URL参数
      * @param array $params U函数的属性数组，属性名为变量名称，属性值为变量值
      * @return string
      */
     public function U($params){
-        return Util::url($params['url']);
+        $url = $params['url'];
+        unset($params['url']);
+        return Util::url($url,$params);
     }
 
     public function registerPlugin($type, $tag, $callback, $cacheable = true, $cache_attr = null){

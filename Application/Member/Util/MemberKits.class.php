@@ -41,4 +41,23 @@ class MemberKits {
             return SessionUtil::get('x_user_sign') === SEK::dataAuthSign($info)?$info : null;
         }
     }
+
+
+
+    /**
+     * 检查登陆状态
+     * @return bool
+     */
+    public static function checkLoginStatus(){
+        //设置了UID，说明是其他地方new了一个控制器
+        if(defined('UID')) return true;
+        $uid = self::getUserId();
+        if(0 === $uid){//用户需要重新登录
+            return false;
+        }else{
+            define('UID',$uid);
+            return true;
+        }
+    }
+
 }
