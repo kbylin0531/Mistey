@@ -30,6 +30,16 @@ const STORAGEMODE_SAE = 'Sae';
  */
 const LOGRATE_HOUR = 0;
 const LOGRATE_DAY = 1;
+/**
+ * 数据库连接配置组成部分
+ */
+const DB_PREFIX = 'prefix';
+const DB_PORT= 'port';
+const DB_PWD = 'password';
+const DB_UNAME = 'username';
+const DB_DBNAME = 'dbname';
+const DB_HOST = 'host';
+const DB_TYPE = 'type';
 
 Mist::init(array(
     'URL_MODE'          => URLMODE_PATHINFO,

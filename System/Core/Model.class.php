@@ -133,6 +133,36 @@ class Model{
     }
 
     /**
+     * 执行一段查询SQL
+     * @param string$sql
+     * @param array $inputs
+     * @return array|false 返回数组结果集合,返回false表示执行失败
+     * @throws \System\Exception\PDOExecuteException
+     */
+    public function query($sql,array $inputs=null){
+        $rst = $this->dao->prepare($sql)->execute($inputs);
+        if(false === $rst){
+            return false;
+        }
+        return $this->dao->fetchAll();
+    }
+
+    /**
+     * 执行一段受影响SQL
+     * @param string $sql
+     * @param array $inputs
+     * @return bool|int 返回受影响行数,返回false表示执行失败
+     * @throws \System\Exception\PDOExecuteException
+     */
+    public function execute($sql,array $inputs=null){
+        $rst = $this->dao->prepare($sql)->execute($inputs);
+        if(false === $rst){
+            return false;
+        }
+        return $this->dao->rowCount();
+    }
+
+    /**
      * 插入数据库记录
      * @param array $fields
      * @param string $tablename

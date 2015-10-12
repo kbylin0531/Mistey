@@ -12,7 +12,12 @@ use System\Core\Configer;
  * Class InstallKits 安装过程中使用的工具包
  * @package Application\Installer\Util
  */
-class InstallKits {
+final class InstallKits {
+    /**
+     * 缓存的数据库配置
+     * @var array
+     */
+    private static $_dbconfig = null;
 
     /**
      * 及时显示提示信息
@@ -26,13 +31,20 @@ class InstallKits {
     }
 
     /**
-     * 配置
-     * @return array
+     * 获取数据库配置
+     * @param string $option 数据库连接配置项
+     * @return array|null
      * @throws \System\Exception\FileNotFoundException
      */
-    public static function getDatabaseConfig(){
-        $path = str_replace('\\','/',dirname(dirname(__FILE__)).'/Configure/database.config.php');
-        return Configer::read($path);
+    public static function getDatabaseConfig($option=null){
+        if(!isset(self::$_dbconfig)){
+            $path = str_replace('\\','/',dirname(dirname(__FILE__)).'/Configure/database.config.php');
+            self::$_dbconfig = Configer::read($path);
+        }
+        if(isset($option)){
+            return isset(self::$_dbconfig[$option])? self::$_dbconfig[$option]:null;
+        }
+        return self::$_dbconfig;
     }
 
 }
