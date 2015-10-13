@@ -2633,3 +2633,362 @@ File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_
 
 
 
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 12 "$('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:12
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 13 "loginbox.css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:13
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 13 "loginbox.css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:13
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 13 "loginbox.css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:13
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 13 "loginbox.css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:13
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 13 "loginbox.css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:13
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 13 "loginbox.css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:13
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "F:/Web/Webroot/Mist/Application/Member/View/Public/login.html"  on line 13 "loginbox.css({'position':'absolute','left':($(window).width()-692)/2});"  - Unexpected ":", expected one of: "}"
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:13
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2346): Smarty_Internal_TemplateCompilerBase->trigger_template_error()
+#1 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2405): Smarty_Internal_Templateparser->yy_syntax_error(2, ':')
+#2 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(2, ':')
+#3 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html ...', true)
+#4 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#5 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(152): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#6 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#7 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#8 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#9 F:\Web\Webroot\Mist\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('login.html', NULL, NULL, NULL, true)
+#10 F:\Web\Webroot\Mist\System\Core\View.class.php(174): Smarty->display('login.html', NULL, NULL, NULL)
+#11 F:\Web\Webroot\Mist\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#12 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#13 F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php(30): Application\Member\Controller\PublicController->login()
+#14 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(25): Application\Common\Controller\AdminController->__construct()
+#15 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(78): Application\Member\Controller\PublicController->__construct()
+#16 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#17 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#18 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyException : Plugin tag "U" already registered
+||--position--||
+File:F:\Web\Webroot\Mist\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatebase.php   Line:135
+||--trace--||
+#0 F:\Web\Webroot\Mist\System\Core\View.class.php(112): Smarty_Internal_TemplateBase->registerPlugin('function', 'U', Array, true, NULL)
+#1 F:\Web\Webroot\Mist\System\Core\View.class.php(96): System\Core\View->registerPlugin('function', 'U', Array)
+#2 F:\Web\Webroot\Mist\System\Core\View.class.php(87): System\Core\View->registerTemplateFunctions()
+#3 F:\Web\Webroot\Mist\System\Core\Controller.class.php(231): System\Core\View->__construct(Array)
+#4 F:\Web\Webroot\Mist\System\Core\Controller.class.php(218): System\Core\Controller->initView()
+#5 F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php(52): System\Core\Controller->display()
+#6 [internal function]: Application\Member\Controller\PublicController->login(NULL, NULL, NULL)
+#7 F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php(121): ReflectionMethod->invokeArgs(Object(Application\Member\Controller\PublicController), Array)
+#8 F:\Web\Webroot\Mist\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Public', 'login', Array)
+#9 F:\Web\Webroot\Mist\index.php(59): System\Mist::start()
+#10 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2 file_get_contents(ssl/server.pem): failed to open stream: No such file or directory
+||--position--||
+File:F:\Web\Webroot\Mist\System\Util\RSA.class.php   Line:42
+||--trace--||
+#0  System\Mist::handleError(2, file_get_contents(ssl/server.pem): failed to open stream: No such file or directory, F:\Web\Webroot\Mist\System\Util\RSA.class.php, 42, Array ([crypttext] => ,[fileName] => ssl/server.pem,[fromjs] => 1))
+#1  file_get_contents(ssl/server.pem) called at [F:\Web\Webroot\Mist\System\Util\RSA.class.php:42]
+#2  System\Util\RSA::privatekey_decodeing(, ssl/server.pem, 1) called at [F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php:85]
+#3  Application\Member\Controller\PublicController->check(, ) called at [F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php:46]
+#4  Application\Member\Controller\PublicController->login() called at [F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php:30]
+#5  Application\Common\Controller\AdminController->__construct() called at [F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php:29]
+#6  Application\Member\Controller\PublicController->__construct() called at [F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php:78]
+#7  System\Core\Dispatcher::execute(Member, Public, login, Array ()) called at [F:\Web\Webroot\Mist\System\Mist.class.php:213]
+#8  System\Mist::start() called at [F:\Web\Webroot\Mist\index.php:59]
+
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+2 openssl_private_decrypt(): key parameter is not a valid private key
+||--position--||
+File:F:\Web\Webroot\Mist\System\Util\RSA.class.php   Line:43
+||--trace--||
+#0  System\Mist::handleError(2, openssl_private_decrypt(): key parameter is not a valid private key, F:\Web\Webroot\Mist\System\Util\RSA.class.php, 43, Array ([data] => ,[decrypted] => ))
+#1  openssl_private_decrypt(, , F:/Web/Webroot/Mist/Resource/private.key) called at [F:\Web\Webroot\Mist\System\Util\RSA.class.php:43]
+#2  System\Util\RSA::decrypt() called at [F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php:84]
+#3  Application\Member\Controller\PublicController->check(, ) called at [F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php:47]
+#4  Application\Member\Controller\PublicController->login() called at [F:\Web\Webroot\Mist\Application\Common\Controller\AdminController.class.php:30]
+#5  Application\Common\Controller\AdminController->__construct() called at [F:\Web\Webroot\Mist\Application\Member\Controller\PublicController.class.php:30]
+#6  Application\Member\Controller\PublicController->__construct() called at [F:\Web\Webroot\Mist\System\Core\Dispatcher.class.php:78]
+#7  System\Core\Dispatcher::execute(Member, Public, login, Array ()) called at [F:\Web\Webroot\Mist\System\Mist.class.php:213]
+#8  System\Mist::start() called at [F:\Web\Webroot\Mist\index.php:59]
+
+
+            
+=====================================================================================
+
+
+
+
+

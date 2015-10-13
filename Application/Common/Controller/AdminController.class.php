@@ -28,6 +28,7 @@ class AdminController extends Controller {
                 define('GO_MEMBER_LOGIN',true);
                 $memberController = new PublicController();
                 $memberController->login();
+                exit;
             }
         }
     }

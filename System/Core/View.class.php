@@ -17,6 +17,11 @@ use System\Utils\Util;
  */
 class View{
 
+    protected $_config = array(
+        'left_delimiter'    => '<{',
+        'right_delimiter'   => '}>',
+    );
+
     /**
      * 模板文件存放目录
      * @var string
@@ -53,6 +58,8 @@ class View{
 
     protected static $_smarty_lite_file = null;
 
+    protected static $registed = false;
+
     protected $_tVars = array();
 
     /**
@@ -75,9 +82,11 @@ class View{
         if(!isset(self::$tpl_engine)){
             require_once SMARTY_DIR.'Smarty.class.php';
             static::$tpl_engine = new \Smarty();
+            static::$tpl_engine->left_delimiter  = $this->_config['left_delimiter'];
+            static::$tpl_engine->right_delimiter = $this->_config['right_delimiter'];
             null === self::$_smarty_lite_file and self::$_smarty_lite_file =  RUNTIME_PATH.'Smarty.lite.php';
         }
-        $this->registerTemplateFunctions();
+        self::$registed or $this->registerTemplateFunctions();
     }
 
     /**
@@ -87,6 +96,7 @@ class View{
     private function registerTemplateFunctions(){
         //注册U函数
         $this->registerPlugin('function','U',array($this,'U'));
+        self::$registed = true;
     }
 
     /**

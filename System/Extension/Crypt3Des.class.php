@@ -13,6 +13,7 @@ namespace System\Extension;
  * @version: V0.1 2008.12.04
  */
 class Crypt3Des {
+
     private static $key    = "01234567890123456789012345678912";
     private static $iv    = "23456789"; //like java: private static byte[] myIV = { 50, 51, 52, 53, 54, 55, 56, 57 };
     //加密
@@ -50,7 +51,7 @@ class Crypt3Des {
         return $decrypted;
     }
     //填充密码，填充至8的倍数
-    public static function padding( $str )
+    private static function padding( $str )
     {
         $len = 8 - strlen( $str ) % 8;
         for ( $i = 0; $i < $len; $i++ )
@@ -60,7 +61,7 @@ class Crypt3Des {
         return $str ;
     }
     //删除填充符
-    public static function removePadding( $str )
+    private static function removePadding( $str )
     {
         $len = strlen( $str );
         $newstr = "";
@@ -75,7 +76,7 @@ class Crypt3Des {
         return $newstr;
     }
     //删除回车和换行
-    public static function removeBR( $str )
+    private static function removeBR( $str )
     {
         $len = strlen( $str );
         $newstr = "";
@@ -89,10 +90,13 @@ class Crypt3Des {
         }
         return $newstr;
     }
-////test
-//$input = "1qaz2wsA";
-//echo "plainText:" . $input."<br/>";
-//$crypt = new Crypt3Des();
-//echo "Encode:".$crypt->encrypt($input)."<br/>";
-//echo "Decode:".$crypt->decrypt($crypt->encrypt($input));
 }
+
+/**
+ * 测试
+$rst = Crypt3Des::encrypt('linzhonghuang');
+echo $rst;
+echo '<br />';
+//            echo Crypt3Des::decrypt($rst);
+echo '<br />';
+ */

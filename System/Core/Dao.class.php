@@ -676,7 +676,7 @@ final class Dao{
      * @param string $tablename
      * @param string|array|null $fields
      * @param string|array|null $whr
-     * @return array
+     * @return array|bool
      * @throws PDOExecuteException
      */
     public function select($tablename,$fields=null,$whr=null){

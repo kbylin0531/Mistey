@@ -192,7 +192,7 @@ class Model{
      * @param mixed $where
      * @param mixed $fields
      * @param string $tablename
-     * @return array
+     * @return array|bool
      */
     public function select($where=null,$fields=null,$tablename=null){
         isset($tablename) or $tablename = $this->getTableName();
@@ -205,12 +205,12 @@ class Model{
      * @param mixed $where
      * @param mixed $fields
      * @param string $tablename
-     * @return string
+     * @return array|bool
      */
     public function find($where=null,$fields=null,$tablename=null){
         isset($tablename) or $tablename = $this->getTableName();
         $rst = $this->dao->select($tablename,$fields,$where);
-        return count($rst) !== 1?$this->getErrorInfo():$rst[0];
+        return count($rst) !== 1? false:$rst[0];
     }
 
     /**

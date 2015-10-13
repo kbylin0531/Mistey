@@ -8,7 +8,10 @@
 namespace Application\Member\Controller;
 use Application\Common\Controller\AdminController;
 use Application\Member\Util\MemberKits;
+use System\Core\Storage;
+use System\Extension\Crypt3Des;
 use System\Extension\Verify;
+use System\Util\RSA;
 
 /**
  * Class PublicController 用户登录登出控制器
@@ -21,28 +24,34 @@ class PublicController extends AdminController {
      */
     private $verify = null;
 
+    private $rsa = null;
+
+    public function __construct(){
+        parent::__construct();
+        defined('URL_ASSERTS_SAMPLE_PATH') or define('URL_ASSERTS_SAMPLE_PATH',URL_PUBLIC_PATH.'sample');
+    }
+
     /**
      * 用户登录界面和操作
      * @param string $username
      * @param string $password
-     * @param string $verify
      * @return void
      */
-    public function login($username=null,$password=null,$verify=null){
+    public function login($username=null,$password=null){
         if(IS_POST){
-            isset($this->verify) or $this->verify = new Verify();
-            if($this->checkVerify($verify)){
-                $this->error('验证码错误!');
-            }
+//            isset($this->verify) or $this->verify = new Verify();
+//            if($this->checkVerify($verify)){
+//                $this->error('验证码错误!');
+//            }
+            $this->check($username,$password);
 
-
-
-            $this->redirect('cms/Index/index');
+//            $this->redirect('cms/Index/index');
             //TODO:登陆成功后设置UID常量
         }else{
             if(MemberKits::getUserId()){//已经登陆了
                 $this->redirect('cms/Index/index');
             }
+
             //TODO:读取配置 并 缓存
             $this->display();
         }
@@ -53,7 +62,15 @@ class PublicController extends AdminController {
      */
     public function logout(){
 
+
+
     }
+
+    private function createRsaKeys(){
+
+    }
+
+
 
     /**
      * 检查用户和密码是否允许登录
@@ -62,7 +79,7 @@ class PublicController extends AdminController {
      * @param $password
      */
     public function check($username,$password){
-
+        //密文传输
     }
     /**
      * 生成验证码
