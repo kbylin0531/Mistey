@@ -7,6 +7,7 @@
  */
 namespace Application\Installer\Controller;
 use Application\Installer\Model\InstallModel;
+use Application\Installer\Util\DedeInstallKits;
 use Application\Installer\Util\InstallKits;
 use Application\Member\Model\MemberModel;
 use System\Core\Configer;
@@ -27,6 +28,7 @@ class InstallController extends Controller{
      * @var string
      */
     private static $config_file_path = null;
+
     /**
      * 安装步骤
      * @var array
@@ -41,6 +43,8 @@ class InstallController extends Controller{
 
     public function __construct(){
         parent::__construct();
+        $this->initialize();
+
         self::$config_file_path = $this->module_path.'/Configure/database.config.php';
         if($this->checkInstalled() and 'complete' !== Router::getParsed('a')){
             //已经安装完毕，直接跳转到完成界面，但是必须在并非访问complete的情况下，否则会导致重定向死循环
@@ -49,6 +53,9 @@ class InstallController extends Controller{
 
         //静态可以直接访问的文件目录
         defined('URL_CMS_STATIC_PATH') or define('URL_CMS_STATIC_PATH',URL_PUBLIC_PATH.'CMS/');
+    }
+    private function initialize(){
+
     }
 
     /**
