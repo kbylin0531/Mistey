@@ -185,20 +185,21 @@ class Util{
      * 依次从后往前解析出操作，控制器，模块(如果存在模块将被认定为完整的模块路径)
      * TODO:如果未设置控制器或者模块将默认使用当前访问的模块或者控制器(在URLHelper::create方法已有这个设定)
      * @param string $url 快速创建的URL字符串
+     * @param null $mode
      * @param array $params GET参数数组
      * @return string
      */
-    public static function url($url=null,array $params=array()){
+    public static function url($url=null,array $params=array(),$mode=null){
         //解析参数中的$url
         if(!$url){
-            return Router::create(null,null,null,$params);
+            return Router::create(null,null,null,$params,$mode);
         }
         $parts = @explode('/',$url);
         //调用URLHelper创建URL
         $action  = array_pop($parts);
         $ctler   = $action?array_pop($parts):null;
         $modules = $ctler?$parts:null;
-        return Router::create($modules,$ctler,$action,$params);
+        return Router::create($modules,$ctler,$action,$params,$mode);
     }
     /**
      * $url规则如：

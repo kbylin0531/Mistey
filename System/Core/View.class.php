@@ -108,7 +108,13 @@ class View{
     public function U($params){
         $url = $params['url'];
         unset($params['url']);
-        return Util::url($url,$params);
+        if(isset($params['mode'])){
+            $mode = $params['mode'];
+            unset($params['mode']);
+        }else{
+            $mode = null;
+        }
+        return Util::url($url,$params,$mode);
     }
 
     public function registerPlugin($type, $tag, $callback, $cacheable = true, $cache_attr = null){

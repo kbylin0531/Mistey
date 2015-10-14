@@ -375,11 +375,12 @@ class Router{
      * @param null|string $modulelist 模块列表
      * @param null|string $controller 控制器名称
      * @param null|string $action 操作名称
+     * @param null $mode  URL模式,null时跟随系统
      * @param array $params 参数列表
      * @return string URL字符串
      * @throws \Exception
      */
-    public static function create($modulelist=null,$controller=null,$action=null,$params=array()){
+    public static function create($modulelist=null,$controller=null,$action=null,$params=array(),$mode=null){
         isset($modulelist) or $modulelist = self::$_components['m'];
         isset($controller) or $controller = self::$_components['c'];
         isset($action)     or $action     = self::$_components['a'];
@@ -387,7 +388,12 @@ class Router{
         if(URLMODE_TOPSPEED_ON){
             $url = self::createInCommon($modulelist,$controller,$action,$params);
         }else{
-            switch(URL_MODE){
+            if(null === $mode){
+                $mode = URL_MODE;
+            }else{
+                $mode = intval($mode);
+            }
+            switch($mode){
                 case URLMODE_COMMON:
                     $url = self::createInCommon($modulelist,$controller,$action,$params);
                     break;

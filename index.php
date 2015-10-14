@@ -6,6 +6,7 @@
  * Time: 9:13
  */
 use System\Mist;
+
 /**
  * 基础目录定义
  */
@@ -40,7 +41,6 @@ const DB_UNAME = 'username';
 const DB_DBNAME = 'dbname';
 const DB_HOST = 'host';
 const DB_TYPE = 'type';
-
 Mist::init(array(
     'URL_MODE'          => URLMODE_PATHINFO,
 //    'TIME_ZONE'         => 'Asia/Shanghai',

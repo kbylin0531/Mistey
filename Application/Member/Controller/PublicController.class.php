@@ -6,25 +6,21 @@
  * Time: 19:45
  */
 namespace Application\Member\Controller;
-use Application\Common\Controller\AdminController;
 use Application\Member\Util\MemberKits;
-use System\Core\Storage;
-use System\Extension\Crypt3Des;
+use System\Core\Controller;
 use System\Extension\Verify;
-use System\Util\RSA;
 
 /**
  * Class PublicController 用户登录登出控制器
  * @package Application\Member\Controller
  */
-class PublicController extends AdminController {
+class PublicController extends Controller {
     /**
      * 验证码类
      * @var Verify
      */
     private $verify = null;
 
-    private $rsa = null;
 
     public function __construct(){
         parent::__construct();
@@ -35,26 +31,29 @@ class PublicController extends AdminController {
      * 用户登录界面和操作
      * @param string $username
      * @param string $password
+     * @param string $verify
      * @return void
      */
-    public function login($username=null,$password=null){
+    public function login($username=null,$password=null,$verify=null){
+        $error = 0;
         if(IS_POST){
-//            isset($this->verify) or $this->verify = new Verify();
-//            if($this->checkVerify($verify)){
-//                $this->error('验证码错误!');
-//            }
-            $this->check($username,$password);
-
-//            $this->redirect('cms/Index/index');
-            //TODO:登陆成功后设置UID常量
-        }else{
-            if(MemberKits::getUserId()){//已经登陆了
-                $this->redirect('cms/Index/index');
+            if(empty($verify)){
+                $error = 3;
+            }else if(!$this->checkVerify($verify)){
+                $error = 2;
+            }else{
+                if($this->check($username,$password)){
+                    $this->redirect('admin/index/index');
+                }
+                //密码错误
+                $error = 1;
             }
-
-            //TODO:读取配置 并 缓存
-            $this->display();
         }
+        if(MemberKits::getUserId()){//已经登陆了
+            $this->redirect('admin/index/index');
+        }
+        $this->assign('error',$error);
+        $this->display('login');
     }
     /**
      * 用户登出界面和操作
@@ -62,14 +61,7 @@ class PublicController extends AdminController {
      */
     public function logout(){
 
-
-
     }
-
-    private function createRsaKeys(){
-
-    }
-
 
 
     /**
@@ -77,9 +69,10 @@ class PublicController extends AdminController {
      * 此外还可以加上用户登录权限检查(是否被强制禁止登陆等)
      * @param $username
      * @param $password
+     * @return bool
      */
     public function check($username,$password){
-        //密文传输
+        return true;
     }
     /**
      * 生成验证码
@@ -98,7 +91,7 @@ class PublicController extends AdminController {
      * @return boolean     检测结果
      * @author 麦当苗儿 <zuojiazi@vip.qq.com>
      */
-    function checkVerify($code, $id = APP_NAME){
+    private function checkVerify($code, $id = APP_NAME){
         isset($this->verify) or $this->verify = new Verify();
         return $this->verify->check($code, $id);
     }

@@ -16,17 +16,27 @@ class IndexController extends AdminController{
 
     public function __construct(){
         parent::__construct();
-        defined('URL_CMS_ADMIN_PATH') or define('URL_CMS_ADMIN_PATH',URL_PUBLIC_PATH.'cms/modules/admin/');
-        defined('URL_CMS_ADMIN_CSS_PATH') or define('URL_CMS_ADMIN_CSS_PATH',URL_CMS_ADMIN_PATH.'css/');
-        defined('URL_CMS_ADMIN_JS_PATH') or define('URL_CMS_ADMIN_JS_PATH',URL_CMS_ADMIN_PATH.'js/');
-        defined('URL_CMS_ADMIN_IMG_PATH') or define('URL_CMS_ADMIN_IMG_PATH',URL_CMS_ADMIN_PATH.'images/');
+        //问题：在缺少sample的情况下会调用框架的方法进行寻找
+        defined('URL_CMS_ADMIN_CSS_PATH') or define('URL_CMS_ADMIN_CSS_PATH',URL_PUBLIC_PATH.'sample/css');
+        defined('URL_CMS_ADMIN_JS_PATH') or define('URL_CMS_ADMIN_JS_PATH',URL_PUBLIC_PATH.'sample/js');
+        defined('URL_CMS_ADMIN_IMG_PATH') or define('URL_CMS_ADMIN_IMG_PATH',URL_PUBLIC_PATH.'sample/images');
     }
 
     /**
      * 后台首页界面
      */
     public function index(){
-        echo __METHOD__;
+        $this->display();
+    }
+
+    public function top(){
+        $this->display();
+    }
+    public function left(){
+        $this->display();
+    }
+    public function main(){
+        $this->display();
     }
 
 }

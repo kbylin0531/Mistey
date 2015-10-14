@@ -23,14 +23,6 @@ class AdminController extends Controller {
      */
     public function __construct(){
         parent::__construct();
-        if(false === MemberKits::checkLoginStatus()){
-            if(!defined('GO_MEMBER_LOGIN')){//防止陷入死循环
-                define('GO_MEMBER_LOGIN',true);
-                $memberController = new PublicController();
-                $memberController->login();
-                exit;
-            }
-        }
     }
 
 
