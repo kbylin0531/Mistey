@@ -30,22 +30,32 @@
 <div class="lefttop"><span></span><{$title}></div>
 
 <dl class="leftmenu">
+    <{$mainhref = null}>
     <{foreach $submodules as $submodule }>
     <dd>
         <div class="title">
             <span><img src="<{$submodule.src}>" /></span><{$submodule.name}>
         </div>
         <ul class="menuson">
-        <{foreach $submodule['items'] as $itemorder=>$item }>
-            <{if $itemorder === 0 }>
-                <li class="active"><cite></cite><a href="<{$item.href}>" target="rightFrame"><{$item.name}></a></li>
-            <{else}>
-                <li><cite></cite><a href="<{$item.href}>" target="rightFrame"><{$item.name}></a></li>
-            <{/if}>
-        <{/foreach}>
+            <{foreach $submodule['items'] as $name=>$href }>
+                <{if $mainhref === null}>
+                    <li class="active"><cite></cite><a href="<{$href}>" target="rightFrame"><{$name}></a></li>
+                <{$mainhref = $href}>
+                <{else}>
+                    <li><cite></cite><a href="<{$href}>" target="rightFrame"><{$name}></a></li>
+                <{/if}>
+
+            <{/foreach}>
         </ul>
     </dd>
     <{/foreach}>
+
+    <{* main区域的href变为激活的href *}>
+    <script>
+        var rightFrame = parent.document.getElementById('rightFrame');
+        rightFrame.src = "<{$mainhref}>";
+//        console.log(rightFrame);
+    </script>
 </dl>
 </body>
 </html>

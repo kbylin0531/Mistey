@@ -21,7 +21,6 @@ class PublicController extends Controller {
      */
     private $verify = null;
 
-
     public function __construct(){
         parent::__construct();
         defined('URL_ASSERTS_SAMPLE_PATH') or define('URL_ASSERTS_SAMPLE_PATH',URL_PUBLIC_PATH.'sample');
@@ -42,7 +41,7 @@ class PublicController extends Controller {
             }else if(!$this->checkVerify($verify)){
                 $error = 2;
             }else{
-                if($this->check($username,$password)){
+                if($this->checkLogin($username,$password)){
                     $this->redirect('admin/index/index');
                 }
                 //密码错误
@@ -62,18 +61,6 @@ class PublicController extends Controller {
     public function logout(){
 
     }
-
-
-    /**
-     * 检查用户和密码是否允许登录
-     * 此外还可以加上用户登录权限检查(是否被强制禁止登陆等)
-     * @param $username
-     * @param $password
-     * @return bool
-     */
-    public function check($username,$password){
-        return true;
-    }
     /**
      * 生成验证码
      * @param string $id
@@ -83,6 +70,18 @@ class PublicController extends Controller {
         isset($this->verify) or $this->verify = new Verify();
         $this->verify->entry($id);
     }
+
+    /**
+     * 检查用户和密码是否允许登录
+     * 此外还可以加上用户登录权限检查(是否被强制禁止登陆等)
+     * @param $username
+     * @param $password
+     * @return bool
+     */
+    private function checkLogin($username,$password){
+        return true;
+    }
+
 
     /**
      * 检测验证码
