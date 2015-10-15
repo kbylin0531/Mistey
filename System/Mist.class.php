@@ -229,6 +229,14 @@ final class Mist{
     }
 
     /**
+     * 404页面
+     */
+    public static function showNotFound(){
+        self::loadTemplate('404');
+    }
+
+
+    /**
      * 显示trace页面
      * @return void
      */
