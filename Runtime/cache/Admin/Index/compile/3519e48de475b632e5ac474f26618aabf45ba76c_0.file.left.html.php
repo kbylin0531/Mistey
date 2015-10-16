@@ -1,7 +1,7 @@
-<?php /* Smarty version 3.1.24, created on 2015-10-15 16:57:07
+<?php /* Smarty version 3.1.24, created on 2015-10-16 08:52:24
          compiled from "E:/Web/Webroot/Mistey/Application/Admin/View/Index/left.html" */ ?>
 <?php
-/*%%SmartyHeaderCode:31133561f6a63cd9785_11483442%%*/
+/*%%SmartyHeaderCode:3165356204a48916e45_50980354%%*/
 if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
@@ -9,11 +9,11 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3519e48de475b632e5ac474f26618aabf45ba76c' => 
     array (
       0 => 'E:/Web/Webroot/Mistey/Application/Admin/View/Index/left.html',
-      1 => 1444899426,
+      1 => 1444899447,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '31133561f6a63cd9785_11483442',
+  'nocache_hash' => '3165356204a48916e45_50980354',
   'variables' => 
   array (
     'title' => 0,
@@ -24,13 +24,13 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   ),
   'has_nocache_code' => false,
   'version' => '3.1.24',
-  'unifunc' => 'content_561f6a63d531e7_10869559',
+  'unifunc' => 'content_56204a4ab49e29_48543279',
 ),false);
 /*/%%SmartyHeaderCode%%*/
-if ($_valid && !is_callable('content_561f6a63d531e7_10869559')) {
-function content_561f6a63d531e7_10869559 ($_smarty_tpl) {
+if ($_valid && !is_callable('content_56204a4ab49e29_48543279')) {
+function content_56204a4ab49e29_48543279 ($_smarty_tpl) {
 
-$_smarty_tpl->properties['nocache_hash'] = '31133561f6a63cd9785_11483442';
+$_smarty_tpl->properties['nocache_hash'] = '3165356204a48916e45_50980354';
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -102,10 +102,12 @@ $_smarty_tpl->tpl_vars['item']->_loop = true;
 $foreach_item_Sav = $_smarty_tpl->tpl_vars['item'];
 ?>
             <?php if ($_smarty_tpl->tpl_vars['itemorder']->value === 0) {?>
-                <li class="active"><cite></cite><a href="" target="rightFrame"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
+                <li class="active"><cite></cite><a href="<?php echo $_smarty_tpl->tpl_vars['item']->value['href'];?>
+" target="rightFrame"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
 </a></li>
             <?php } else { ?>
-                <li><cite></cite><a href="" target="rightFrame"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
+                <li><cite></cite><a href="<?php echo $_smarty_tpl->tpl_vars['item']->value['href'];?>
+" target="rightFrame"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
 </a></li>
             <?php }?>
         <?php
