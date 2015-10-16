@@ -22,14 +22,13 @@
 <div class="topleft">
     <a href="main.html" target="_parent"><img src="<{$smarty.const.URL_CMS_ADMIN_IMG_PATH}>/logo.png" title="系统首页" /></a>
 </div>
-
 <ul class="nav">
     <{foreach $modules as $order=>$module}>
         <li>
             <{if 0 === $order }>
-                <a href="<{$module.href}>" target="leftFrame" class="selected">
+                <a href="<{$module.href}>" target="leftFrame" class="link selected">
             <{else}>
-                <a href="<{$module.href}>" target="leftFrame">
+                <a href="<{$module.href}>" target="leftFrame" class="link">
             <{/if}>
                 <img src="<{$module.imgsrc}>"  />
                 <h2><{$module.title}></h2>

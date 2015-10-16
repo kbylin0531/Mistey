@@ -23,6 +23,13 @@ class AdminController extends Controller {
      */
     public function __construct(){
         parent::__construct();
+
+        defined('URL_CMS_ADMIN_CSS_PATH') or define('URL_CMS_ADMIN_CSS_PATH',URL_PUBLIC_PATH.'sample/css');
+        defined('URL_CMS_ADMIN_JS_PATH') or define('URL_CMS_ADMIN_JS_PATH',URL_PUBLIC_PATH.'sample/js');
+        defined('URL_CMS_ADMIN_IMG_PATH') or define('URL_CMS_ADMIN_IMG_PATH',URL_PUBLIC_PATH.'sample/images');
+
+        defined('URL_UIKIT_CSS_PATH') or define('URL_UIKIT_CSS_PATH',URL_PUBLIC_PATH.'uikit/css');
+        defined('URL_UIKIT_JS_PATH') or define('URL_UIKIT_JS_PATH',URL_PUBLIC_PATH.'uikit/js');
     }
 
 

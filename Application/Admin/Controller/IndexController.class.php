@@ -16,10 +16,6 @@ class IndexController extends AdminController{
 
     public function __construct(){
         parent::__construct();
-        //问题：在缺少sample的情况下会调用框架的方法进行寻找
-        defined('URL_CMS_ADMIN_CSS_PATH') or define('URL_CMS_ADMIN_CSS_PATH',URL_PUBLIC_PATH.'sample/css');
-        defined('URL_CMS_ADMIN_JS_PATH') or define('URL_CMS_ADMIN_JS_PATH',URL_PUBLIC_PATH.'sample/js');
-        defined('URL_CMS_ADMIN_IMG_PATH') or define('URL_CMS_ADMIN_IMG_PATH',URL_PUBLIC_PATH.'sample/images');
     }
 
     /**
@@ -43,7 +39,7 @@ class IndexController extends AdminController{
                 'title'     => '系统设置',
             ),
             array(
-                'href'      => '',
+                'href'      => '/Mist/admin/index/left.html',
                 'imgsrc'    => URL_CMS_ADMIN_IMG_PATH.'/icon03.png',
                 'title'     => '用户管理',
             ),
@@ -63,22 +59,15 @@ class IndexController extends AdminController{
                 'src'   => URL_CMS_ADMIN_IMG_PATH.'/leftico01.png',
                 'name'  => '管理信息',
                 'items' => array(
-                    array(
-                        'href'  => 'http://www.baidu.com',
-                        'name'  => 'baidu',
-                    ),
-                    array(
-                        'href'  => 'http://www.sina.com.cn',
-                        'name'  => 'sina',
-                    ),
+                    '用户列表'  => '/Mist/member/member/showMemberList.html',
+                    'sina'  => '/Mist/member/public/login.html',
                 ),
             ),
             array(
                 'src'   => URL_CMS_ADMIN_IMG_PATH.'/leftico02.png',
                 'name'  => '其他设置',
                 'items' => array(
-                    'href'  => 'http://www.ifeng.con',
-                    'name'  => 'ifeng',
+                    'ifeng'  => 'http://www.ifeng.com',
                 ),
             ),
         );
@@ -86,6 +75,10 @@ class IndexController extends AdminController{
         $this->assign('submodules',$submodules);
         $this->display();
     }
+
+    /**
+     * 显示系统信息和运行状态
+     */
     public function main(){
         $this->display();
     }
