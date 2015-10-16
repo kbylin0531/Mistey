@@ -231,6 +231,7 @@ module.exports = function (grunt) {
         //    and then simplify the fix for https://github.com/twbs/bootstrap/issues/14837 accordingly
         compatibility: 'ie8',
         keepSpecialComments: '*',
+        sourceMap: true,
         advanced: false
       },
       minifyCore: {
@@ -243,6 +244,7 @@ module.exports = function (grunt) {
       },
       docs: {
         src: [
+          'docs/assets/css/ie10-viewport-bug-workaround.css',
           'docs/assets/css/src/pygments-manni.css',
           'docs/assets/css/src/docs.css'
         ],

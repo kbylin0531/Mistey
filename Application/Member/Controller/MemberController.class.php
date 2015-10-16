@@ -14,9 +14,16 @@ use Application\Common\Controller\AdminController;
  */
 class MemberController extends AdminController{
 
-    public function showMemberList(){
+    public function showList(){
         $this->display();
     }
+    public function create(){
+
+    }
+    public function remove(){}
+
+    public function update(){}
+
 
 
 }
