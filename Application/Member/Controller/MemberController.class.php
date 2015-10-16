@@ -14,9 +14,26 @@ use Application\Common\Controller\AdminController;
  */
 class MemberController extends AdminController{
 
+    public function __construct(){
+        parent::__construct();
+    }
+
+
     public function showList(){
+
         $this->display();
     }
+
+    public function pageAddMember(){
+
+        $this->display();
+    }
+
+
+    public function listMembers(){
+
+    }
+
     public function create(){
 
     }

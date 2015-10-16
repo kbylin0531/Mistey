@@ -1,0 +1,14 @@
+<{extends file="../basic.html"}>
+
+
+
+<{block name="body"}>
+
+<form id="ff" method="post">
+        <label for="name">Name:</label>
+        <input class="easyui-validatebox" type="text" name="name" data-options="required:true" />
+        <label for="email">Email:</label>
+        <input class="easyui-validatebox" type="text" name="email" data-options="validType:'email'" />
+</form>
+
+<{/block}>

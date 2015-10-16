@@ -66,3 +66,152 @@ File:E:\Web\Webroot\Mistey\Runtime\cache\Member\Member\compile\89d1e3f6f749a6b30
 
 
 
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+ReflectionException : Method Application\Member\Controller\MemberController::combobox_data() does not exist
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php   Line:81
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(81): ReflectionMethod->__construct(Object(Application\Member\Controller\MemberController), 'combobox_data')
+#1 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Member', 'combobox_data', Array)
+#2 E:\Web\Webroot\Mistey\index.php(59): System\Mist::start()
+#3 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+ReflectionException : Method Application\Member\Controller\MemberController::datagrid_data() does not exist
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php   Line:81
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(81): ReflectionMethod->__construct(Object(Application\Member\Controller\MemberController), 'datagrid_data')
+#1 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Member', 'datagrid_data', Array)
+#2 E:\Web\Webroot\Mistey\index.php(59): System\Mist::start()
+#3 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyException : Unable to read template file 'base.html'
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_resource_file.php   Line:212
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_source.php(279): Smarty_Internal_Resource_File->getContent(Object(Smarty_Template_Source))
+#1 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(389): Smarty_Template_Source->__get('content')
+#2 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#3 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(176): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#4 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#5 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#6 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#7 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('showList.html', NULL, NULL, NULL, true)
+#8 E:\Web\Webroot\Mistey\System\Core\View.class.php(190): Smarty->display('showList.html', NULL, NULL, NULL)
+#9 E:\Web\Webroot\Mistey\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#10 E:\Web\Webroot\Mistey\Application\Member\Controller\MemberController.class.php(24): System\Core\Controller->display()
+#11 [internal function]: Application\Member\Controller\MemberController->showList()
+#12 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Member\Controller\MemberController))
+#13 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Member', 'showList', Array)
+#14 E:\Web\Webroot\Mistey\index.php(59): System\Mist::start()
+#15 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "E:/Web/Webroot/Mistey/Application/Member/View/Member/basic.html"  on line 15 "<{block name="head"}><{body}>" unknown tag "body"
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:15
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(692): Smarty_Internal_TemplateCompilerBase->trigger_template_error('unknown tag "bo...', 15)
+#1 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(462): Smarty_Internal_TemplateCompilerBase->compileTag2('body', Array, Array)
+#2 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(1411): Smarty_Internal_TemplateCompilerBase->compileTag('body', Array)
+#3 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2303): Smarty_Internal_Templateparser->yy_r33()
+#4 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2398): Smarty_Internal_Templateparser->yy_reduce(33)
+#5 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(4, '\n</body>\n</html...')
+#6 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html>...', true)
+#7 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#8 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(176): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#9 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#10 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#11 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#12 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('showList.html', NULL, NULL, NULL, true)
+#13 E:\Web\Webroot\Mistey\System\Core\View.class.php(190): Smarty->display('showList.html', NULL, NULL, NULL)
+#14 E:\Web\Webroot\Mistey\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#15 E:\Web\Webroot\Mistey\Application\Member\Controller\MemberController.class.php(24): System\Core\Controller->display()
+#16 [internal function]: Application\Member\Controller\MemberController->showList()
+#17 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Member\Controller\MemberController))
+#18 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Member', 'showList', Array)
+#19 E:\Web\Webroot\Mistey\index.php(59): System\Mist::start()
+#20 {main}
+
+            
+=====================================================================================
+
+
+
+
+
+08:00:00
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            ||--message--||
+SmartyCompilerException : Syntax error in template "E:/Web/Webroot/Mistey/Application/Member/View/Member/basic.html"  on line 15 "<{block name="body"}><{block}>" missing "name" attribute
+||--position--||
+File:E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php   Line:15
+||--trace--||
+#0 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_compilebase.php(105): Smarty_Internal_TemplateCompilerBase->trigger_template_error('missing "name" ...', 15)
+#1 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_compile_block.php(78): Smarty_Internal_CompileBase->getAttributes(Object(Smarty_Internal_SmartyTemplateCompiler), Array)
+#2 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(761): Smarty_Internal_Compile_Block->compile(Array, Object(Smarty_Internal_SmartyTemplateCompiler), Array, NULL, NULL)
+#3 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(495): Smarty_Internal_TemplateCompilerBase->callTagCompiler('block', Array, Array)
+#4 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(462): Smarty_Internal_TemplateCompilerBase->compileTag2('block', Array, Array)
+#5 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(1411): Smarty_Internal_TemplateCompilerBase->compileTag('block', Array)
+#6 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2303): Smarty_Internal_Templateparser->yy_r33()
+#7 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templateparser.php(2398): Smarty_Internal_Templateparser->yy_reduce(33)
+#8 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_smartytemplatecompiler.php(114): Smarty_Internal_Templateparser->doParse(4, '\n</body>\n</html...')
+#9 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_templatecompilerbase.php(396): Smarty_Internal_SmartyTemplateCompiler->doCompile('<!DOCTYPE html>...', true)
+#10 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(226): Smarty_Internal_TemplateCompilerBase->compileTemplate(Object(Smarty_Internal_Template))
+#11 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(176): Smarty_Template_Compiled->compileTemplateSource(Object(Smarty_Internal_Template))
+#12 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_template_compiled.php(199): Smarty_Template_Compiled->process(Object(Smarty_Internal_Template))
+#13 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\sysplugins\smarty_internal_template.php(246): Smarty_Template_Compiled->render(Object(Smarty_Internal_Template))
+#14 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\Smarty.class.php(824): Smarty_Internal_Template->render(true, false, true)
+#15 E:\Web\Webroot\Mistey\System\Projects\Smarty\libs\Smarty.class.php(838): Smarty->fetch('showList.html', NULL, NULL, NULL, true)
+#16 E:\Web\Webroot\Mistey\System\Core\View.class.php(190): Smarty->display('showList.html', NULL, NULL, NULL)
+#17 E:\Web\Webroot\Mistey\System\Core\Controller.class.php(223): System\Core\View->display(NULL, NULL, NULL, NULL)
+#18 E:\Web\Webroot\Mistey\Application\Member\Controller\MemberController.class.php(24): System\Core\Controller->display()
+#19 [internal function]: Application\Member\Controller\MemberController->showList()
+#20 E:\Web\Webroot\Mistey\System\Core\Dispatcher.class.php(123): ReflectionMethod->invoke(Object(Application\Member\Controller\MemberController))
+#21 E:\Web\Webroot\Mistey\System\Mist.class.php(213): System\Core\Dispatcher::execute('Member', 'Member', 'showList', Array)
+#22 E:\Web\Webroot\Mistey\index.php(59): System\Mist::start()
+#23 {main}
+
+            
+=====================================================================================
+
+
+
+
+

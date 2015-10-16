@@ -16,7 +16,7 @@ CREATE TABLE `mist_entity_user` (
   `last_login_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
   `last_login_ip` bigint(20) NOT NULL DEFAULT '0' COMMENT '最后登录IP',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
-  `status` tinyint(4) DEFAULT '0' COMMENT '用户状态',
+  `status` tinyint(4)  unsigned NOT NULL DEFAULT '0' COMMENT '用户状态',
   -- 唯一约束
   PRIMARY KEY (`uid`),
   -- 名称 (栏位)

@@ -15,6 +15,8 @@ use System\Core\Model;
  */
 class AdminModel extends Model {
 
+    protected $prefix = 'mist_';
+
     /**
      * 数据库配置
      * @param array|null $config
