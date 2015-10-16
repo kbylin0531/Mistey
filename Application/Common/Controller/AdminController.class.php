@@ -28,7 +28,7 @@ class AdminController extends Controller {
         defined('URL_CMS_ADMIN_JS_PATH') or define('URL_CMS_ADMIN_JS_PATH',URL_PUBLIC_PATH.'sample/js');
         defined('URL_CMS_ADMIN_IMG_PATH') or define('URL_CMS_ADMIN_IMG_PATH',URL_PUBLIC_PATH.'sample/images');
 
-        defined('URL_UIKIT_PATH') or define('URL_UIKIT_PATH',URL_PUBLIC_PATH.'uikit');
+        defined('URL_BST_PATH') or define('URL_BST_PATH',URL_PUBLIC_PATH.'bootstrap');
 
     }
 
